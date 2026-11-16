@@ -211,5 +211,117 @@ class SkeletonFiles(unittest.TestCase):
         self.assertRegex(js, r"if\s*\(\s*!url\s*\)\s*return")
 
 
+class HomePage(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.html = (ROOT / "index.html").read_text(encoding="utf-8")
+
+    def test_project_titles(self):
+        for t in ("Call QA for voice agents", "Exception triage for accounts payable",
+                  "gtm_agent", "Tender tracker"):
+            self.assertIn(t, self.html, t)
+
+    def test_employers(self):
+        for t in ("NexTurn", "Windstream Technologies", "out of home advertising firm",
+                  "Centre for Innovation and Entrepreneurship"):
+            self.assertIn(t, self.html, t)
+
+    def test_capstone_and_education(self):
+        self.assertIn("Immunological Supply Chain", self.html)
+        for t in ("PES University", "Delhi Public School South", "Bishop Cotton"):
+            self.assertIn(t, self.html, t)
+
+    def test_contact_links(self):
+        self.assertIn('href="mailto:archit.rishabh25@gmail.com"', self.html)
+        self.assertIn('href="https://www.linkedin.com/in/archit-rishabh"', self.html)
+        self.assertIn('href="https://github.com/arch-vvc"', self.html)
+
+    def test_no_dropped_figure(self):
+        self.assertNotIn("93%", self.html)
+
+    def test_sections_in_order(self):
+        heads = re.findall(r"<h2[^>]*>(.*?)</h2>", self.html)
+        self.assertEqual(heads, ["Projects", "Experience", "Research", "Education",
+                                 "Leadership and activities"])
+
+    def test_semantic_elements(self):
+        for tag in ("<header", "<main", "<footer", "<section", "<ul"):
+            self.assertIn(tag, self.html, tag)
+
+    def test_project_links(self):
+        for page in ("call-qa", "exception-triage", "gtm-agent", "tender-tracker"):
+            self.assertIn(f'href="projects/{page}.html"', self.html, page)
+        for repo in ("voice-agent-call-qa", "invoice-exception-triage", "gtm_agent"):
+            self.assertIn(f"https://github.com/arch-vvc/{repo}", self.html, repo)
+        self.assertNotIn("arch-vvc/tender-tracker", self.html)
+
+    def test_demo_and_cv_slots(self):
+        for slot in ("callqa", "triage", "gtm", "tender"):
+            self.assertIn(f'data-demo="{slot}"', self.html, slot)
+        self.assertIn("data-cv", self.html)
+
+
+PROJECT_PAGES = ("call-qa", "exception-triage", "gtm-agent", "tender-tracker")
+
+
+class ProjectPages(unittest.TestCase):
+    def page(self, name):
+        return (ROOT / "projects" / f"{name}.html").read_text(encoding="utf-8")
+
+    def test_pages_exist(self):
+        for n in PROJECT_PAGES:
+            self.assertTrue((ROOT / "projects" / f"{n}.html").is_file(), n)
+
+    def test_common_headings(self):
+        for n in PROJECT_PAGES:
+            heads = re.findall(r"<h2[^>]*>(.*?)</h2>", self.page(n))
+            for h in ("The problem", "What it does", "Proof", "Limits"):
+                self.assertIn(h, heads, (n, h))
+
+    def test_tender_case_study(self):
+        html = self.page("tender-tracker")
+        heads = re.findall(r"<h2[^>]*>(.*?)</h2>", html)
+        self.assertIn("What went wrong", heads)
+        self.assertIn("Rules it keeps", heads)
+        self.assertNotIn("github.com/arch-vvc/tender-tracker", html)
+        self.assertIn("private", html)
+
+    def test_back_home_link(self):
+        for n in PROJECT_PAGES:
+            self.assertIn('href="../index.html"', self.page(n), n)
+
+    def test_repo_links(self):
+        self.assertIn("github.com/arch-vvc/voice-agent-call-qa", self.page("call-qa"))
+        self.assertIn("github.com/arch-vvc/invoice-exception-triage", self.page("exception-triage"))
+        self.assertIn("github.com/arch-vvc/gtm_agent", self.page("gtm-agent"))
+
+    def test_no_unfinished_words(self):
+        for n in PROJECT_PAGES + ("../index",):
+            low = self.page(n).lower()
+            for bad in ("placeholder", "todo", "lorem"):
+                self.assertNotIn(bad, low, (n, bad))
+
+    def test_numbers_from_facts(self):
+        self.assertIn("70% to 95%", self.page("call-qa"))
+        self.assertIn("16 of 16", self.page("exception-triage"))
+        self.assertIn("570", self.page("gtm-agent"))
+        t = self.page("tender-tracker")
+        for x in ("33 portals", "3,900", "57", "366", "8 of 10", "2 of 10"):
+            self.assertIn(x, t, x)
+
+    def test_config_slots(self):
+        slots = {"call-qa": "callqa", "exception-triage": "triage",
+                 "gtm-agent": "gtm", "tender-tracker": "tender"}
+        for n, slot in slots.items():
+            self.assertIn(f'data-demo="{slot}"', self.page(n), n)
+        self.assertIn('data-text="callqaResult"', self.page("call-qa"))
+
+    def test_script_and_css_paths(self):
+        for n in PROJECT_PAGES:
+            h = self.page(n)
+            self.assertIn('href="../styles.css"', h)
+            self.assertLess(h.index("../site.config.js"), h.index("../script.js"))
+
+
 if __name__ == "__main__":
     unittest.main()
