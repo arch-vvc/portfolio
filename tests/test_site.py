@@ -323,5 +323,82 @@ class ProjectPages(unittest.TestCase):
             self.assertLess(h.index("../site.config.js"), h.index("../script.js"))
 
 
+def _luminance(hexcol):
+    h = hexcol.lstrip("#")
+    if len(h) == 3:
+        h = "".join(c * 2 for c in h)
+    chans = []
+    for i in (0, 2, 4):
+        c = int(h[i:i + 2], 16) / 255
+        chans.append(c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4)
+    return 0.2126 * chans[0] + 0.7152 * chans[1] + 0.0722 * chans[2]
+
+
+def contrast(a, b):
+    la, lb = sorted((_luminance(a), _luminance(b)), reverse=True)
+    return (la + 0.05) / (lb + 0.05)
+
+
+def theme_vars(css):
+    """Return (light, dark) dicts of custom properties."""
+    root = re.search(r":root\s*\{([^}]*)\}", css).group(1)
+    dark_block = re.search(
+        r"@media\s*\(prefers-color-scheme:\s*dark\)\s*\{\s*:root\s*\{([^}]*)\}", css).group(1)
+    pick = lambda blk: dict(re.findall(r"(--[\w-]+)\s*:\s*(#[0-9a-fA-F]{3,6})", blk))
+    light = pick(root)
+    dark = dict(light)
+    dark.update(pick(dark_block))
+    return light, dark
+
+
+class Design(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.css = (ROOT / "styles.css").read_text(encoding="utf-8")
+
+    def test_contrast_both_themes(self):
+        light, dark = theme_vars(self.css)
+        for name, t in (("light", light), ("dark", dark)):
+            self.assertGreaterEqual(contrast(t["--fg"], t["--bg"]), 7, (name, "body"))
+            self.assertGreaterEqual(contrast(t["--accent"], t["--bg"]), 4.5, (name, "accent"))
+            self.assertGreaterEqual(contrast(t["--muted"], t["--bg"]), 4.5, (name, "muted"))
+
+    def test_media_rules(self):
+        self.assertRegex(self.css, r"@media\s*\(max-width:\s*600px\)")
+        self.assertRegex(self.css, r"@media\s*\(prefers-color-scheme:\s*dark\)")
+        self.assertRegex(self.css, r"@media\s+print")
+
+    def test_print_shows_link_urls(self):
+        self.assertIn("attr(href)", self.css)
+
+    def test_no_wide_fixed_widths(self):
+        for m in re.finditer(r"(?<![-\w])(?:min-|max-)?width:\s*(\d+)px", self.css):
+            if "@media" in self.css[max(0, m.start() - 40):m.start()]:
+                continue
+            self.assertLessEqual(int(m.group(1)), 600, m.group(0))
+        self.assertNotRegex(self.css, r"(?<![-\w])width:\s*\d{4,}px")
+
+    def test_stylesheet_length(self):
+        self.assertLess(len(self.css.splitlines()), 300)
+
+    def test_focus_styles_and_no_animation(self):
+        self.assertIn(":focus-visible", self.css)
+        self.assertNotIn("@keyframes", self.css)
+        self.assertNotIn("animation", self.css)
+
+    def test_system_fonts_only(self):
+        self.assertIn("system-ui", self.css)
+        self.assertNotIn("@font-face", self.css)
+        self.assertNotIn("url(", self.css)
+
+    def test_one_stylesheet_everywhere(self):
+        for f in site_pages():
+            html = f.read_text(encoding="utf-8")
+            self.assertEqual(len(re.findall(r'rel="stylesheet"', html)), 1, f.name)
+
+    def test_no_horizontal_scroll_guard(self):
+        self.assertRegex(self.css, r"overflow-wrap:\s*(anywhere|break-word)")
+
+
 if __name__ == "__main__":
     unittest.main()
