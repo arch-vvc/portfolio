@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exception triage for accounts payable, Archit Rishabh</title>
+  <meta name="description" content="Exception triage reads invoice, purchase order and payment exports from Tally or Zoho Books and lists every mismatch with the rupees at risk.">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <p class="back"><a href="../index.html">Archit Rishabh</a></p>
+    <h1>Exception triage for accounts payable</h1>
+  </header>
+  <main>
+    <section>
+      <h2>The problem</h2>
+      <p>AP teams match invoices, purchase orders and payments by hand, so wrong amounts, duplicates, missing POs and GST errors are found late.</p>
+    </section>
+    <section>
+      <h2>What it does</h2>
+      <p>Drop in three messy exports from Tally or Zoho Books. Get every mismatch with the rupees at risk, the exact rows and one plain English sentence.</p>
+    </section>
+    <section>
+      <h2>Proof</h2>
+      <p>It finds 16 of 16 planted exceptions across 8 types in synthetic data shaped like real exports, with no false alarms on the look alike rows. It uses the standard library only and runs with no install.</p>
+    </section>
+    <section>
+      <h2>Limits</h2>
+      <p>Tested on synthetic data, with one line item per invoice.</p>
+    </section>
+    <section>
+      <h2>Links</h2>
+      <p class="actions"><a href="https://github.com/arch-vvc/invoice-exception-triage" rel="noopener">Repo</a> <span data-demo="triage"></span> <a href="../index.html">Back to home</a></p>
+    </section>
+  </main>
+  <script src="../site.config.js"></script>
+  <script src="../script.js"></script>
+</body>
+</html>
