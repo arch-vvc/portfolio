@@ -400,5 +400,60 @@ class Design(unittest.TestCase):
         self.assertRegex(self.css, r"overflow-wrap:\s*(anywhere|break-word)")
 
 
+class Sharing(unittest.TestCase):
+    def meta(self, f):
+        p = PageParser()
+        p.feed(f.read_text(encoding="utf-8"))
+        d = {}
+        for m in p.metas:
+            key = m.get("name") or m.get("property")
+            if key:
+                d[key] = m.get("content") or ""
+        return p, d
+
+    def test_pages_include_404(self):
+        self.assertIn("404.html", [f.name for f in site_pages()])
+
+    def test_distinct_title_and_description(self):
+        titles, descs = [], []
+        for f in site_pages():
+            p, d = self.meta(f)
+            titles.append(p.title.strip())
+            descs.append(d["description"].strip())
+        self.assertEqual(len(set(titles)), len(titles), titles)
+        self.assertEqual(len(set(descs)), len(descs), descs)
+
+    def test_open_graph_tags(self):
+        for f in site_pages():
+            p, d = self.meta(f)
+            self.assertTrue(d.get("og:title", "").strip(), f.name)
+            self.assertTrue(d.get("og:description", "").strip(), f.name)
+            self.assertEqual(d["og:title"], p.title.strip(), f.name)
+
+    def test_inline_svg_favicon(self):
+        for f in site_pages():
+            html = f.read_text(encoding="utf-8")
+            self.assertRegex(html, r'<link rel="icon" href="data:image/svg\+xml', f.name)
+
+    def test_404_links_home(self):
+        html = (ROOT / "404.html").read_text(encoding="utf-8")
+        self.assertRegex(html, r'href="index\.html"')
+
+    def test_no_tracking(self):
+        for f in site_pages():
+            low = f.read_text(encoding="utf-8").lower()
+            for bad in ("analytics", "gtag", "pixel", "googletagmanager"):
+                self.assertNotIn(bad, low, (f.name, bad))
+
+    def test_readme(self):
+        r = (ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn("site.config.js", r)
+        self.assertIn("python3 -m unittest discover -s tests -q", r)
+        for part in ("What this is", "Edit site.config.js", "Run the checks", "Publish"):
+            self.assertIn(part, r, part)
+        self.assertIn("GitHub Pages", r)
+        self.assertNotRegex(r, r"\u2014|\u2013")
+
+
 if __name__ == "__main__":
     unittest.main()
