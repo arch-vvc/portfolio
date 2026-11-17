@@ -509,5 +509,40 @@ class Accessibility(unittest.TestCase):
         self.assertIn("<style", html, "404 needs inline styles so it looks right at any depth")
 
 
+class TodoConfig(unittest.TestCase):
+    def run_script(self, text):
+        import subprocess
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            cfg = Path(d) / "c.js"
+            cfg.write_text(text, encoding="utf-8")
+            return subprocess.run(["python3", str(ROOT / "scripts" / "todo_config.py"), str(cfg)],
+                                  capture_output=True, text=True)
+
+    def test_lists_only_empty_values_and_exits_zero(self):
+        r = self.run_script('var C = {\n  a: "",\n  cvPath: "x.pdf",\n  windstreamPhotos: [],\n  degreeTitle: "" // note\n};')
+        self.assertEqual(r.returncode, 0)
+        self.assertIn("- [ ] a:", r.stdout)
+        self.assertIn("- [ ] windstreamPhotos:", r.stdout)
+        self.assertIn("- [ ] degreeTitle:", r.stdout)
+        self.assertNotIn("cvPath", r.stdout)
+
+    def test_all_filled_says_nothing_to_do(self):
+        r = self.run_script('var C = {\n  a: "x"\n};')
+        self.assertEqual(r.returncode, 0)
+        self.assertIn("Nothing to fill in", r.stdout)
+
+    def test_real_config_lists_nine_items(self):
+        import subprocess
+        r = subprocess.run(["python3", str(ROOT / "scripts" / "todo_config.py")],
+                           capture_output=True, text=True)
+        self.assertEqual(r.stdout.count("- [ ]"), 9)
+
+    def test_gitignore_covers_junk(self):
+        g = (ROOT / ".gitignore").read_text(encoding="utf-8")
+        self.assertIn(".DS_Store", g)
+        self.assertIn("__pycache__", g)
+
+
 if __name__ == "__main__":
     unittest.main()
