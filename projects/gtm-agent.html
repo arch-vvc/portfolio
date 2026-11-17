@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>gtm_agent, a pitch engine for FDE outreach, Archit Rishabh</title>
+  <meta name="description" content="gtm_agent reads a startup's site, picks the demo to send, names the likely deployment pain and drafts a short note checked against the site's own text.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="gtm_agent, a pitch engine for FDE outreach, Archit Rishabh">
+  <meta property="og:description" content="gtm_agent reads a startup's site, picks the demo to send, names the likely deployment pain and drafts a short note checked against the site's own text.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a5aa8'/%3E%3Ctext x='16' y='24' font-size='22' font-family='sans-serif' font-weight='700' text-anchor='middle' fill='white'%3EA%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <p class="back"><a href="../index.html">Archit Rishabh</a></p>
+    <h1>gtm_agent, a pitch engine for FDE outreach</h1>
+  </header>
+  <main>
+    <section>
+      <h2>The problem</h2>
+      <p>Tailoring a demo and a note to each startup takes an hour of reading their site.</p>
+    </section>
+    <section>
+      <h2>What it does</h2>
+      <p>Give it a startup's URL. It reads the site, places the company in a cluster, picks which demo to send and names the deployment pain its customers likely have. It drafts a note of 150 words or fewer, checked against the site's own text so it cannot name things that are not there.</p>
+    </section>
+    <section>
+      <h2>Proof</h2>
+      <p>FastAPI, Redis queue, Postgres, Gemini with a Groq fallback. More than 570 tests, with all model calls mocked.</p>
+    </section>
+    <section>
+      <h2>Limits</h2>
+      <p>The guard checks names and figures, not every claim.</p>
+    </section>
+    <section>
+      <h2>Links</h2>
+      <p class="actions"><a href="https://github.com/arch-vvc/gtm_agent" rel="noopener">Repo</a> <span data-demo="gtm"></span> <a href="../index.html">Back to home</a></p>
+    </section>
+  </main>
+  <script src="../site.config.js"></script>
+  <script src="../script.js"></script>
+</body>
+</html>

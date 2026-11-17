@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Call QA for voice agents, Archit Rishabh</title>
+  <meta name="description" content="Call QA tests a voice agent against a client's script before go live, using simulated callers and a judge that shows the exact turn where each call went wrong.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Call QA for voice agents, Archit Rishabh">
+  <meta property="og:description" content="Call QA tests a voice agent against a client's script before go live, using simulated callers and a judge that shows the exact turn where each call went wrong.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a5aa8'/%3E%3Ctext x='16' y='24' font-size='22' font-family='sans-serif' font-weight='700' text-anchor='middle' fill='white'%3EA%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <p class="back"><a href="../index.html">Archit Rishabh</a></p>
+    <h1>Call QA for voice agents</h1>
+  </header>
+  <main>
+    <section>
+      <h2>The problem</h2>
+      <p>Nobody can prove a voice agent follows a client's script before go live, so QA is people listening to calls.</p>
+    </section>
+    <section>
+      <h2>What it does</h2>
+      <p>Paste a client SOP. Simulated callers, including Hinglish and adversarial ones, talk to the agent. A judge scores every call against the SOP. The dashboard shows the exact turn where each call went wrong.</p>
+    </section>
+    <section>
+      <h2>Proof</h2>
+      <p>A scripted walkthrough of 20 callers goes from 70% to 95% after one prompt fix, with one failure left visible. It runs with no API key.</p>
+      <p data-text="callqaResult" hidden></p>
+    </section>
+    <section>
+      <h2>Limits</h2>
+      <p>Text only. There is no audio yet.</p>
+    </section>
+    <section>
+      <h2>Links</h2>
+      <p class="actions"><a href="https://github.com/arch-vvc/voice-agent-call-qa" rel="noopener">Repo</a> <span data-demo="callqa"></span> <a href="../index.html">Back to home</a></p>
+    </section>
+  </main>
+  <script src="../site.config.js"></script>
+  <script src="../script.js"></script>
+</body>
+</html>

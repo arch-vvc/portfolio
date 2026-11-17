@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tender tracker case study, Archit Rishabh</title>
+  <meta name="description" content="A daily tracker that reads 33 Indian state eProcurement portals, keeps only the IT tenders that fit one bidder and emails a short digest with an Excel sheet.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Tender tracker case study, Archit Rishabh">
+  <meta property="og:description" content="A daily tracker that reads 33 Indian state eProcurement portals, keeps only the IT tenders that fit one bidder and emails a short digest with an Excel sheet.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a5aa8'/%3E%3Ctext x='16' y='24' font-size='22' font-family='sans-serif' font-weight='700' text-anchor='middle' fill='white'%3EA%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <header>
+    <p class="back"><a href="../index.html">Archit Rishabh</a></p>
+    <h1>Tender tracker</h1>
+    <p class="meta">A case study. Built for a real user.</p>
+  </header>
+  <main>
+    <section>
+      <h2>The problem</h2>
+      <p>IT tenders are scattered across dozens of Indian state eProcurement portals and nobody has time to read them all.</p>
+    </section>
+    <section>
+      <h2>What it does</h2>
+      <p>Every day it reads the portals, keeps only IT work that fits the bidder, and emails a short digest with an Excel sheet.</p>
+    </section>
+    <section>
+      <h2>Proof</h2>
+      <ul>
+        <li>33 portals parsed, with the parsed count matching the listed total.</li>
+        <li>About 3,900 new open tenders a day, of which about 57 pass a keyword prefilter and go to a model.</li>
+        <li>It runs on free model tiers, at roughly 10,000 tokens in a day.</li>
+        <li>Every "IT" label must carry a quote found in the tender text.</li>
+        <li>366 tests.</li>
+      </ul>
+    </section>
+    <section>
+      <h2>What went wrong</h2>
+      <p>The ranking scored 8 of 10 on the labels it was tuned on. On fresh labels it scored 2 of 10. So the tuned number was thrown out. The next step is labels from the person who actually bids.</p>
+    </section>
+    <section>
+      <h2>Rules it keeps</h2>
+      <p>It never solves or works around a captcha or a login wall. Blocked portals are recorded as blocked and shown as gaps.</p>
+    </section>
+    <section>
+      <h2>Limits</h2>
+      <p>The repo is private because it holds a real bidder's focus, so there is no repo link here. This page is the written case study.</p>
+    </section>
+    <section>
+      <h2>Links</h2>
+      <p class="actions"><span data-demo="tender"></span> <a href="../index.html">Back to home</a></p>
+    </section>
+  </main>
+  <script src="../site.config.js"></script>
+  <script src="../script.js"></script>
+</body>
+</html>
