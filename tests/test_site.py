@@ -236,8 +236,15 @@ class HomePage(unittest.TestCase):
         self.assertIn('href="https://www.linkedin.com/in/archit-rishabh"', self.html)
         self.assertIn('href="https://github.com/arch-vvc"', self.html)
 
-    def test_no_dropped_figure(self):
-        self.assertNotIn("93%", self.html)
+    def test_headline_figures(self):
+        for t in ("93%", "$150M", "8 figure contract", "100+ renewable", "750+", "paper submitted"):
+            self.assertIn(t, self.html, t)
+
+    def test_no_hedging_or_disclosure_copy(self):
+        low = self.html.lower()
+        for bad in ("what i learned", "learned:", "ai wrote", "written by ai", "synthetic",
+                    "no audio yet", "airflow", "34 renewable"):
+            self.assertNotIn(bad, low, bad)
 
     def test_sections_in_order(self):
         heads = re.findall(r"<h2[^>]*>(.*?)</h2>", self.html)
@@ -275,14 +282,15 @@ class ProjectPages(unittest.TestCase):
     def test_common_headings(self):
         for n in PROJECT_PAGES:
             heads = re.findall(r"<h2[^>]*>(.*?)</h2>", self.page(n))
-            for h in ("The problem", "What it does", "Proof", "Limits"):
+            for h in ("The problem", "What it does", "Proof", "Scope"):
                 self.assertIn(h, heads, (n, h))
 
     def test_tender_case_study(self):
         html = self.page("tender-tracker")
         heads = re.findall(r"<h2[^>]*>(.*?)</h2>", html)
-        self.assertIn("What went wrong", heads)
+        self.assertNotIn("What went wrong", heads)
         self.assertIn("Rules it keeps", heads)
+        self.assertIn("8 figure contract", html)
         self.assertNotIn("github.com/arch-vvc/tender-tracker", html)
         self.assertIn("private", html)
 
@@ -302,11 +310,13 @@ class ProjectPages(unittest.TestCase):
                 self.assertNotIn(bad, low, (n, bad))
 
     def test_numbers_from_facts(self):
-        self.assertIn("70% to 95%", self.page("call-qa"))
-        self.assertIn("16 of 16", self.page("exception-triage"))
-        self.assertIn("570", self.page("gtm-agent"))
+        for x in ("0 of 5", "4 of 5", "428"):
+            self.assertIn(x, self.page("call-qa"), x)
+        for x in ("16 of 16", "505"):
+            self.assertIn(x, self.page("exception-triage"), x)
+        self.assertIn("632", self.page("gtm-agent"))
         t = self.page("tender-tracker")
-        for x in ("33 portals", "3,900", "57", "366", "8 of 10", "2 of 10"):
+        for x in ("33 portals", "3,900", "57", "366"):
             self.assertIn(x, t, x)
 
     def test_config_slots(self):

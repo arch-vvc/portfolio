@@ -4,18 +4,24 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Archit Rishabh</title>
-  <meta name="description" content="Archit Rishabh, final year AI and ML engineering student in Bangalore who builds working demos on messy real world data.">
+  <meta name="description" content="Archit Rishabh builds applied AI for messy business operations: a tender tracker behind an 8 figure contract, invoice triage, voice agent QA, outreach and supply chain systems.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Archit Rishabh">
-  <meta property="og:description" content="Archit Rishabh, final year AI and ML engineering student in Bangalore who builds working demos on messy real world data.">
+  <meta property="og:description" content="Archit Rishabh builds applied AI for messy business operations: a tender tracker behind an 8 figure contract, invoice triage, voice agent QA, outreach and supply chain systems.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a5aa8'/%3E%3Ctext x='16' y='24' font-size='22' font-family='sans-serif' font-weight='700' text-anchor='middle' fill='white'%3EA%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
     <h1>Archit Rishabh</h1>
-    <p class="lead">Final year AI and ML engineering student who builds working demos on messy real world data instead of sending a CV.</p>
-    <p class="meta">Bangalore, India. Open to forward deployed engineer and founder's office roles, remote or in India.</p>
+    <p class="lead">Applied AI for messy business operations.</p>
+    <p class="meta">Final year AI and ML at PES University, Bangalore. I build AI systems for procurement, finance, customer calls, sales and supply chains. Open to forward deployed engineer and founder's office roles, remote or in India.</p>
+    <ul class="facts">
+      <li>Built a tender tracker that the company uses, resulting in an 8 figure contract now underway.</li>
+      <li>Cut client insight time by 93% at a $150M firm.</li>
+      <li>National finalist at Drishtikon '26 from 750+ applicants.</li>
+      <li>Supply chain capstone paper submitted.</li>
+    </ul>
     <p class="links">
       <a href="mailto:archit.rishabh25@gmail.com">archit.rishabh25@gmail.com</a>
       <a href="https://www.linkedin.com/in/archit-rishabh" rel="noopener">LinkedIn</a>
@@ -28,28 +34,32 @@
       <h2>Projects</h2>
       <ul class="rows">
         <li class="row">
-          <div class="head"><h3>Call QA for voice agents</h3><span class="when">Text only, no audio yet</span></div>
-          <p>Nobody can prove a voice agent follows a client's script before go live, so QA is people listening to calls.</p>
-          <p>Proof: a scripted walkthrough of 20 callers goes from 70% to 95% after one prompt fix, with one failure left visible. Runs with no API key.</p>
+          <div class="head"><h3>Tender tracker</h3></div>
+          <p class="stack">Python, LLM APIs</p>
+          <p>Reads 33 Indian state eProcurement portals every day, keeps the IT tenders that fit the bidder and emails the bid team a digest with an Excel sheet. Used by the company, resulting in an 8 figure contract now underway.</p>
+          <p>About 3,900 new open tenders a day, 366 tests.</p>
+          <p class="actions"><a href="projects/tender-tracker.html">Read the case study</a> <span data-demo="tender"></span></p>
+        </li>
+        <li class="row">
+          <div class="head"><h3>Call QA for voice agents</h3></div>
+          <p class="stack">Python, LLM APIs</p>
+          <p>Simulated callers, including confused, Hinglish and adversarial ones, talk to an agent built from a client's SOP. A judge marks the exact turn where a call fails.</p>
+          <p>Live run: the first prompt passed 0 of 5 callers, the fixed prompt passed 4 of 5. 428 tests.</p>
           <p class="actions"><a href="projects/call-qa.html">Call QA page</a> <a href="https://github.com/arch-vvc/voice-agent-call-qa" rel="noopener">Repo</a> <span data-demo="callqa"></span></p>
         </li>
         <li class="row">
-          <div class="head"><h3>Exception triage for accounts payable</h3><span class="when">Synthetic data</span></div>
-          <p>AP teams match invoices, purchase orders and payments by hand, so wrong amounts, duplicates, missing POs and GST errors are found late.</p>
-          <p>Proof: finds 16 of 16 planted exceptions across 8 types, with no false alarms on the look alike rows. Standard library only, no install.</p>
+          <div class="head"><h3>Exception triage for accounts payable</h3></div>
+          <p class="stack">Python, Tally and Zoho Books exports</p>
+          <p>Matches invoices, purchase orders and payments, then lists every mismatch with the rupees at risk, the exact source rows and one plain English sentence.</p>
+          <p>Caught 16 of 16 planted exceptions across 8 types. 505 tests.</p>
           <p class="actions"><a href="projects/exception-triage.html">Triage page</a> <a href="https://github.com/arch-vvc/invoice-exception-triage" rel="noopener">Repo</a> <span data-demo="triage"></span></p>
         </li>
         <li class="row">
           <div class="head"><h3>gtm_agent, a pitch engine for FDE outreach</h3></div>
-          <p>Tailoring a demo and a note to each startup takes an hour of reading their site.</p>
-          <p>Proof: give it a URL and it drafts a note of 150 words or fewer, checked against the site's own text. More than 570 tests with all model calls mocked.</p>
+          <p class="stack">Python, FastAPI, Redis, PostgreSQL, Docker</p>
+          <p>Give it a startup's URL. It returns the cluster, the demo to send, the deployment pain the company's customers likely have, three tailoring changes and a pitch note of 150 words or fewer that names only things found on the company's own site.</p>
+          <p>632 tests.</p>
           <p class="actions"><a href="projects/gtm-agent.html">gtm_agent page</a> <a href="https://github.com/arch-vvc/gtm_agent" rel="noopener">Repo</a> <span data-demo="gtm"></span></p>
-        </li>
-        <li class="row">
-          <div class="head"><h3>Tender tracker</h3><span class="when">Case study, private repo</span></div>
-          <p>IT tenders are scattered across dozens of Indian state eProcurement portals and nobody has time to read them all.</p>
-          <p>Proof: 33 portals parsed, about 3,900 new open tenders a day, a short emailed digest. 366 tests.</p>
-          <p class="actions"><a href="projects/tender-tracker.html">Read the case study</a> <span data-demo="tender"></span></p>
         </li>
       </ul>
     </section>
@@ -58,20 +68,23 @@
       <h2>Experience</h2>
       <ul class="rows">
         <li class="row">
-          <div class="head"><h3>Data and AI Strategy Intern, NexTurn</h3><span class="when">Bangalore, 2024</span></div>
-          <p>Built a prototype AI document analysis and visualisation tool for a client.</p>
-        </li>
-        <li class="row">
           <div class="head"><h3>Founder's Office Intern, Windstream Technologies</h3><span class="when">Jammu and Kashmir, 2024</span></div>
-          <p>Site feasibility analysis across 34 renewable energy installations for a ₹20 crore project.</p>
+          <p>Ran a site feasibility analysis across 100+ renewable energy installations (terrain, grid access, cost) to guide capital allocation for a ₹20 crore project.</p>
+          <p>Built an energy yield model on 35,000+ hourly weather records. A hybrid turbine redesign lifts output 20 to 25% at windy sites and loses up to 13% elsewhere, so spend moved to panel and battery upgrades.</p>
+          <p>Built the tender tracker above. Supported the C suite on proposals and client presentations.</p>
           <ul data-photos class="photos" hidden></ul>
         </li>
         <li class="row">
-          <div class="head"><h3>Research and Editorial Intern, PES University Centre for Innovation and Entrepreneurship</h3><span class="when">Bangalore, 2024</span></div>
+          <div class="head"><h3>Data and AI Strategy Intern, NexTurn</h3><span class="when">Bangalore, 2024</span></div>
+          <p>Built a RAG based document analysis and visualisation pipeline for a $150M firm, cutting client insight generation time by 93%.</p>
+          <p>Parsed, chunked and embedded 10+ simultaneous unstructured documents into a vector index, and used structured LLM outputs to turn key metrics into automated visual reports.</p>
         </li>
         <li class="row">
           <div class="head"><h3>Founder's Office Intern, an out of home advertising firm</h3><span class="when">New Delhi, 2023</span></div>
-          <p>Crowd flow and visibility analysis across more than 50 Delhi Metro stations, and pitch decks for tenders.</p>
+          <p>Analysed crowd flow and visibility across 50+ Delhi Metro stations (about 30 lakh daily commuters) to build a site prioritisation framework, and created the pitch decks behind tender submissions.</p>
+        </li>
+        <li class="row">
+          <div class="head"><h3>Research and Editorial Intern, PES University Centre for Innovation and Entrepreneurship</h3><span class="when">Bangalore, 2024</span></div>
         </li>
         <li class="row">
           <div class="head"><h3>AI response evaluation</h3><span class="when">Hindi and English</span></div>
@@ -84,9 +97,12 @@
       <h2>Research</h2>
       <ul class="rows">
         <li class="row">
-          <div class="head"><h3>Capstone: Immunological Supply Chain</h3><span class="when">PES University</span></div>
-          <p>Self healing supply chains using graph neural networks, PPO reinforcement learning and FAISS similarity search. An implementation paper and a survey paper are being prepared for submission.</p>
+          <div class="head"><h3>Capstone: Immunological Supply Chain</h3><span class="when">PES University, paper submitted</span></div>
+          <p class="stack">Python, PyTorch, GCN, PPO, XGBoost, FAISS</p>
+          <p>A supply chain that heals itself the way an immune system does. A 28 stage pipeline runs GCN anomaly detection, a PPO rerouting agent and a FAISS memory of past disruptions over 240K+ records.</p>
+          <p>Backtested blind on real USAID shipment data, it flagged the Haiti 2010 disruption, and recommended vendors beat actual procurement on late rate in 71% of 76 cases. Every headline number reproduces bit for bit from a fresh clone, and CI fails if a number drifts.</p>
           <p data-text="capstoneResult" hidden></p>
+          <p class="actions"><a href="https://github.com/arch-vvc/immunological_supply_chain_management" rel="noopener">Repo</a></p>
         </li>
       </ul>
     </section>
@@ -114,11 +130,11 @@
       <ul class="rows">
         <li class="row">
           <div class="head"><h3>Finalist, Drishtikon '26 case competition</h3><span class="when">IIMS Pune</span></div>
-          <p>More than 750 applicants.</p>
+          <p>National final from 750+ applicants, on corporate restructuring and marketing cases.</p>
         </li>
         <li class="row">
           <div class="head"><h3>PESU E-Cell organising committee</h3></div>
-          <p>Built a 20 case business simulation for more than 100 participants.</p>
+          <p>Built a 20 case business simulation from real corporate problems and ran it for 100+ participants.</p>
         </li>
         <li class="row">
           <div class="head"><h3>Cricket</h3></div>
