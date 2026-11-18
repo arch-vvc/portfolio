@@ -455,5 +455,94 @@ class Sharing(unittest.TestCase):
         self.assertNotRegex(r, r"\u2014|\u2013")
 
 
+class Accessibility(unittest.TestCase):
+    """S2: checks that were missing. Already covered elsewhere: title, description,
+    viewport, exactly one h1 and alt text (all in check_html)."""
+
+    BAD_LINK_TEXT = {"click here", "here", "link", "read more", "more"}
+
+    @staticmethod
+    def headings(html):
+        return [int(n) for n in re.findall(r"<h([1-6])[\s>]", html)]
+
+    @staticmethod
+    def link_texts(html):
+        return [re.sub(r"<[^>]+>", "", t).strip().lower()
+                for t in re.findall(r"<a\b[^>]*>(.*?)</a>", html, flags=re.S)]
+
+    def test_lang_on_html(self):
+        for f in site_pages():
+            self.assertRegex(f.read_text(encoding="utf-8"),
+                             r"<html[^>]*\blang=\"[a-zA-Z-]{2,}\"", f.name)
+
+    def test_heading_order_has_no_gaps(self):
+        for f in site_pages():
+            levels = self.headings(f.read_text(encoding="utf-8"))
+            self.assertEqual(levels[0], 1, f.name)
+            for prev, cur in zip(levels, levels[1:]):
+                self.assertLessEqual(cur, prev + 1, (f.name, levels))
+
+    def test_heading_checker_catches_a_gap(self):
+        levels = self.headings("<h1>a</h1><h3>b</h3>")
+        self.assertTrue(any(c > p + 1 for p, c in zip(levels, levels[1:])))
+
+    def test_links_have_descriptive_text(self):
+        for f in site_pages():
+            for t in self.link_texts(f.read_text(encoding="utf-8")):
+                self.assertNotIn(t, self.BAD_LINK_TEXT, (f.name, t))
+
+    def test_link_text_checker_catches_click_here(self):
+        self.assertIn("click here", self.link_texts('<a href="x">Click here</a>'))
+
+    def test_every_link_has_some_text(self):
+        for f in site_pages():
+            html = f.read_text(encoding="utf-8")
+            for m in re.finditer(r"<a\b([^>]*)>(.*?)</a>", html, flags=re.S):
+                text = re.sub(r"<[^>]+>", "", m.group(2)).strip()
+                if not text:
+                    # empty anchors are only allowed as script filled slots
+                    self.assertIn("data-", m.group(1), (f.name, m.group(0)))
+
+    def test_404_does_not_need_a_deep_path(self):
+        """GitHub Pages serves 404.html at any depth, so relative links would break."""
+        html = (ROOT / "404.html").read_text(encoding="utf-8")
+        self.assertIn("<style", html, "404 needs inline styles so it looks right at any depth")
+
+
+class TodoConfig(unittest.TestCase):
+    def run_script(self, text):
+        import subprocess
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            cfg = Path(d) / "c.js"
+            cfg.write_text(text, encoding="utf-8")
+            return subprocess.run(["python3", str(ROOT / "scripts" / "todo_config.py"), str(cfg)],
+                                  capture_output=True, text=True)
+
+    def test_lists_only_empty_values_and_exits_zero(self):
+        r = self.run_script('var C = {\n  a: "",\n  cvPath: "x.pdf",\n  windstreamPhotos: [],\n  degreeTitle: "" // note\n};')
+        self.assertEqual(r.returncode, 0)
+        self.assertIn("- [ ] a:", r.stdout)
+        self.assertIn("- [ ] windstreamPhotos:", r.stdout)
+        self.assertIn("- [ ] degreeTitle:", r.stdout)
+        self.assertNotIn("cvPath", r.stdout)
+
+    def test_all_filled_says_nothing_to_do(self):
+        r = self.run_script('var C = {\n  a: "x"\n};')
+        self.assertEqual(r.returncode, 0)
+        self.assertIn("Nothing to fill in", r.stdout)
+
+    def test_real_config_lists_nine_items(self):
+        import subprocess
+        r = subprocess.run(["python3", str(ROOT / "scripts" / "todo_config.py")],
+                           capture_output=True, text=True)
+        self.assertEqual(r.stdout.count("- [ ]"), 9)
+
+    def test_gitignore_covers_junk(self):
+        g = (ROOT / ".gitignore").read_text(encoding="utf-8")
+        self.assertIn(".DS_Store", g)
+        self.assertIn("__pycache__", g)
+
+
 if __name__ == "__main__":
     unittest.main()
