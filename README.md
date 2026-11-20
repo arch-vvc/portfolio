@@ -5,7 +5,8 @@
 A static portfolio site written like a CV. Plain HTML, CSS and a little JavaScript. No framework, no build step, no packages, no CDN, no external fonts or scripts, no analytics.
 
 - `index.html` is the home page: a Mac desktop with the CV open in a window, a Reminders widget, one folder per CV item and a dock. It is built for laptop screens. `desktop.css`, `desktop.js` and `assets/icons/` belong to it.
-- `plain.html` is the plain text version. Small screens are sent there until the phone layout exists.
+- `plain.html` is the plain text version. Visitors with JavaScript off are sent there, and every page links to it.
+- On screens narrower than 900px the same `index.html` shows a phone layout instead: a drawn iPhone screen inset from the real screen edges, with Home (reminders, the three internships, the CV) and Projects to its left, so swiping right reveals it. `phone.js` runs it and reuses the folder and app data from `desktop.js` and `apps.js`.
 - `projects/` holds one page per project, including the tender tracker case study.
 - `site.config.js` holds everything still to be filled in (demo videos, a CV file, photos).
 - `styles.css` is the only stylesheet. `script.js` reads the config.
@@ -45,6 +46,8 @@ windstreamPhotos: [
 Other keys: `callqaResult` (live result text on the Call QA page), `capstoneResult` (text under Research), `cvPath` (for example `assets/archit-rishabh-cv.pdf`, which turns on the CV button) and `degreeTitle` (the exact degree title).
 
 ## Run the checks
+
+The phone gestures are also checked in a real browser when Node and Playwright are installed (`node tests/phone_gestures.js`, or it runs inside the command below and skips if they are missing).
 
 ```
 python3 -m unittest discover -s tests -q

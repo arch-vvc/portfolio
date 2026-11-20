@@ -14,6 +14,7 @@
   var track = document.getElementById("p-track");
   var hint = document.getElementById("p-hint");
   var dots = document.querySelectorAll("[data-pdot]");
+  var pages = document.querySelectorAll(".p-page");
   var sheets = document.getElementById("p-sheets");
   var inertParts = [pager, hint, document.getElementById("p-dots"), document.querySelector(".p-dock")];
 
@@ -62,6 +63,10 @@
     if (instant) {
       void track.offsetWidth;
       window.requestAnimationFrame(function () { track.classList.remove("dragging"); });
+    }
+    for (var pg = 0; pg < pages.length; pg++) {
+      if (Number(pages[pg].getAttribute("data-page")) === page) pages[pg].removeAttribute("inert");
+      else pages[pg].setAttribute("inert", "");
     }
     hint.textContent = HINTS[page];
     hint.setAttribute("data-dir", page === 0 ? "back" : "forward");
@@ -132,7 +137,7 @@
   }
 
   document.addEventListener("keydown", function (e) {
-    if (!phone.offsetParent) return;
+    if (window.getComputedStyle(phone).display === "none") return;   // the laptop layout is showing
     if (e.key === "Escape" && stack.length) { closeSheet(stack[stack.length - 1]); return; }
     if (stack.length) return;
     if (e.key === "ArrowLeft") setPage(0);
@@ -288,7 +293,11 @@
       html += "</div>";
       var rows = data.rowsFor(key);
       var list = "";
-      for (var r = 0; r < rows.length; r++) if (rows[r].kind !== "txt") list += rowHtml(rows[r]);
+      for (var r = 0; r < rows.length; r++) {
+        if (rows[r].kind === "txt") continue;
+        if (rows[r].kind === "mov" && !rows[r].href) continue;   // no video yet: show nothing, not "Coming soon"
+        list += rowHtml(rows[r]);
+      }
       if (list) html += '<div class="p-rows">' + list + "</div>";
       body = node(html);
     }
@@ -382,13 +391,22 @@
 
   // ----- Safari: GitHub and LinkedIn open for real, the rest wait for their links -----
   function safariSheet(origin) {
-    var tabs = shared.tabs;
+    var all = shared.tabs;
+    var tabs = [];
+    for (var n = 0; n < all.length; n++) {
+      var keep = all[n].href || (all[n].page === "krillion" && cfg.krillionImage);
+      if (keep) tabs.push(all[n]);
+    }
+    var firstPage = -1;
     var chips = "";
     for (var i = 0; i < tabs.length; i++) {
       var t = tabs[i];
       var inner = t.fav + "<span>" + esc(t.name) + "</span>";
       if (t.href) chips += '<a class="p-tab" href="' + esc(t.href) + '" target="_blank" rel="noopener">' + inner + "</a>";
-      else chips += '<button class="p-tab' + (i === 1 ? " selected" : "") + '" type="button" data-tab="' + i + '">' + inner + "</button>";
+      else {
+        if (firstPage === -1) firstPage = i;
+        chips += '<button class="p-tab' + (i === firstPage ? " selected" : "") + '" type="button" data-tab="' + i + '">' + inner + "</button>";
+      }
     }
     var body = node('<div class="p-address">' + ICON.lock + '<span id="p-url"></span></div><div class="p-tabs">' + chips + '</div><div id="p-tabpage"></div>');
     var rec = openSheet({ title: "Safari", body: body, origin: origin });
@@ -398,25 +416,24 @@
     function show(i) {
       var t = tabs[i];
       url.textContent = t.host;
-      if (t.page === "krillion") {
-        pageEl.innerHTML = cfg.krillionImage
-          ? '<div class="p-shot"><img src="' + esc(cfg.krillionImage) + '" alt="My One in a Krillion result in the Krillion game"></div>'
-          : '<div class="p-stub"><div class="p-frame">My One in a Krillion goes here.</div></div>';
-      } else {
-        pageEl.innerHTML = '<div class="p-stub"><div class="p-frame small">' + t.fav + "</div><p>" + esc(t.name) + " is coming soon.</p></div>";
-      }
+      pageEl.innerHTML = '<div class="p-shot"><img src="' + esc(cfg.krillionImage) + '" alt="My One in a Krillion result in the Krillion game"></div>';
+    }
+    if (firstPage === -1) {
+      url.textContent = "Bookmarks";
+      pageEl.innerHTML = '<div class="p-stub"><p>Tap GitHub or LinkedIn. Each opens in a new tab.</p></div>';
+    } else {
+      show(firstPage);
     }
     var buttons = rec.el.querySelectorAll("button.p-tab");
-    for (var b = 0; b < buttons.length; b++) {
+    for (var b2 = 0; b2 < buttons.length; b2++) {
       (function (btn) {
         btn.addEventListener("click", function () {
           for (var k = 0; k < buttons.length; k++) buttons[k].classList.remove("selected");
           btn.classList.add("selected");
           show(Number(btn.getAttribute("data-tab")));
         });
-      })(buttons[b]);
+      })(buttons[b2]);
     }
-    show(1);
   }
 
   // ----- Music and Photos -----
@@ -446,7 +463,13 @@
     "Mail": mailSheet, "Messages": messagesSheet, "Safari": safariSheet,
     "Music": musicSheet, "Photos": photosSheet,
     "Trash": function (origin) { folderSheet("trash", origin); },
-    "Claude": function () { /* nothing here yet, like the laptop */ }
+    "Claude": function (origin) {
+      // nothing to open yet; the icon shakes so the tap is not dead
+      origin.classList.remove("shake");
+      void origin.offsetWidth;
+      origin.classList.add("shake");
+      window.setTimeout(function () { origin.classList.remove("shake"); }, 500);
+    }
   };
 
   var icons = document.querySelectorAll(".p-icon");

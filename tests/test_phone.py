@@ -127,5 +127,50 @@ class Phone(unittest.TestCase):
         self.assertIn("p-sheet", self.css)
 
 
+    # ----- fixes from the first council round -----
+    def test_visitors_without_javascript_are_sent_to_the_plain_version(self):
+        self.assertRegex(self.html, r'<noscript><meta http-equiv="refresh" content="0; url=plain\.html"></noscript>')
+
+    def test_plain_version_is_reachable_on_the_phone_without_a_keyboard(self):
+        home = self.html[self.html.index('data-page="1"'):self.html.index('id="p-dots"')]
+        self.assertIn('class="p-plain" href="plain.html"', home)
+
+    def test_home_says_who_this_is(self):
+        home = self.html[self.html.index('data-page="1"'):self.html.index('id="p-dots"')]
+        self.assertIn(">Archit Rishabh<", home)
+        self.assertIn("Applied AI for messy business operations", home)
+
+    def test_project_pages_lead_back_to_the_portfolio_and_the_plain_version(self):
+        for f in (ROOT / "projects").glob("*.html"):
+            t = f.read_text(encoding="utf-8")
+            self.assertIn('href="../index.html"', t, f.name)
+            self.assertIn('href="../plain.html"', t, f.name)
+
+    def test_the_page_that_is_off_screen_cannot_take_focus(self):
+        self.assertIn('setAttribute("inert", "")', self.js)
+        self.assertRegex(self.js, r"pages\[pg\]\.removeAttribute\(\"inert\"\)")
+
+    def test_edge_swipe_and_home_bar_get_their_horizontal_and_vertical_moves(self):
+        self.assertRegex(self.css, r"\.p-sheet\s*\{[^}]*touch-action:\s*pan-y")
+        self.assertRegex(self.css, r"\.p-body\s*\{[^}]*touch-action:\s*pan-y")
+        bar = re.search(r"\.p-home-bar\s*\{([^}]*)\}", self.css).group(1)
+        self.assertGreaterEqual(int(re.search(r"height:\s*(\d+)px", bar).group(1)), 48)
+
+    def test_no_stub_text_on_first_open(self):
+        # no Demo row without a video, no Safari tab without content, Claude answers with a shake
+        self.assertIn('rows[r].kind === "mov" && !rows[r].href', self.js)
+        self.assertNotIn("goes here", self.js)
+        self.assertNotIn("is coming soon", self.js)
+        self.assertIn("shake", self.js)
+
+    def test_dock_separator_matches_the_laptop(self):
+        self.assertIn('class="p-dock-sep"', self.html)
+
+    def test_tap_targets_are_comfortable(self):
+        dot = re.search(r"\.p-dot\s*\{([^}]*)\}", self.css).group(1)
+        self.assertGreaterEqual(int(re.search(r"width:\s*(\d+)px", dot).group(1)), 36)
+        self.assertGreaterEqual(int(re.search(r"height:\s*(\d+)px", dot).group(1)), 28)
+
+
 if __name__ == "__main__":
     unittest.main()

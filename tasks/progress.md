@@ -24,5 +24,13 @@ Rule: never push to main. Council decides if it is done.
 - 20 Nov 2026: T1 to T5 done. 118 static checks pass. Touch tests in an emulated iPhone pass (swipe, rubber band, tap to open, swipe up to close, all dock apps).
 - Found and fixed while building: the narrow screen media rule sat above the base .phone rule, so the phone never showed.
 
-## Council verdict
-(pending)
+## Fix round 1 (20 Nov 2026)
+Done: noscript redirect to plain.html, visible Plain version link on Home, name and role on Home, Demo rows hidden until there is a video, Safari shows only tabs with content, Claude tap shakes, project pages link back to the portfolio and the plain version, off screen page inert, touch-action on sheets so the Messages edge swipe works, taller swipe up zone, bigger dots, dock separator, hint arrow spacing, Escape and arrow keys fixed (offsetParent bug), real browser gesture test added (tests/phone_gestures.js). 128 checks pass.
+
+## Council verdict (round 1, 20 Nov 2026)
+Engineer: NOT DONE. Sceptic: NOT DONE. Chairman: NOT DONE.
+Top 3 actions:
+1. Make it feel finished: hide Demo rows with no video, no Safari stub on first open, Claude tap gives feedback, name and role visible on Home.
+2. Make it safe: visible Plain version link on the phone, noscript fallback to plain.html, project pages link back to the portfolio, off screen page inert.
+3. Fix the gestures: edge swipe back in Messages is cancelled by the browser (needs touch-action on the sheet), wider swipe up zone, plus a real browser gesture test. Then run the council again.
+Parked (owner decisions): CV is one tap behind an icon (kept as the owner's layout), Cricket line about coaching juniors is from the original site but not on the CV.
