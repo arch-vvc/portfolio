@@ -427,7 +427,7 @@
     function show(i) {
       var t = tabs[i];
       url.textContent = t.host;
-      pageEl.innerHTML = '<div class="p-shot"><img src="' + esc(cfg.krillionImage) + '" alt="My One in a Krillion result in the Krillion game"></div>';
+      pageEl.innerHTML = '<div class="p-shot"><h2 class="p-yes">YES I HAVE A ONE IN A KRILLION</h2><img src="' + esc(cfg.krillionImage) + '" alt="My One in a Krillion result in the Krillion game"></div>';
     }
     if (firstPage === -1) {
       url.textContent = "Bookmarks";
@@ -452,7 +452,8 @@
     var out = "";
     for (var i = 0; i < list.length; i++) {
       var title = titles ? titles[i] : "Drake";
-      out += '<div class="p-card ' + cls + '"><img src="' + esc(list[i]) + '" alt="' + esc(title) + '"><span class="p-card-title">' + esc(title) + '</span><span class="p-card-sub">Drake</span></div>';
+      out += '<a class="p-card ' + cls + '" href="' + esc(shared.drakeUrl) + '" target="_blank" rel="noopener"><img src="' + esc(list[i]) + '" alt="' + esc(title) + '"><span class="p-card-title">' + esc(title) + "</span>" +
+        (titles ? '<span class="p-card-sub">Drake</span>' : "") + "</a>";
     }
     return out;
   }
@@ -460,11 +461,16 @@
   function musicSheet(origin) {
     var last = shared.lastPlayed;
     var body = node('<h3 class="p-large">Home</h3>' +
-      '<h3 class="p-h3">Last Played</h3><div class="p-last"><img src="' + esc(last.cover) + '" alt="' + esc(last.album) + '"><div><span class="p-card-title">' + esc(last.title) + '</span><span class="p-card-sub">' + esc(last.artist) + "</span></div></div>" +
+      '<h3 class="p-h3">Last Played</h3><a class="p-last" href="' + esc(shared.drakeUrl) + '" target="_blank" rel="noopener"><img src="' + esc(last.cover) + '" alt="' + esc(last.album) + '"><div><span class="p-card-title">' + esc(last.title) + '</span><span class="p-card-sub">' + esc(last.artist) + "</span></div></a>" +
       '<h3 class="p-h3">On Repeat</h3><div class="p-cards">' + cards(shared.covers, "") +
       '</div><h3 class="p-h3">Recently Played</h3><div class="p-cards">' + cards(shared.albums, "small", shared.albumTitles) +
       '</div><div class="p-mini"><img src="' + esc(last.cover) + '" alt="' + esc(last.album) + '"><span>' + esc(last.title) + "<br>" + esc(last.artist) + "</span>" + ICON.play + "</div>");
-    openSheet({ title: "Music", body: body, origin: origin });
+    var rec = openSheet({ title: "Music", body: body, origin: origin });
+    // Anything else tapped in Music (headings, the player bar) goes to Drake's page as well.
+    rec.body.addEventListener("click", function (e) {
+      if (e.target.closest("a")) return;
+      window.open(shared.drakeUrl, "_blank", "noopener");
+    });
   }
 
   // ----- wiring: icons on the pages, then the dock -----

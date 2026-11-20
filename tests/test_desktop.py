@@ -183,7 +183,7 @@ class Desktop(unittest.TestCase):
         for banned in ("fetch(", "import ", "export ", "XMLHttpRequest", "http://"):
             self.assertNotIn(banned, self.apps, banned)
         for url in re.findall(r"https://[^\"'\s]+", self.apps):
-            self.assertTrue(url.startswith(("https://github.com/arch-vvc", "https://www.linkedin.com/in/archit-rishabh", "https://mail.google.com/mail/?view=cm")), url)
+            self.assertTrue(url.startswith(("https://github.com/arch-vvc", "https://www.linkedin.com/in/archit-rishabh", "https://mail.google.com/mail/?view=cm", "https://music.apple.com/us/artist/drake/271256")), url)
 
     def test_dock_apps_are_wired(self):
         for label in ("Safari", "Mail", "Messages", "Photos", "Music"):
@@ -289,6 +289,21 @@ class Desktop(unittest.TestCase):
             self.assertIn(tier, page, tier)
         for precedent in ("Yahoo", "Steve Jobs", "Black Friday"):
             self.assertIn(precedent, page, precedent)
+
+    def test_music_sends_every_click_to_drakes_page_and_on_repeat_says_just_drake(self):
+        url = "https://music.apple.com/us/artist/drake/271256"
+        self.assertIn('var DRAKE_URL = "%s"' % url, self.apps)
+        self.assertIn("musicInit", self.apps)
+        self.assertIn("drakeUrl: DRAKE_URL", self.apps)
+        phone = (ROOT / "phone.js").read_text(encoding="utf-8")
+        self.assertIn("shared.drakeUrl", phone)
+        self.assertIn('(titles ? \'<span class="t-sub">Drake</span>\' : "")', self.apps)
+
+    def test_krillion_tab_has_the_big_headline_on_laptop_and_phone(self):
+        phone = (ROOT / "phone.js").read_text(encoding="utf-8")
+        for src in (self.apps, phone):
+            self.assertIn("YES I HAVE A ONE IN A KRILLION", src)
+        self.assertRegex((ROOT / "desktop.css").read_text(encoding="utf-8"), r"\.kr-yes\s*\{[^}]*font-weight:\s*900")
 
     def test_photos_is_a_stub_until_photos_arrive(self):
         self.assertIn("Photos", self.apps)

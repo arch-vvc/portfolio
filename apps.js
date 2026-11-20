@@ -152,6 +152,10 @@ window.DESKTOP_APPS = (function () {
   // Last played: the song, the artist, and the cover of the album it is on (Take Care).
   var LAST_PLAYED = { title: "Headlines", artist: "Drake", cover: ALBUMS[0], album: ALBUM_TITLES[0] };
 
+  // Anything tapped in Music goes to Drake's page in the visitor's music app (Apple Music opens the
+  // Music app on iPhone and Mac; elsewhere it opens in the browser).
+  var DRAKE_URL = "https://music.apple.com/us/artist/drake/271256";
+
   // Cover art for a tile: a photo while there is one, a gradient otherwise.
   function art(list, i, alt) {
     var src = list[i];
@@ -159,12 +163,13 @@ window.DESKTOP_APPS = (function () {
       (src ? '<img src="' + src + '" alt="' + esc(alt || "Drake") + '">' : svg("note")) + "</span>";
   }
 
-  // titles is optional: the album names under the covers; without it every tile says Drake.
+  // titles is optional: the album names under the covers (with Drake underneath); without it a tile says just Drake.
   function tiles(list, count, cls, titles) {
     var out = "";
     for (var i = 0; i < count; i++) {
       var title = titles ? titles[i] : "Drake";
-      out += '<li class="tile ' + cls + '">' + art(list, i, title) + '<span class="t-title">' + esc(title) + '</span><span class="t-sub">Drake</span></li>';
+      out += '<li class="tile ' + cls + '"><a class="mu-link" href="' + DRAKE_URL + '" target="_blank" rel="noopener">' + art(list, i, title) + '<span class="t-title">' + esc(title) + "</span>" +
+        (titles ? '<span class="t-sub">Drake</span>' : "") + "</a></li>";
     }
     return out;
   }
@@ -193,11 +198,20 @@ window.DESKTOP_APPS = (function () {
       ], ["", "Library", "Playlists"]) + "</aside>" +
       '<section class="mu-main"><div class="mu-top" data-drag></div><div class="mu-scroll">' +
       "<h2>Home</h2>" +
-      '<h3>Last Played</h3><div class="mu-last">' + art(ALBUMS, 0, LAST_PLAYED.album) + '<div><span class="t-title">' + esc(LAST_PLAYED.title) + '</span><span class="t-sub">' + esc(LAST_PLAYED.artist) + '</span></div></div>' +
+      '<h3>Last Played</h3><a class="mu-last mu-link" href="' + DRAKE_URL + '" target="_blank" rel="noopener">' + art(ALBUMS, 0, LAST_PLAYED.album) + '<div><span class="t-title">' + esc(LAST_PLAYED.title) + '</span><span class="t-sub">' + esc(LAST_PLAYED.artist) + '</span></div></a>' +
       '<h3>On Repeat</h3><ul class="tiles">' + tiles(COVERS, 4, "big") + "</ul>" +
       "<h3>Recently Played</h3><ul class=\"tiles\">" + tiles(ALBUMS, 4, "small", ALBUM_TITLES) + "</ul>" +
       '</div><div class="mu-player" aria-hidden="true">' + svg("shuffle") + svg("prev") + svg("play", "play") + svg("next") + svg("repeat") +
       '<span class="mu-now"><span>' + esc(LAST_PLAYED.title) + '</span><span>' + esc(LAST_PLAYED.artist) + '</span></span>' + svg("volume") + "</div></section>";
+  }
+
+  // Everything else in the window (sidebar, player, headings) goes to Drake's page too.
+  // The title bar and the traffic lights keep their own jobs.
+  function musicInit(el) {
+    el.addEventListener("click", function (e) {
+      if (e.target.closest("a, .lights, [data-drag]")) return;
+      window.open(DRAKE_URL, "_blank", "noopener");
+    });
   }
 
   // ---------- Photos ----------
@@ -227,7 +241,7 @@ window.DESKTOP_APPS = (function () {
   function pageHtml(tab) {
     if (tab.page === "krillion") {
       return cfg.krillionImageWide || cfg.krillionImage
-        ? '<div class="sf-shot"><img src="' + esc(cfg.krillionImageWide || cfg.krillionImage) + '" alt="My One in a Krillion result in the Krillion game"></div>'
+        ? '<div class="sf-shot"><h2 class="kr-yes">YES I HAVE A ONE IN A KRILLION</h2><img src="' + esc(cfg.krillionImageWide || cfg.krillionImage) + '" alt="My One in a Krillion result in the Krillion game"></div>'
         : '<div class="sf-stub"><div class="sf-frame" aria-hidden="true">' + svg("photos") + "</div><p>My One in a Krillion goes here.</p></div>";
     }
     return '<div class="sf-stub"><div class="sf-frame small" aria-hidden="true">' + tab.fav + "</div><p>" + esc(tab.name) + " is coming soon.</p></div>";
@@ -314,7 +328,7 @@ window.DESKTOP_APPS = (function () {
 
   // The phone layout (phone.js) reuses this content with its own markup.
   window.DESKTOP_SHARED = {
-    esc: esc, threads: THREADS, tabs: TABS, covers: COVERS, albums: ALBUMS, albumTitles: ALBUM_TITLES, lastPlayed: LAST_PLAYED, to: TO,
+    esc: esc, threads: THREADS, tabs: TABS, covers: COVERS, albums: ALBUMS, albumTitles: ALBUM_TITLES, lastPlayed: LAST_PLAYED, drakeUrl: DRAKE_URL, to: TO,
     gmailUrl: gmailUrl, mailtoUrl: mailtoUrl, subject: DRAFT_SUBJECT, body: DRAFT_BODY,
     linkedin: LINKEDIN, github: GITHUB
   };
@@ -322,7 +336,7 @@ window.DESKTOP_APPS = (function () {
   return {
     "Mail": { title: "New Message", size: [580, 440], pos: [360, 160], html: mail, init: mailInit },
     "Messages": { title: "Messages", size: [700, 520], pos: [330, 150], html: messages, init: messagesInit },
-    "Music": { title: "Music", size: [900, 685], pos: [270, 84], html: music },
+    "Music": { title: "Music", size: [900, 685], pos: [270, 84], html: music, init: musicInit },
     "Safari": { title: "Safari", size: [920, 580], pos: [260, 118], html: safari, init: safariInit },
     "Photos": { title: "Photos", size: [780, 500], pos: [300, 140], html: photos }
   };

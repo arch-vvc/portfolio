@@ -410,8 +410,12 @@ a.bubble.link:focus-visible { outline: calc(var(--u) * 2) solid #4da3ff; outline
 .sf-frame svg { width: calc(var(--u) * 44); height: calc(var(--u) * 44); }
 .sf-frame.small { width: calc(var(--u) * 64); aspect-ratio: 1; border-style: solid; border-radius: calc(var(--u) * 16); }
 .sf-frame.small .fav { width: calc(var(--u) * 34); height: calc(var(--u) * 34); font-size: calc(var(--u) * 16); border-radius: calc(var(--u) * 8); }
-.sf-shot { width: 100%; height: 100%; display: grid; place-items: center; }
-.sf-shot img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.sf-shot { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; }
+.sf-shot .kr-yes { flex: none; margin: calc(var(--u) * 10) calc(var(--u) * 12) calc(var(--u) * 8); text-align: center; font-size: calc(var(--u) * 30); font-weight: 900; line-height: 1.1; letter-spacing: 0.01em; color: #fcd26c; text-shadow: 0 0 calc(var(--u) * 14) rgba(252, 210, 108, 0.35); }
+.sf-shot img { display: block; flex: 1 1 0; min-height: 0; width: 100%; object-fit: contain; }
+.mu-link { display: block; color: inherit; text-decoration: none; }
+.mu-link:focus-visible { outline: calc(var(--u) * 2) solid #fa2d48; outline-offset: calc(var(--u) * 3); border-radius: calc(var(--u) * 8); }
+.mu-last.mu-link { display: flex; }
 
 /* Mail */
 .window.app-mail { flex-direction: column; background: #252528; }
@@ -604,6 +608,9 @@ a.p-bubble span { font-size: 13px; color: #c3c9d6; overflow-wrap: anywhere; }
 .p-frame.small { width: 64px; aspect-ratio: 1; border-style: solid; border-radius: 16px; }
 .p-frame .fav { width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center; font-size: 16px; font-weight: 700; color: #fff; }
 .p-shot img { display: block; width: 100%; height: auto; border-radius: 12px; }
+.p-yes { margin: 4px 0 14px; text-align: center; font-size: 28px; font-weight: 900; line-height: 1.1; letter-spacing: 0.01em; color: #fcd26c; text-shadow: 0 0 14px rgba(252, 210, 108, 0.35); }
+a.p-card, a.p-last { display: block; color: inherit; text-decoration: none; }
+a.p-last { display: flex; }
 
 .p-h3 { margin: 20px 0 10px; font-size: 20px; font-weight: 700; }
 .p-cards { display: flex; gap: 12px; overflow-x: auto; margin: 0 -18px; padding: 0 18px 6px; scroll-snap-type: x mandatory; scrollbar-width: none; }
