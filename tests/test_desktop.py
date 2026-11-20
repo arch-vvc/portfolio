@@ -7,14 +7,14 @@ from pathlib import Path
 from test_site import ROOT, check_html
 
 FOLDERS = [
+    ("windstream", "Windstream"),
+    ("nexturn", "NexTurn"),
+    ("ooh", "OOH Advertising"),
+    ("capstone", "Immunological Supply Chain"),
     ("tender-tracker", "Tender Tracker"),
     ("call-qa", "Call QA"),
     ("exception-triage", "Exception Triage"),
     ("gtm-agent", "gtm_agent"),
-    ("capstone", "Immunological Supply Chain"),
-    ("windstream", "Windstream"),
-    ("nexturn", "NexTurn"),
-    ("ooh", "OOH Advertising"),
     ("drishtikon", "Drishtikon '26"),
     ("e-cell", "E-Cell"),
     ("cricket", "Cricket"),
@@ -69,7 +69,7 @@ class Desktop(unittest.TestCase):
     def test_one_stylesheet_and_it_is_desktop_css(self):
         self.assertEqual(re.findall(r'rel="stylesheet" href="([^"]+)"', self.html), ["desktop.css"])
 
-    def test_eleven_folders_in_cv_order(self):
+    def test_eleven_folders_internships_first_then_groups_of_three(self):
         folders = [b for b in self.parsed.buttons if "data-folder" in b]
         self.assertEqual([(b["data-folder"], b["data-name"]) for b in folders], FOLDERS)
         for b in folders:
@@ -135,7 +135,7 @@ class Desktop(unittest.TestCase):
 
     def test_every_folder_has_a_finder_window_definition(self):
         keys = re.findall(r'"([a-z\-]+)":\s*\{\s*title:', self.js)
-        self.assertEqual(sorted(keys), sorted(k for k, _ in FOLDERS))
+        self.assertEqual(sorted(keys), sorted([k for k, _ in FOLDERS] + ["trash"]))
 
     def test_project_folders_offer_a_demo_and_the_repos_open_on_github(self):
         heads = list(re.finditer(r'"([a-z\-]+)":\s*\{\s*title:', self.js))
@@ -220,6 +220,27 @@ class Desktop(unittest.TestCase):
         # a single click on a desktop icon only selects unless it came from the keyboard
         self.assertIn("e.detail === 0", self.js)
         self.assertNotIn('icon.addEventListener("click", function () { openWin(cvWin); });', self.js)
+
+    def test_desktop_icons_sit_in_rows_of_three(self):
+        # the three internships open the grid, and the CV file closes the third row
+        order = re.findall(r'data-(?:folder|file)="([a-z\-]+)"', self.html)
+        self.assertEqual(order[:3], ["windstream", "nexturn", "ooh"])
+        self.assertEqual(order[3:6], ["capstone", "tender-tracker", "call-qa"])
+        self.assertEqual(order[8], "cv")
+        self.assertRegex(self.css, r"\.icons\s*\{[^}]*grid-template-columns:\s*repeat\(3")
+
+    def test_trash_opens_a_window_with_the_message(self):
+        self.assertIn("Nothing to say here, everything I make is sexy", self.js)
+        self.assertRegex(self.js, r'"trash":\s*\{\s*title: "Trash"')
+        self.assertIn('=== "Trash"', self.js)
+
+    def test_windows_emerge_from_what_opened_them(self):
+        self.assertIn("--ox", self.css)
+        self.assertIn("--oy", self.css)
+        self.assertIn("is-opening", self.css)
+        self.assertIn("no-anim", self.css)
+        self.assertIn("function emerge(", self.js)
+        self.assertIn("getBoundingClientRect", self.js)
 
     def test_music_window_shape(self):
         for t in ("Home", "Recently Played", "Library", "Playlists", "Albums", "Songs"):

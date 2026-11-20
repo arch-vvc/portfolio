@@ -9,6 +9,8 @@
   var cfg = window.SITE_CONFIG || {};
   var demos = cfg.demos || {};
 
+  var TRASH_MESSAGE = "Nothing to say here, everything I make is sexy.";
+
   // What each folder holds. A folder always gets Summary.txt. A demo key adds Demo.mov
   // (live as soon as its Loom link is set in site.config.js) and a repo adds a GitHub row.
   var FOLDERS = {
@@ -94,6 +96,11 @@
         "PESU Entrepreneurship Cell, Organising Committee.",
         "Built a 20 case business simulation from real corporate problems and ran it end to end for 100+ participants."
       ],
+      rows: []
+    },
+    "trash": {
+      title: "Trash", bare: true,
+      summary: [TRASH_MESSAGE],
       rows: []
     },
     "cricket": {
@@ -202,15 +209,31 @@
     w.slot = null;
   }
 
-  function openWin(w) {
-    if (w.minimised) { restoreWin(w); return; }
-    var wasGone = w.el.classList.contains("is-gone");
-    if (wasGone) {
-      w.el.classList.add("is-opening");
-      w.el.classList.remove("is-gone");
-      void w.el.offsetWidth;
-      w.el.classList.remove("is-opening");
+  // Start the window tiny and centred on the icon that opened it, then let the transition
+  // carry it to its place. The jump to the start pose has its transition switched off.
+  function emerge(w, origin) {
+    var el = w.el;
+    el.classList.remove("is-gone");
+    var dx = 0, dy = 0;
+    if (origin) {
+      var r = el.getBoundingClientRect();
+      var o = origin.getBoundingClientRect();
+      dx = o.left + o.width / 2 - (r.left + r.width / 2);
+      dy = o.top + o.height / 2 - (r.top + r.height / 2);
     }
+    el.style.setProperty("--ox", dx + "px");
+    el.style.setProperty("--oy", dy + "px");
+    el.classList.add("no-anim", "is-opening");
+    void el.offsetWidth;
+    el.classList.remove("no-anim");
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () { el.classList.remove("is-opening"); });
+    });
+  }
+
+  function openWin(w, origin) {
+    if (w.minimised) { restoreWin(w); return; }
+    if (w.el.classList.contains("is-gone")) emerge(w, origin);
     focusWin(w);
     w.el.focus({ preventScroll: true });
   }
@@ -328,6 +351,7 @@
 
   function rowsFor(key) {
     var f = FOLDERS[key];
+    if (f.bare) return [];
     var text = f.summary.join(" ");
     var rows = [{ kind: "txt", name: "Summary.txt", date: TODAY, size: sizeOf(text.length), text: f.summary, selected: true }];
     if (f.demo) {
@@ -402,7 +426,8 @@
         "</div>" +
         '<div class="finder-cols" aria-hidden="true"><span class="c-name">Name</span><span class="c-date">Date Modified</span><span class="c-size">Size</span></div>' +
         '<ul class="finder-rows">' + rowsHtml + "</ul>" +
-        '<div class="finder-pane" aria-live="polite">' + paneHtml(rows[0].name, rows[0].text) + "</div>" +
+        '<div class="finder-pane' + (f.bare ? " empty" : "") + '" aria-live="polite">' +
+          (f.bare ? "<p>" + esc(f.summary[0]) + "</p>" : paneHtml(rows[0].name, rows[0].text)) + "</div>" +
       "</div>";
 
     desktop.querySelector(".stage").appendChild(el);
@@ -422,9 +447,9 @@
         btn.addEventListener("click", function (e) {
           selectRow(btn);
           if (row.text) pane.innerHTML = paneHtml(row.name, row.text);
-          if (row.kind === "folder" && e.detail === 0) openFolder(row.open);
+          if (row.kind === "folder" && e.detail === 0) openFolder(row.open, btn);
         });
-        if (row.kind === "folder") btn.addEventListener("dblclick", function () { openFolder(row.open); });
+        if (row.kind === "folder") btn.addEventListener("dblclick", function () { openFolder(row.open, btn); });
       })(buttons[b2]);
     }
     var links = el.querySelectorAll("a.frow");
@@ -441,7 +466,7 @@
     return w;
   }
 
-  function openFolder(key) {
+  function openFolder(key, origin) {
     var w = finders[key];
     if (!w) {
       w = finders[key] = buildFinder(key);
@@ -451,7 +476,7 @@
       w.el.style.left = "calc(var(--u) * " + (445 + n * 26) + ")";
       w.el.style.top = "calc(var(--u) * " + (262 + n * 26) + ")";
     }
-    openWin(w);
+    openWin(w, origin);
   }
 
   // ----- dock apps: Safari, Mail, Messages, Photos and Music (apps.js describes them) -----
@@ -474,7 +499,7 @@
     return w;
   }
 
-  function openApp(name) {
+  function openApp(name, origin) {
     if (!APPS[name]) return;
     var w = appWins[name];
     if (!w) {
@@ -486,7 +511,7 @@
       w.el.style.top = "calc(var(--u) * " + (def.pos[1] + shown * 24) + ")";
       w.dockBtn = dockButton(name);
     }
-    openWin(w);
+    openWin(w, origin);
   }
 
   function dockButton(name) {
@@ -500,7 +525,9 @@
     (function (btn) {
       btn.addEventListener("click", function (e) {
         e.stopPropagation();
-        openApp(btn.getAttribute("aria-label"));
+        var label = btn.getAttribute("aria-label");
+        if (label === "Trash") openFolder("trash", btn);
+        else openApp(label, btn);
       });
     })(dockItems[di]);
   }
@@ -517,8 +544,8 @@
     (function (icon) {
       function open() {
         var key = icon.getAttribute("data-folder");
-        if (key && FOLDERS[key]) openFolder(key);
-        else if (icon.getAttribute("data-file") === "cv") openWin(cvWin);
+        if (key && FOLDERS[key]) openFolder(key, icon);
+        else if (icon.getAttribute("data-file") === "cv") openWin(cvWin, icon);
       }
       icon.addEventListener("click", function (e) {
         e.stopPropagation();
