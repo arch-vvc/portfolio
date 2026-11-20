@@ -57,3 +57,10 @@ Not re-reviewed by the council. Maximum fix rounds reached, so the rest is for t
 - Recently Played shows Take Care, Habibti, Views, Nothing Was The Same (laptop and phone).
 - Plain version link removed from the phone. No JavaScript still redirects to plain.html.
 - 129 checks pass, including the real browser test at 320, 360, 390, 430 and landscape.
+
+## After the phone merge (20 Nov 2026), branch claude/cv-pdf
+- Added assets/Archit_Rishabh_CV.pdf (one page, no phone number), built by scripts/make_cv_pdf.js from the CV text in index.html. Download buttons: laptop Preview toolbar, phone CV sheet, plain page (cvPath set).
+- Cache busting: scripts and stylesheet carry ?v=20261120b so a phone cannot keep old copies. Bump the value when you change them.
+- Trash stays as is (owner decision).
+- Music: waiting for the owner to say what to change.
+- Owner said the phone did not change after the merge. The live site was verified serving the new version; preview links are frozen snapshots and never update.

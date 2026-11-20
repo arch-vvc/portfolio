@@ -21,7 +21,7 @@ var SITE_CONFIG = {
   // Capstone result text, shown under Research when not empty.
   capstoneResult: "",
   // Path to the CV PDF, for example "assets/archit-rishabh-cv.pdf". Empty hides the CV button.
-  cvPath: "",
+  cvPath: "assets/Archit_Rishabh_CV.pdf",
   // Windstream photos, for example { src: "assets/site-1.jpg", caption: "Site survey", alt: "..." }.
   windstreamPhotos: [],
   // Exact degree title. Until set, the site shows "AI and ML engineering".

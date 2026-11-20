@@ -25,6 +25,7 @@
     search: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
     lock: '<svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><rect x="6" y="11" width="12" height="8" rx="2" fill="currentColor"/><path d="M9 11V8.500a3 3 0 0 1 6 0V11" fill="none" stroke="currentColor" stroke-width="1.800"/></svg>',
     play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.500v13l11-6.500z" fill="currentColor"/></svg>',
+    download: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.500 11l4.500 4.500 4.500-4.500M5 19h14" fill="none" stroke="#4da3ff" stroke-width="1.900" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     mail: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.500" width="18" height="13" rx="3" fill="none" stroke="#4da3ff" stroke-width="1.800"/><path d="M4 8l8 5.500L20 8" fill="none" stroke="#4da3ff" stroke-width="1.800" stroke-linejoin="round"/></svg>',
     link: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14l4-4M8.500 11.500l-2 2a3 3 0 0 0 4.200 4.200l2-2M15.500 12.500l2-2a3 3 0 0 0-4.200-4.200l-2 2" fill="none" stroke="#4da3ff" stroke-width="1.800" stroke-linecap="round"/></svg>',
     call: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h3l1.500 4-2 1.300a11 11 0 0 0 5.200 5.200L16 12.500l4 1.500v3a2 2 0 0 1-2 2A14 14 0 0 1 5 6a2 2 0 0 1 2-2z" fill="none" stroke="#34c759" stroke-width="1.800" stroke-linejoin="round"/></svg>'
@@ -323,10 +324,14 @@
   // ----- the CV: the same text as the laptop window -----
   function cvSheet(origin) {
     var source = document.querySelector("#pdf .page");
+    var holder = document.createElement("div");
+    var pdf = cfg.cvPath || "assets/Archit_Rishabh_CV.pdf";
+    holder.appendChild(node('<div class="p-rows p-download"><a class="p-row" href="' + esc(pdf) + '" target="_blank" rel="noopener" download>' + ICON.download + '<span class="p-row-name">Download PDF</span><span class="p-row-meta">1 page</span></a></div>'));
     var wrap = document.createElement("div");
     wrap.className = "p-cv";
     if (source) wrap.appendChild(source.cloneNode(true));
-    openSheet({ title: "Archit_Rishabh_CV.pdf", body: wrap, origin: origin });
+    holder.appendChild(wrap);
+    openSheet({ title: "Archit_Rishabh_CV.pdf", body: holder, origin: origin });
   }
 
   // ----- Mail: a drafted message; Send opens Gmail with the edited text -----

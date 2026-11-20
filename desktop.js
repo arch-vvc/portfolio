@@ -301,12 +301,12 @@
     for (var h = 0; h < handles.length; h++) {
       (function (handle) {
         handle.addEventListener("dblclick", function (e) {
-          if (e.target.closest && e.target.closest(".lights")) return;
+          if (e.target.closest && e.target.closest(".lights, a")) return;
           toggleFull(w);
         });
         handle.addEventListener("pointerdown", function (e) {
           if (el.classList.contains("is-full")) return;
-          if (e.target.closest && e.target.closest(".lights")) return;
+          if (e.target.closest && e.target.closest(".lights, a")) return;
           var r = el.getBoundingClientRect();
           drag = { w: w, handle: handle, x: e.clientX - r.left, y: e.clientY - r.top };
           el.classList.add("dragging");

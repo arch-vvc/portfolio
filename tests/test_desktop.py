@@ -67,7 +67,7 @@ class Desktop(unittest.TestCase):
         self.assertEqual(check_html(self.html, ROOT), [])
 
     def test_one_stylesheet_and_it_is_desktop_css(self):
-        self.assertEqual(re.findall(r'rel="stylesheet" href="([^"]+)"', self.html), ["desktop.css"])
+        self.assertEqual([h.split("?")[0] for h in re.findall(r'rel="stylesheet" href="([^"]+)"', self.html)], ["desktop.css"])
 
     def test_eleven_folders_internships_first_then_groups_of_three(self):
         folders = [b for b in self.parsed.buttons if "data-folder" in b]
@@ -243,6 +243,20 @@ class Desktop(unittest.TestCase):
         self.assertIn("no-anim", self.css)
         self.assertIn("function emerge(", self.js)
         self.assertIn("getBoundingClientRect", self.js)
+
+    def test_scripts_and_styles_carry_a_version_so_phones_never_keep_old_ones(self):
+        refs = re.findall(r'(?:href|src)="((?:desktop\.css|site\.config\.js|apps\.js|desktop\.js|phone\.js)[^"]*)"', self.html)
+        self.assertEqual(len(refs), 5, refs)
+        for r in refs:
+            self.assertRegex(r, r"\?v=\w+$", r)
+        self.assertEqual(len({r.split("?v=")[1] for r in refs}), 1, refs)
+
+    def test_cv_pdf_is_offered_on_the_laptop_the_phone_and_the_plain_page(self):
+        self.assertIn('href="assets/Archit_Rishabh_CV.pdf" download', self.html)
+        self.assertIn('Download the CV as a PDF', self.html)
+        phone = (ROOT / "phone.js").read_text(encoding="utf-8")
+        self.assertIn("Download PDF", phone)
+        self.assertIn('cvPath: "assets/Archit_Rishabh_CV.pdf"', (ROOT / "site.config.js").read_text(encoding="utf-8"))
 
     def test_music_window_shape(self):
         for t in ("Home", "Recently Played", "Library", "Playlists", "Albums", "Songs"):

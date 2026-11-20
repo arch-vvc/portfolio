@@ -689,3 +689,8 @@ a.p-bubble span { font-size: 13px; color: #c3c9d6; overflow-wrap: anywhere; }
   .p-page[data-page="0"] .p-widget-left { min-height: 62px; }
   .p-page[data-page="0"] .p-widget { padding: 8px 14px; }
 }
+
+a.tool { text-decoration: none; }
+a.tool:hover { background: rgba(255, 255, 255, 0.22); }
+a.tool:focus-visible { outline: calc(var(--u) * 2) solid #fff; outline-offset: calc(var(--u) * 2); }
+.p-download { margin: 0 0 14px; }
