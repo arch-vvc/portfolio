@@ -7,7 +7,11 @@ from test_site import ROOT, check_html
 HOME_FOLDERS = ["windstream", "nexturn", "ooh"]
 PROJECT_FOLDERS = ["capstone", "tender-tracker", "call-qa", "exception-triage", "gtm-agent",
                    "drishtikon", "e-cell", "cricket"]
-DOCK = ["Safari", "Mail", "Messages", "Photos", "Music", "Claude", "Trash"]
+LETTERS = {"windstream": "W", "nexturn": "N", "ooh": "O", "capstone": "I", "tender-tracker": "T",
+           "call-qa": "C", "exception-triage": "E", "gtm-agent": "G", "drishtikon": "D",
+           "e-cell": "E", "cricket": "C"}
+DOCK = ["Phone", "Music", "Messages", "Safari"]
+ALBUMS = ["Take Care", "Habibti", "Views", "Nothing Was The Same"]
 
 
 class Phone(unittest.TestCase):
@@ -18,6 +22,10 @@ class Phone(unittest.TestCase):
         cls.js = (ROOT / "phone.js").read_text(encoding="utf-8")
         cls.desktop_js = (ROOT / "desktop.js").read_text(encoding="utf-8")
         cls.apps_js = (ROOT / "apps.js").read_text(encoding="utf-8")
+        start = cls.html.index('class="phone"')
+        cls.phone = cls.html[start:cls.html.index('id="desktop"')]
+        cls.home = cls.phone[cls.phone.index('data-page="0"'):cls.phone.index('data-page="1"')]
+        cls.projects = cls.phone[cls.phone.index('data-page="1"'):cls.phone.index('id="p-dots"')]
 
     # ----- structure -----
     def test_page_still_passes_the_shared_checks(self):
@@ -27,44 +35,61 @@ class Phone(unittest.TestCase):
         for needle in ('class="phone"', 'class="phone-screen"', 'id="p-clock"', 'id="p-pager"'):
             self.assertIn(needle, self.html, needle)
 
-    def test_projects_page_sits_left_of_home_so_swiping_right_reveals_it(self):
-        self.assertLess(self.html.index('data-page="0"'), self.html.index('data-page="1"'))
-        self.assertRegex(self.js, r"var page = 1\b")
-        first = self.html[self.html.index('data-page="0"'):self.html.index('data-page="1"')]
-        for key in PROJECT_FOLDERS:
-            self.assertIn('data-pfolder="%s"' % key, first, key)
+    def test_home_is_first_and_projects_is_one_swipe_to_the_left(self):
+        self.assertLess(self.phone.index('data-page="0"'), self.phone.index('data-page="1"'))
+        self.assertIn('aria-label="Home"', self.home)
+        self.assertIn('aria-label="Projects"', self.projects)
+        self.assertRegex(self.js, r"var page = 0\b")
 
     def test_home_page_is_the_widget_three_internships_and_the_cv(self):
-        home = self.html[self.html.index('data-page="1"'):self.html.index('id="p-dots"')]
         for key in HOME_FOLDERS:
-            self.assertIn('data-pfolder="%s"' % key, home, key)
-        self.assertIn('data-pfile="cv"', home)
-        self.assertEqual(len(re.findall(r"data-preminder", home)), 3)
+            self.assertIn('data-pfolder="%s"' % key, self.home, key)
+        self.assertIn('data-pfile="cv"', self.home)
+        self.assertEqual(len(re.findall(r"data-preminder", self.home)), 3)
         for text in ("ask about capstone", "hire archit", "check out folders for demos and info"):
-            self.assertIn(text, home, text)
+            self.assertIn(text, self.home, text)
 
     def test_projects_page_holds_five_projects_and_three_activities(self):
-        first = self.html[self.html.index('data-page="0"'):self.html.index('data-page="1"')]
-        self.assertEqual(len(re.findall(r"data-pfolder=", first)), 8)
+        for key in PROJECT_FOLDERS:
+            self.assertIn('data-pfolder="%s"' % key, self.projects, key)
+        self.assertEqual(len(re.findall(r"data-pfolder=", self.projects)), 8)
 
     def test_hint_and_page_dots(self):
-        self.assertIn("swipe right to see projects", self.html)
-        self.assertEqual(len(re.findall(r"data-pdot=", self.html)), 2)
+        self.assertIn("swipe left to see projects", self.phone)
+        self.assertEqual(len(re.findall(r"data-pdot=", self.phone)), 2)
+        self.assertRegex(self.phone, r'data-pdot="0"[^>]*aria-current="true"')
 
-    def test_dock_is_unchanged_from_the_laptop(self):
-        labels = re.findall(r'data-pdock[^>]*aria-label="([^"]+)"', self.html)
+    def test_dock_is_the_four_icons_of_an_iphone(self):
+        labels = re.findall(r'data-pdock[^>]*aria-label="([^"]+)"', self.phone)
         self.assertEqual(labels, DOCK)
-        for name in DOCK[:-1]:
-            self.assertTrue((ROOT / "assets" / "icons" / (name.lower() + ".png")).is_file(), name)
+        for name in DOCK:
+            self.assertTrue((ROOT / "assets" / "icons" / ("ios-" + name.lower() + ".png")).is_file(), name)
+        self.assertNotIn("Trash", self.phone)
+        self.assertNotIn("p-dock-sep", self.phone)
 
-    def test_phone_icons_use_the_real_folder_and_cv_images(self):
-        phone = self.html[self.html.index('class="phone"'):]
-        self.assertGreaterEqual(phone.count('src="assets/icons/folder.png"'), 10)
-        self.assertIn('src="assets/icons/cvfile.png"', phone)
+    def test_folder_icons_are_stylised_first_letters(self):
+        self.assertEqual(self.phone.count('class="p-tile letter"'), 11)
+        for key, letter in LETTERS.items():
+            pat = r'data-pfolder="%s".*?class="p-tile letter"[^>]*>%s</span>' % (re.escape(key), letter)
+            self.assertRegex(self.phone, re.compile(pat, re.S), key)
+        self.assertNotIn("folder.png", self.phone)
+        self.assertIn('src="assets/icons/cvfile.png"', self.home)
 
-    def test_no_second_cv_or_duplicate_ids(self):
+    def test_internships_name_their_roles_on_home(self):
+        self.assertIn("Founder's Office intern", self.home)
+        self.assertIn("Data and AI strategy intern", self.home)
+
+    def test_no_plain_version_link_on_the_phone(self):
+        self.assertNotIn("p-plain", self.phone)
+        self.assertNotIn('href="plain.html"', self.phone)
+
+    def test_no_duplicate_ids(self):
         ids = re.findall(r'\bid="([^"]+)"', self.html)
         self.assertEqual(len(ids), len(set(ids)), [i for i in ids if ids.count(i) > 1])
+
+    def test_home_says_who_this_is(self):
+        self.assertIn(">Archit Rishabh<", self.home)
+        self.assertIn("Applied AI for messy business operations", self.home)
 
     # ----- styles -----
     def test_black_wallpaper(self):
@@ -82,7 +107,11 @@ class Phone(unittest.TestCase):
     def test_touch_actions_protect_the_gestures(self):
         self.assertRegex(self.css, r"\.p-pager\s*\{[^}]*touch-action:\s*pan-y")
         self.assertRegex(self.css, r"\.p-home-bar\s*\{[^}]*touch-action:\s*none")
+        self.assertRegex(self.css, r"\.p-sheet\s*\{[^}]*touch-action:\s*pan-y")
+        self.assertRegex(self.css, r"\.p-body\s*\{[^}]*touch-action:\s*pan-y")
         self.assertIn("overscroll-behavior", self.css)
+        bar = re.search(r"\.p-home-bar\s*\{([^}]*)\}", self.css).group(1)
+        self.assertGreaterEqual(int(re.search(r"height:\s*(\d+)px", bar).group(1)), 48)
 
     def test_phone_replaces_the_laptop_on_narrow_screens(self):
         m = re.search(r"@media\s*\(max-width:\s*899px\)\s*\{(.*?)\n\}", self.css, re.S)
@@ -93,6 +122,11 @@ class Phone(unittest.TestCase):
 
     def test_reduced_motion_is_respected(self):
         self.assertIn("prefers-reduced-motion", self.css)
+
+    def test_tap_targets_are_comfortable(self):
+        dot = re.search(r"\.p-dot\s*\{([^}]*)\}", self.css).group(1)
+        self.assertGreaterEqual(int(re.search(r"width:\s*(\d+)px", dot).group(1)), 36)
+        self.assertGreaterEqual(int(re.search(r"height:\s*(\d+)px", dot).group(1)), 28)
 
     # ----- behaviour -----
     def test_scripts_load_in_order(self):
@@ -112,34 +146,32 @@ class Phone(unittest.TestCase):
         self.assertIn("DESKTOP_SHARED", self.js)
 
     def test_iphone_gestures_are_implemented(self):
-        for needle in ("pointerdown", "pointermove", "pointerup", "setPointerCapture",
+        for needle in ("pointerdown", "pointermove", "pointerup", "pointercancel", "setPointerCapture",
                        "rubber", "p-home-bar", "Escape", "ArrowLeft", "ArrowRight"):
             self.assertIn(needle, self.js, needle)
 
     def test_sheets_for_every_dock_app_and_folder(self):
-        for name in ("Mail", "Messages", "Safari", "Music", "Photos", "Trash", "Claude"):
+        for name in DOCK:
             self.assertIn('"%s"' % name, self.js, name)
-        self.assertIn("folderSheet", self.js)
-        self.assertIn("cvSheet", self.js)
+        for fn in ("folderSheet", "cvSheet", "mailSheet", "phoneSheet", "messagesSheet", "safariSheet", "musicSheet"):
+            self.assertIn(fn, self.js, fn)
+        self.assertNotIn("photosSheet", self.js)
+
+    def test_phone_app_offers_the_drafted_email_and_no_number_by_default(self):
+        self.assertIn("Email Archit", self.js)
+        self.assertIn("cfg.phone", self.js)
+        self.assertRegex((ROOT / "site.config.js").read_text(encoding="utf-8"), r'phone:\s*""')
 
     def test_close_returns_to_the_icon(self):
         self.assertIn("getBoundingClientRect", self.js)
         self.assertIn("p-sheet", self.css)
 
+    def test_the_page_that_is_off_screen_cannot_take_focus(self):
+        self.assertIn('setAttribute("inert", "")', self.js)
+        self.assertRegex(self.js, r"pages\[pg\]\.removeAttribute\(\"inert\"\)")
 
-    # ----- fixes from the first council round -----
     def test_visitors_without_javascript_are_sent_to_the_plain_version(self):
         self.assertRegex(self.html, r'<noscript><meta http-equiv="refresh" content="0; url=plain\.html"></noscript>')
-
-    def test_plain_version_is_reachable_on_the_phone_without_a_keyboard(self):
-        phone = self.html[self.html.index('class="phone"'):self.html.index('id="desktop"')]
-        self.assertIn('class="p-plain" href="plain.html"', phone)
-        self.assertIn('class="p-foot"', phone)
-
-    def test_home_says_who_this_is(self):
-        home = self.html[self.html.index('data-page="1"'):self.html.index('id="p-dots"')]
-        self.assertIn(">Archit Rishabh<", home)
-        self.assertIn("Applied AI for messy business operations", home)
 
     def test_project_pages_lead_back_to_the_portfolio_and_the_plain_version(self):
         for f in (ROOT / "projects").glob("*.html"):
@@ -147,30 +179,18 @@ class Phone(unittest.TestCase):
             self.assertIn('href="../index.html"', t, f.name)
             self.assertIn('href="../plain.html"', t, f.name)
 
-    def test_the_page_that_is_off_screen_cannot_take_focus(self):
-        self.assertIn('setAttribute("inert", "")', self.js)
-        self.assertRegex(self.js, r"pages\[pg\]\.removeAttribute\(\"inert\"\)")
-
-    def test_edge_swipe_and_home_bar_get_their_horizontal_and_vertical_moves(self):
-        self.assertRegex(self.css, r"\.p-sheet\s*\{[^}]*touch-action:\s*pan-y")
-        self.assertRegex(self.css, r"\.p-body\s*\{[^}]*touch-action:\s*pan-y")
-        bar = re.search(r"\.p-home-bar\s*\{([^}]*)\}", self.css).group(1)
-        self.assertGreaterEqual(int(re.search(r"height:\s*(\d+)px", bar).group(1)), 48)
-
     def test_no_stub_text_on_first_open(self):
-        # no Demo row without a video, no Safari tab without content, Claude answers with a shake
         self.assertIn('rows[r].kind === "mov" && !rows[r].href', self.js)
         self.assertNotIn("goes here", self.js)
         self.assertNotIn("is coming soon", self.js)
-        self.assertIn("shake", self.js)
 
-    def test_dock_separator_matches_the_laptop(self):
-        self.assertIn('class="p-dock-sep"', self.html)
-
-    def test_tap_targets_are_comfortable(self):
-        dot = re.search(r"\.p-dot\s*\{([^}]*)\}", self.css).group(1)
-        self.assertGreaterEqual(int(re.search(r"width:\s*(\d+)px", dot).group(1)), 36)
-        self.assertGreaterEqual(int(re.search(r"height:\s*(\d+)px", dot).group(1)), 28)
+    # ----- the music names the owner asked for -----
+    def test_recently_played_shows_the_album_names_not_drake(self):
+        for title in ALBUMS:
+            self.assertIn('"%s"' % title, self.apps_js, title)
+        self.assertIn("albumTitles", self.apps_js)
+        self.assertIn("shared.albumTitles", self.js)
+        self.assertRegex(self.apps_js, r"tiles\(ALBUMS, 4, \"small\", ALBUM_TITLES\)")
 
 
 if __name__ == "__main__":

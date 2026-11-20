@@ -24,7 +24,10 @@
     send: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12L20 4l-6 16-3-7z" fill="currentColor"/></svg>',
     search: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
     lock: '<svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><rect x="6" y="11" width="12" height="8" rx="2" fill="currentColor"/><path d="M9 11V8.500a3 3 0 0 1 6 0V11" fill="none" stroke="currentColor" stroke-width="1.800"/></svg>',
-    play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.500v13l11-6.500z" fill="currentColor"/></svg>'
+    play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.500v13l11-6.500z" fill="currentColor"/></svg>',
+    mail: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.500" width="18" height="13" rx="3" fill="none" stroke="#4da3ff" stroke-width="1.800"/><path d="M4 8l8 5.500L20 8" fill="none" stroke="#4da3ff" stroke-width="1.800" stroke-linejoin="round"/></svg>',
+    link: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14l4-4M8.500 11.500l-2 2a3 3 0 0 0 4.200 4.200l2-2M15.500 12.500l2-2a3 3 0 0 0-4.200-4.200l-2 2" fill="none" stroke="#4da3ff" stroke-width="1.800" stroke-linecap="round"/></svg>',
+    call: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h3l1.500 4-2 1.300a11 11 0 0 0 5.200 5.200L16 12.500l4 1.500v3a2 2 0 0 1-2 2A14 14 0 0 1 5 6a2 2 0 0 1 2-2z" fill="none" stroke="#34c759" stroke-width="1.800" stroke-linejoin="round"/></svg>'
   };
 
   function file(name) {
@@ -51,9 +54,9 @@
     });
   }
 
-  // ----- the two pages: Projects on the left, Home in the middle of the story -----
-  var page = 1;
-  var HINTS = ["swipe left to go back home", "swipe right to see projects"];
+  // ----- the two pages: Home first, Projects one swipe to the left -----
+  var page = 0;
+  var HINTS = ["swipe left to see projects", "swipe right to go back home"];
 
   function setPage(i, instant) {
     page = Math.max(0, Math.min(1, i));
@@ -443,37 +446,39 @@
   }
 
   // ----- Music and Photos -----
-  function cards(list, cls) {
+  function cards(list, cls, titles) {
     var out = "";
     for (var i = 0; i < list.length; i++) {
-      out += '<div class="p-card ' + cls + '"><img src="' + esc(list[i]) + '" alt="Drake"><span class="p-card-title">Drake</span><span class="p-card-sub">Drake</span></div>';
+      var title = titles ? titles[i] : "Drake";
+      out += '<div class="p-card ' + cls + '"><img src="' + esc(list[i]) + '" alt="' + esc(title) + '"><span class="p-card-title">' + esc(title) + '</span><span class="p-card-sub">Drake</span></div>';
     }
     return out;
   }
 
   function musicSheet(origin) {
     var body = node('<h3 class="p-large">Home</h3><h3 class="p-h3">On Repeat</h3><div class="p-cards">' + cards(shared.covers, "") +
-      '</div><h3 class="p-h3">Recently Played</h3><div class="p-cards">' + cards(shared.albums, "small") +
+      '</div><h3 class="p-h3">Recently Played</h3><div class="p-cards">' + cards(shared.albums, "small", shared.albumTitles) +
       '</div><div class="p-mini"><img src="' + esc(shared.covers[0]) + '" alt="Drake"><span>Drake<br>Drake</span>' + ICON.play + "</div>");
     openSheet({ title: "Music", body: body, origin: origin });
   }
 
-  function photosSheet(origin) {
-    openSheet({ title: "Photos", body: node('<h3 class="p-large">Library</h3><div class="p-empty"><p>No photos yet. They are on their way.</p></div>'), origin: origin });
+  // ----- Phone: ways to reach Archit, in the shape of the Favorites list -----
+  function phoneSheet(origin) {
+    var rows = '<button class="p-row" type="button" data-mail>' + ICON.mail + '<span class="p-row-name">Email Archit</span><span class="p-row-meta">Draft ready</span></button>' +
+      '<a class="p-row" href="' + esc(shared.linkedin) + '" target="_blank" rel="noopener">' + ICON.link + '<span class="p-row-name">LinkedIn</span></a>' +
+      '<a class="p-row" href="' + esc(shared.github) + '" target="_blank" rel="noopener">' + ICON.link + '<span class="p-row-name">GitHub</span></a>';
+    if (cfg.phone) {
+      rows = '<a class="p-row" href="tel:' + esc(String(cfg.phone).replace(/[^0-9+]/g, "")) + '">' + ICON.call + '<span class="p-row-name">Call</span></a>' + rows;
+    }
+    var body = node('<h3 class="p-large">Favorites</h3><div class="p-rows">' + rows + "</div>");
+    var rec = openSheet({ title: "Phone", body: body, origin: origin });
+    var mail = rec.body.querySelector("[data-mail]");
+    mail.addEventListener("click", function () { mailSheet(mail); });
   }
 
   // ----- wiring: icons on the pages, then the dock -----
   var APPS = {
-    "Mail": mailSheet, "Messages": messagesSheet, "Safari": safariSheet,
-    "Music": musicSheet, "Photos": photosSheet,
-    "Trash": function (origin) { folderSheet("trash", origin); },
-    "Claude": function (origin) {
-      // nothing to open yet; the icon shakes so the tap is not dead
-      origin.classList.remove("shake");
-      void origin.offsetWidth;
-      origin.classList.add("shake");
-      window.setTimeout(function () { origin.classList.remove("shake"); }, 500);
-    }
+    "Phone": phoneSheet, "Music": musicSheet, "Messages": messagesSheet, "Safari": safariSheet
   };
 
   var icons = document.querySelectorAll(".p-icon");
@@ -500,5 +505,5 @@
     })(dockItems[dk]);
   }
 
-  setPage(1, true);
+  setPage(0, true);
 })();

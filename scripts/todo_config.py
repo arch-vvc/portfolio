@@ -10,6 +10,7 @@ WHAT = {
     "gtm": "Loom URL for the gtm_agent demo",
     "tender": "Loom URL for the tender tracker demo",
     "capstone": "Loom URL for the capstone demo",
+    "phone": "optional phone number, adds a Call row to the Phone app on the phone layout",
     "twitter": "Twitter or X profile URL, turns on the Twitter tab in Safari",
     "youtube": "YouTube channel URL, turns on the YouTube tab in Safari",
     "krillionImage": 'path to the Krillion screenshot, for example "assets/krillion.png"',

@@ -48,3 +48,12 @@ Not re-reviewed by the council. Maximum fix rounds reached, so the rest is for t
 4. The CV is one tap behind an icon on Home, not on the page itself. Say if you want the CV text on Home.
 5. Cricket says "Coached 15 juniors to a final", which is on the original site but not on the CV.
 6. Not tested on a real iPhone: Safari's own edge swipe, the Gmail send link, and new tab behaviour.
+
+## Owner changes after the merge (20 Nov 2026), branch claude/phone-v2
+- Dock is four icons cut from the owner's iPhone screenshot: Phone, Music, Messages, Safari. No Trash, Photos, Claude or Mail icon on the phone.
+- Phone opens a Favorites sheet (email draft, LinkedIn, GitHub). A Call row appears only if phone is set in site.config.js.
+- Home (internships) is first; Projects is one swipe LEFT. Hints: "swipe left to see projects" and "swipe right to go back home".
+- Folder icons are stylised first letters (W, N, O, I, T, C, E, G, D, E, C). The CV keeps its document thumbnail.
+- Recently Played shows Take Care, Habibti, Views, Nothing Was The Same (laptop and phone).
+- Plain version link removed from the phone. No JavaScript still redirects to plain.html.
+- 129 checks pass, including the real browser test at 320, 360, 390, 430 and landscape.

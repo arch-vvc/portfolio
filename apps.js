@@ -148,18 +148,21 @@ window.DESKTOP_APPS = (function () {
   // ---------- Music ----------
   var COVERS = ["assets/music/drake1.jpg", "assets/music/drake2.jpg", "assets/music/drake3.jpg", "assets/music/drake4.jpg"];
   var ALBUMS = ["assets/music/album1.jpg", "assets/music/album2.jpg", "assets/music/album3.jpg", "assets/music/album4.jpg"];
+  var ALBUM_TITLES = ["Take Care", "Habibti", "Views", "Nothing Was The Same"];
 
   // Cover art for a tile: a photo while there is one, a gradient otherwise.
-  function art(list, i) {
+  function art(list, i, alt) {
     var src = list[i];
     return '<span class="art art' + (i % 5) + '"' + (src ? ' data-cover' : "") + ">" +
-      (src ? '<img src="' + src + '" alt="Drake">' : svg("note")) + "</span>";
+      (src ? '<img src="' + src + '" alt="' + esc(alt || "Drake") + '">' : svg("note")) + "</span>";
   }
 
-  function tiles(list, count, cls) {
+  // titles is optional: the album names under the covers; without it every tile says Drake.
+  function tiles(list, count, cls, titles) {
     var out = "";
     for (var i = 0; i < count; i++) {
-      out += '<li class="tile ' + cls + '">' + art(list, i) + '<span class="t-title">Drake</span><span class="t-sub">Drake</span></li>';
+      var title = titles ? titles[i] : "Drake";
+      out += '<li class="tile ' + cls + '">' + art(list, i, title) + '<span class="t-title">' + esc(title) + '</span><span class="t-sub">Drake</span></li>';
     }
     return out;
   }
@@ -190,7 +193,7 @@ window.DESKTOP_APPS = (function () {
       "<h2>Home</h2>" +
       '<h3>Last Played</h3><div class="mu-last">' + art(COVERS, 0) + '<div><span class="t-title">Drake</span><span class="t-sub">Drake</span></div></div>' +
       '<h3>On Repeat</h3><ul class="tiles">' + tiles(COVERS, 4, "big") + "</ul>" +
-      "<h3>Recently Played</h3><ul class=\"tiles\">" + tiles(ALBUMS, 4, "small") + "</ul>" +
+      "<h3>Recently Played</h3><ul class=\"tiles\">" + tiles(ALBUMS, 4, "small", ALBUM_TITLES) + "</ul>" +
       '</div><div class="mu-player" aria-hidden="true">' + svg("shuffle") + svg("prev") + svg("play", "play") + svg("next") + svg("repeat") +
       '<span class="mu-now"><span>Drake</span><span>Drake</span></span>' + svg("volume") + "</div></section>";
   }
@@ -309,7 +312,7 @@ window.DESKTOP_APPS = (function () {
 
   // The phone layout (phone.js) reuses this content with its own markup.
   window.DESKTOP_SHARED = {
-    esc: esc, threads: THREADS, tabs: TABS, covers: COVERS, albums: ALBUMS, to: TO,
+    esc: esc, threads: THREADS, tabs: TABS, covers: COVERS, albums: ALBUMS, albumTitles: ALBUM_TITLES, to: TO,
     gmailUrl: gmailUrl, mailtoUrl: mailtoUrl, subject: DRAFT_SUBJECT, body: DRAFT_BODY,
     linkedin: LINKEDIN, github: GITHUB
   };
