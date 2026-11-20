@@ -472,7 +472,9 @@ a.bubble.link:focus-visible { outline: calc(var(--u) * 2) solid #4da3ff; outline
 
 .p-page[data-page="1"] { display: flex; flex-direction: column; }
 .p-sub { margin: -10px 4px 16px; font-size: 14px; line-height: 1.35; color: #8e8e93; }
-.p-plain { margin-top: auto; align-self: center; padding: 10px 14px; font-size: 13px; color: #6f6f76; text-decoration: underline; text-underline-offset: 3px; }
+.p-foot { position: relative; flex: none; }
+.p-plain { position: absolute; right: 8px; bottom: 2px; padding: 8px 6px; font-size: 12px; color: #9a9aa1; text-decoration: underline; text-underline-offset: 3px; }
+.p-plain:focus-visible { outline: 2px solid #4da3ff; border-radius: 6px; }
 .p-page[data-page="1"] .p-grid { flex: none; }
 .p-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 6px; justify-items: center; align-items: start; }
 .p-icon { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 0; background: none; border: 0; color: #fff; font: inherit; }
@@ -655,3 +657,28 @@ a.p-bubble span { font-size: 13px; color: #c3c9d6; overflow-wrap: anywhere; }
   body { background: #000; }
 }
 
+
+/* ---- fixes from the second council round ---- */
+.p-role { max-width: 100%; margin-top: -3px; font-size: 10px; line-height: 1.15; text-align: center; color: #8e8e93; overflow-wrap: break-word; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.p-sheet.is-closing { pointer-events: none; }
+.p-plain { color: #9a9aa1; }
+.p-field-row { flex-wrap: wrap; }
+.p-field-row span { min-width: 0; overflow-wrap: anywhere; }
+.p-mail-body { box-sizing: border-box; max-width: 100%; }
+.p-body { overflow-x: hidden; }
+@media (max-height: 640px) {
+  .p-sub { display: none; }
+  .p-pagetitle { margin-bottom: 10px; font-size: 26px; }
+  .p-widget { margin: 0 0 14px; padding: 12px 14px; }
+  .p-widget-left { min-height: 84px; }
+  .p-count { font-size: 32px; }
+  .p-grid { gap: 12px 6px; }
+}
+@media (orientation: landscape) and (max-height: 520px) {
+  .p-page[data-page="1"] .p-pagetitle { grid-column: 1 / -1; }
+  .p-page[data-page="1"] .p-pagetitle { margin: 0 4px 4px; font-size: 22px; }
+  .p-page[data-page="1"] .p-widget { padding: 10px 14px; }
+  .p-page[data-page="1"] .p-widget-left { min-height: 70px; }
+  .p-page[data-page="1"] .p-grid { grid-template-columns: repeat(4, 1fr); gap: 8px 4px; }
+  .p-page[data-page="1"] .p-role { display: none; }
+}

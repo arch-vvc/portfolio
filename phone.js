@@ -16,7 +16,7 @@
   var dots = document.querySelectorAll("[data-pdot]");
   var pages = document.querySelectorAll(".p-page");
   var sheets = document.getElementById("p-sheets");
-  var inertParts = [pager, hint, document.getElementById("p-dots"), document.querySelector(".p-dock")];
+  var inertParts = [pager, hint, document.querySelector(".p-foot"), document.querySelector(".p-dock")];
 
   var ICON = {
     close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
@@ -87,7 +87,7 @@
   var quietUntil = 0;
 
   pager.addEventListener("pointerdown", function (e) {
-    if (stack.length) return;
+    if (stack.length || swipe) return;               // a second finger is ignored
     if (e.pointerType === "mouse" && e.button !== 0) return;
     swipe = { id: e.pointerId, x: e.clientX, y: e.clientY, locked: false, dx: 0, lastX: e.clientX, lastT: e.timeStamp, v: 0 };
   });
@@ -113,6 +113,11 @@
   });
 
   function endSwipe(e) {
+    if (e.type === "pointercancel" && swipe) {       // whichever finger it was, snap back cleanly
+      swipe = null;
+      setPage(page);
+      return;
+    }
     if (!swipe || e.pointerId !== swipe.id) return;
     var s = swipe;
     swipe = null;
@@ -138,7 +143,8 @@
 
   document.addEventListener("keydown", function (e) {
     if (window.getComputedStyle(phone).display === "none") return;   // the laptop layout is showing
-    if (e.key === "Escape" && stack.length) { closeSheet(stack[stack.length - 1]); return; }
+    var typing = document.activeElement && /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
+    if (e.key === "Escape" && stack.length && !typing) { closeSheet(stack[stack.length - 1]); return; }
     if (stack.length) return;
     if (e.key === "ArrowLeft") setPage(0);
     if (e.key === "ArrowRight") setPage(1);
@@ -181,6 +187,7 @@
     window.requestAnimationFrame(function () {
       window.requestAnimationFrame(function () { el.classList.remove("is-opening"); });
     });
+    if (stack.length) stack[stack.length - 1].el.setAttribute("inert", "");
     stack.push(rec);
     setInert(true);
     el.querySelector(".p-close").addEventListener("click", function () { closeSheet(rec); });
@@ -199,12 +206,11 @@
     rec.el.classList.remove("dragging");
     aim(rec.el, rec.origin && document.body.contains(rec.origin) ? rec.origin : null);
     rec.el.classList.add("is-closing");
-    if (!stack.length) {
-      setInert(false);
-      if (rec.origin && rec.origin.closest) {
-        var focusable = rec.origin.closest("button");
-        if (focusable) focusable.focus({ preventScroll: true });
-      }
+    if (stack.length) stack[stack.length - 1].el.removeAttribute("inert");
+    else setInert(false);
+    if (rec.origin && rec.origin.closest) {
+      var focusable = rec.origin.closest("button, a");
+      if (focusable) focusable.focus({ preventScroll: true });
     }
     window.setTimeout(function () { if (rec.el.parentNode) rec.el.parentNode.removeChild(rec.el); }, 480);
   }
@@ -453,9 +459,7 @@
   }
 
   function photosSheet(origin) {
-    var cells = "";
-    for (var i = 0; i < 18; i++) cells += "<i></i>";
-    openSheet({ title: "Photos", body: node('<h3 class="p-large">Library</h3><div class="p-photo-grid">' + cells + '</div><p class="p-note">Photos are on their way.</p>'), origin: origin });
+    openSheet({ title: "Photos", body: node('<h3 class="p-large">Library</h3><div class="p-empty"><p>No photos yet. They are on their way.</p></div>'), origin: origin });
   }
 
   // ----- wiring: icons on the pages, then the dock -----

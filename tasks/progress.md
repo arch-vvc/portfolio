@@ -34,3 +34,17 @@ Top 3 actions:
 2. Make it safe: visible Plain version link on the phone, noscript fallback to plain.html, project pages link back to the portfolio, off screen page inert.
 3. Fix the gestures: edge swipe back in Messages is cancelled by the browser (needs touch-action on the sheet), wider swipe up zone, plus a real browser gesture test. Then run the council again.
 Parked (owner decisions): CV is one tap behind an icon (kept as the owner's layout), Cricket line about coaching juniors is from the original site but not on the CV.
+
+## Council round 2 (20 Nov 2026)
+Engineer: NOT DONE (one real bug: a second finger left the pages stuck mid drag; small focus and layout items).
+Sceptic: NOT DONE (no blockers; Photos blank tiles, Drake labels, Trash text, no CV PDF, Mail clipped at 320).
+Chairman: NOT DONE at the time of review. All engineering findings fixed in fix round 2 (second finger and cancel, nested sheet inert and focus, Escape in text fields, Photos message, role labels on Home, Mail wrapping, Plain version link moved to the footer, Home fits at 320 by 568 and in landscape). 128 checks pass, including the real browser test at 320, 360, 390, 430 and landscape.
+Not re-reviewed by the council. Maximum fix rounds reached, so the rest is for the owner.
+
+## Owner decisions (not mine to make)
+1. Music says "Drake" on every title, artist and cover (asked for). Keep it in front of recruiters?
+2. Trash says "Nothing to say here, everything I make is sexy." (asked for). Keep it in front of recruiters?
+3. The CV sheet is titled Archit_Rishabh_CV.pdf but there is no PDF to download. Add one (without the phone number) or rename it.
+4. The CV is one tap behind an icon on Home, not on the page itself. Say if you want the CV text on Home.
+5. Cricket says "Coached 15 juniors to a final", which is on the original site but not on the CV.
+6. Not tested on a real iPhone: Safari's own edge swipe, the Gmail send link, and new tab behaviour.

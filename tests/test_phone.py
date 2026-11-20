@@ -132,8 +132,9 @@ class Phone(unittest.TestCase):
         self.assertRegex(self.html, r'<noscript><meta http-equiv="refresh" content="0; url=plain\.html"></noscript>')
 
     def test_plain_version_is_reachable_on_the_phone_without_a_keyboard(self):
-        home = self.html[self.html.index('data-page="1"'):self.html.index('id="p-dots"')]
-        self.assertIn('class="p-plain" href="plain.html"', home)
+        phone = self.html[self.html.index('class="phone"'):self.html.index('id="desktop"')]
+        self.assertIn('class="p-plain" href="plain.html"', phone)
+        self.assertIn('class="p-foot"', phone)
 
     def test_home_says_who_this_is(self):
         home = self.html[self.html.index('data-page="1"'):self.html.index('id="p-dots"')]

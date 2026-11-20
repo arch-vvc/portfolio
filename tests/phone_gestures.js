@@ -107,7 +107,71 @@ function check(name, ok, detail) { if (!ok) failures.push(name + (detail !== und
   check('cv sheet has the CV text', (await page.$eval('.p-cv', e => e.innerText)).includes('Windstream Technologies'));
   await page.click('.p-sheet .p-close'); await page.waitForTimeout(600);
 
+  // a second finger and a cancelled touch must not leave the pages stuck mid drag
+  await page.reload(); await page.waitForTimeout(400);
+  await client.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 200, y: 420, id: 1 }] });
+  for (let i = 1; i <= 5; i++) await client.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 200 + i * 12, y: 420, id: 1 }] });
+  await client.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 200 + 60, y: 420, id: 1 }, { x: 120, y: 500, id: 2 }] });
+  await client.send('Input.dispatchTouchEvent', { type: 'touchCancel', touchPoints: [] });
+  await page.waitForTimeout(600);
+  check('cancel after a second finger snaps back to a page', (await track()) === 'translateX(-50%)', await track());
+  check('track is not stuck in drag mode', !(await page.$eval('#p-track', e => e.classList.contains('dragging'))));
+  await swipe(90, 420, 300, 420);
+  check('pager still works after the cancel', (await track()) === 'translateX(0%)', await track());
+  await swipe(300, 420, 80, 420);
+
+  // Escape in the Mail text field is for the field, and focus returns to the opener after a nested close
+  await tap('[data-pdock][aria-label=Mail]');
+  await page.focus('#p-mailbody');
+  await page.keyboard.press('Escape'); await page.waitForTimeout(500);
+  check('Escape inside the mail body does not discard the draft', (await sheets()) === 1);
+  await page.click('.p-sheet .p-close'); await page.waitForTimeout(600);
+  await tap('[data-pfolder=windstream] .p-tile');
+  await tap('.p-sheet [data-open="tender-tracker"]');
+  check('parent sheet is inert while the child is open', await page.$eval('.p-sheet:not(:last-child)', e => e.hasAttribute('inert')));
+  await page.keyboard.press('Escape'); await page.waitForTimeout(600);
+  check('focus returns to the row that opened the child', await page.evaluate(() => document.activeElement && document.activeElement.getAttribute('data-open') === 'tender-tracker'));
+  await page.keyboard.press('Escape'); await page.waitForTimeout(600);
+
+  // Photos says what it is, plainly
+  await tap('[data-pdock][aria-label=Photos]');
+  check('photos shows its message without scrolling', (await page.$eval('.p-sheet .p-empty', e => { const r = e.getBoundingClientRect(); return r.bottom <= innerHeight && r.height > 0; })));
+  await page.click('.p-sheet .p-close'); await page.waitForTimeout(600);
+
   check('no script errors', errors.length === 0, errors);
+  await ctx.close();
+
+  // other phone sizes: everything on Home fits, nothing overflows sideways, Mail does not clip
+  for (const [name, w, h, land] of [['320x568', 320, 568, false], ['360x640', 360, 640, false], ['430x932', 430, 932, false], ['844x390 landscape', 844, 390, true]]) {
+    const c2 = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+    const p2 = await c2.newPage(); p2.setDefaultTimeout(5000);
+    await p2.goto('file://' + path.resolve(__dirname, '..', 'index.html'));
+    await p2.waitForTimeout(400);
+    const fit = await p2.evaluate(() => {
+      const pager = document.getElementById('p-pager').getBoundingClientRect();
+      const inside = el => { const r = el.getBoundingClientRect(); return r.top >= pager.top - 1 && r.bottom <= pager.bottom + 1 && r.left >= 0 && r.right <= innerWidth; };
+      return {
+        icons: [...document.querySelectorAll('[data-page="1"] .p-icon')].map(inside),
+        widget: inside(document.querySelector('[data-page="1"] .p-widget')),
+        plain: (() => { const r = document.querySelector('.p-plain').getBoundingClientRect(); const d = document.querySelector('.p-dock').getBoundingClientRect(); return r.width > 0 && r.left >= 0 && r.right <= innerWidth && r.bottom <= d.top + 1; })(),
+        overflowX: document.documentElement.scrollWidth > innerWidth,
+      };
+    });
+    check(name + ': all four Home icons are visible without scrolling', fit.icons.length === 4 && fit.icons.every(Boolean), fit);
+    check(name + ': widget fully visible', fit.widget, fit);
+    check(name + ': plain version link visible', fit.plain, fit);
+    check(name + ': no sideways overflow', !fit.overflowX, fit);
+    const [mx, my] = await p2.$eval('[data-pdock][aria-label=Mail]', e => { const r = e.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; });
+    await p2.touchscreen.tap(mx, my); await p2.waitForTimeout(750);
+    const mail = await p2.evaluate(() => {
+      const body = document.querySelector('.p-sheet .p-body');
+      const to = [...document.querySelectorAll('.p-sheet .p-field-row span')].pop();
+      return { overflow: body.scrollWidth > body.clientWidth, toClipped: to.scrollWidth > to.clientWidth };
+    });
+    check(name + ': mail does not overflow or clip the address', !mail.overflow && !mail.toClipped, mail);
+    await c2.close();
+  }
+
   await browser.close();
 
   if (failures.length) { console.log('PHONE GESTURES FAILED:\n - ' + failures.join('\n - ')); process.exit(1); }
