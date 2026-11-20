@@ -97,7 +97,11 @@
         "Built a 20 case business simulation from real corporate problems and ran it end to end for 100+ participants.",
         "A Jeopardy style board on four tiers of difficulty, from a payment page breakdown to a CEO dying weeks before an IPO. Each case has a scenario, key challenges and a real precedent such as Apple after Steve Jobs or Yahoo and Microsoft."
       ],
-      rows: [{ kind: "page", name: "Case board.html", href: "projects/e-cell.html", date: "20 Nov 2026" }]
+      rows: [
+        { kind: "page", name: "Case board.html", href: "projects/e-cell.html", date: "20 Nov 2026" },
+        { kind: "link", name: "Play the board", href: "https://jeopardylabs.com/play/jeopardy-266069", date: "20 Nov 2026", size: "Link" },
+        { kind: "link", name: "All the cases", href: "https://docs.google.com/document/d/1n_BltmPHSIL0voqint2vZuTZPE8fBdgfCPpQs_UZJZE/view", date: "20 Nov 2026", size: "Link" }
+      ]
     },
     "trash": {
       title: "Trash", bare: true,

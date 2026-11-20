@@ -125,9 +125,11 @@ class Desktop(unittest.TestCase):
     def test_script_works_from_disk(self):
         for banned in ("fetch(", "import ", "export ", "XMLHttpRequest", "http://"):
             self.assertNotIn(banned, self.js, banned)
-        # Only plain links to the author's own GitHub may appear; nothing is loaded remotely.
+        # Only plain links may appear (the author's GitHub and the two E-Cell links); nothing is loaded remotely.
+        allowed = ("https://github.com/arch-vvc/", "https://jeopardylabs.com/play/jeopardy-266069",
+                   "https://docs.google.com/document/d/1n_BltmPHSIL0voqint2vZuTZPE8fBdgfCPpQs_UZJZE/view")
         for url in re.findall(r"https://[^\"'\s]+", self.js):
-            self.assertTrue(url.startswith("https://github.com/arch-vvc/"), url)
+            self.assertTrue(url.startswith(allowed), url)
 
     def test_folder_and_file_icons_are_the_real_ones(self):
         for name in ("folder.png", "cvfile.png"):
@@ -278,7 +280,11 @@ class Desktop(unittest.TestCase):
     def test_ecell_folder_opens_the_case_board_page(self):
         self.assertIn('name: "Case board.html", href: "projects/e-cell.html"', (ROOT / "desktop.js").read_text(encoding="utf-8"))
         page = (ROOT / "projects" / "e-cell.html").read_text(encoding="utf-8")
-        self.assertEqual(page.count("<li>"), 20)          # the 20 cases on the board
+        self.assertEqual(page.count("<li>"), 29)          # 20 cases on the board, 3 x 3 questions in the examples
+        self.assertIn("Three example cases", page)
+        self.assertNotIn("as written", page)
+        self.assertIn("https://jeopardylabs.com/play/jeopardy-266069", page)
+        self.assertIn("1n_BltmPHSIL0voqint2vZuTZPE8fBdgfCPpQs_UZJZE", page)
         for tier in ("Tier 4, 100 points", "Tier 3, 200 points", "Tier 2, 300 points", "Tier 1, 400 points"):
             self.assertIn(tier, page, tier)
         for precedent in ("Yahoo", "Steve Jobs", "Black Friday"):
