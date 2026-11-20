@@ -14,7 +14,7 @@ var SITE_CONFIG = {
   youtube: "",
   // Screenshots shown in the Krillion tab: portrait for the phone, landscape for the laptop.
   krillionImage: "assets/krillion.png",
-  krillionImageWide: "assets/krillion-wide.png",
+  krillionImageWide: "assets/krillion-laptop.png",
   // Call QA live result text, shown on the project page when not empty.
   callqaResult: "",
   // Capstone result text, shown under Research when not empty.
