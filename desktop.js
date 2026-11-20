@@ -94,9 +94,10 @@
       title: "E-Cell",
       summary: [
         "PESU Entrepreneurship Cell, Organising Committee.",
-        "Built a 20 case business simulation from real corporate problems and ran it end to end for 100+ participants."
+        "Built a 20 case business simulation from real corporate problems and ran it end to end for 100+ participants.",
+        "A Jeopardy style board on four tiers of difficulty, from a payment page breakdown to a CEO dying weeks before an IPO. Each case has a scenario, key challenges and a real precedent such as Apple after Steve Jobs or Yahoo and Microsoft."
       ],
-      rows: []
+      rows: [{ kind: "page", name: "Case board.html", href: "projects/e-cell.html", date: "20 Nov 2026" }]
     },
     "trash": {
       title: "Trash", bare: true,

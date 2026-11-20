@@ -275,6 +275,15 @@ class Desktop(unittest.TestCase):
         for key in ("krillionImage", "twitter", "youtube"):
             self.assertIn("cfg." + key, self.apps, key)
 
+    def test_ecell_folder_opens_the_case_board_page(self):
+        self.assertIn('name: "Case board.html", href: "projects/e-cell.html"', (ROOT / "desktop.js").read_text(encoding="utf-8"))
+        page = (ROOT / "projects" / "e-cell.html").read_text(encoding="utf-8")
+        self.assertEqual(page.count("<li>"), 20)          # the 20 cases on the board
+        for tier in ("Tier 4, 100 points", "Tier 3, 200 points", "Tier 2, 300 points", "Tier 1, 400 points"):
+            self.assertIn(tier, page, tier)
+        for precedent in ("Yahoo", "Steve Jobs", "Black Friday"):
+            self.assertIn(precedent, page, precedent)
+
     def test_photos_is_a_stub_until_photos_arrive(self):
         self.assertIn("Photos", self.apps)
         self.assertIn("photos", self.apps)
