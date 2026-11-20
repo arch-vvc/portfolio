@@ -557,5 +557,8 @@
   }
   desktop.addEventListener("click", function () { select(null); });
 
+  // The phone layout (phone.js) reads the same folder data.
+  window.DESKTOP_DATA = { folders: FOLDERS, rowsFor: rowsFor, today: TODAY };
+
   refresh();
 })();

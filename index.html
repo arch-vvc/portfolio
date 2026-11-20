@@ -51,10 +51,72 @@
     <symbol id="g-list" viewBox="0 0 24 24"><path d="M8 7h11M8 12h11M8 17h11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="4.5" cy="7" r="1.3" fill="currentColor"/><circle cx="4.5" cy="12" r="1.3" fill="currentColor"/><circle cx="4.5" cy="17" r="1.3" fill="currentColor"/></symbol>
   </svg>
 
-  <div class="small-screen">
-    <p class="small-title">Archit Rishabh</p>
-    <p>The desktop is built for a laptop screen. A phone version is on its way.</p>
-    <p><a href="plain.html">Open the plain text version</a></p>
+  
+  <div class="phone" id="phone">
+    <div class="phone-screen" id="phone-screen">
+      <div class="p-status">
+        <time id="p-clock">4:27</time>
+        <span class="p-status-icons" aria-hidden="true">
+          <svg viewBox="0 0 20 14"><rect x="0" y="9" width="3" height="5" rx="1" fill="currentColor"/><rect x="5" y="6" width="3" height="8" rx="1" fill="currentColor"/><rect x="10" y="3" width="3" height="11" rx="1" fill="currentColor"/><rect x="15" y="0" width="3" height="14" rx="1" fill="currentColor" opacity="0.4"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M2 9a15 15 0 0 1 20 0M5 12.5a10.5 10.5 0 0 1 14 0M8.5 16a5.5 5.5 0 0 1 7 0" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="19" r="1.6" fill="currentColor"/></svg>
+          <svg viewBox="0 0 30 14"><rect x="0.8" y="0.8" width="25" height="12.4" rx="4" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.5"/><rect x="2.6" y="2.6" width="17" height="8.8" rx="2.4" fill="currentColor"/><rect x="27.2" y="4.5" width="2" height="5" rx="1" fill="currentColor" opacity="0.5"/></svg>
+        </span>
+      </div>
+
+      <div class="p-pager" id="p-pager">
+        <div class="p-track" id="p-track">
+          <section class="p-page" data-page="0" aria-label="Projects">
+            <p class="p-pagetitle">Projects</p>
+            <div class="p-grid">
+            <button class="p-icon" type="button" data-pfolder="capstone" aria-label="Immunological Supply Chain folder"><span class="p-tile"><img src="assets/icons/folder.png" alt="Immunological Supply Chain folder"></span><span class="p-label">Immunological Supply Chain</span></button>
+            <button class="p-icon" type="button" data-pfolder="tender-tracker" aria-label="Tender Tracker folder"><span class="p-tile"><img src="assets/icons/folder.png" alt="Tender Tracker folder"></span><span class="p-label">Tender Tracker</span></button>
+            <button class="p-icon" type="button" data-pfolder="call-qa" aria-label="Call QA folder"><span class="p-tile"><img src="assets/icons/folder.png" alt="Call QA folder"></span><span class="p-label">Call QA</span></button>
+            <button class="p-icon" type="button" data-pfolder="exception-triage" aria-label="Exception Triage folder"><span class="p-tile"><img src="assets/icons/folder.png" alt="Exception Triage folder"></span><span class="p-label">Exception Triage</span></button>
+            <button class="p-icon" type="button" data-pfolder="gtm-agent" aria-label="gtm_agent folder"><span class="p-tile"><img src="assets/icons/folder.png" alt="gtm_agent folder"></span><span class="p-label">gtm_agent</span></button>
+            <button class="p-icon" type="button" data-pfolder="drishtikon" aria-label="Drishtikon '26 folder"><span class="p-tile"><img src="assets/icons/folder.png" alt="Drishtikon '26 folder"></span><span class="p-label">Drishtikon '26</span></button>
+            <button class="p-icon" type="button" data-pfolder="e-cell" aria-label="E-Cell folder"><span class="p-tile"><img src="assets/icons/folder.png" alt="E-Cell folder"></span><span class="p-label">E-Cell</span></button>
+            <button class="p-icon" type="button" data-pfolder="cricket" aria-label="Cricket folder"><span class="p-tile"><img src="assets/icons/folder.png" alt="Cricket folder"></span><span class="p-label">Cricket</span></button>
+            </div>
+          </section>
+          <section class="p-page" data-page="1" aria-label="Home">
+            <aside class="p-widget" aria-labelledby="p-rem-title">
+              <div class="p-widget-left">
+                <span class="p-widget-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#g-list"/></svg></span>
+                <h2 class="sr-only" id="p-rem-title">Reminders</h2>
+                <div class="p-widget-stat"><span class="p-count" id="p-count" aria-live="polite">3</span><span class="p-when">Reminders</span></div>
+              </div>
+              <ul class="p-reminders">
+                <li data-preminder><label><input type="checkbox"><span class="p-tick" aria-hidden="true"></span><span class="p-text">ask about capstone</span></label></li>
+                <li data-preminder><label><input type="checkbox"><span class="p-tick" aria-hidden="true"></span><span class="p-text">hire archit</span></label></li>
+                <li data-preminder><label><input type="checkbox"><span class="p-tick" aria-hidden="true"></span><span class="p-text">check out folders for demos and info</span></label></li>
+              </ul>
+            </aside>
+            <div class="p-grid">
+            <button class="p-icon" type="button" data-pfolder="windstream" aria-label="Windstream folder"><span class="p-tile"><img src="assets/icons/folder.png" alt="Windstream folder"></span><span class="p-label">Windstream</span></button>
+            <button class="p-icon" type="button" data-pfolder="nexturn" aria-label="NexTurn folder"><span class="p-tile"><img src="assets/icons/folder.png" alt="NexTurn folder"></span><span class="p-label">NexTurn</span></button>
+            <button class="p-icon" type="button" data-pfolder="ooh" aria-label="OOH Advertising folder"><span class="p-tile"><img src="assets/icons/folder.png" alt="OOH Advertising folder"></span><span class="p-label">OOH Advertising</span></button>
+            <button class="p-icon" type="button" data-pfile="cv" aria-label="Archit_Rishabh_CV.pdf"><span class="p-tile cv"><img src="assets/icons/cvfile.png" alt="Archit_Rishabh_CV.pdf"></span><span class="p-label">CV</span></button>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <p class="p-hint" id="p-hint">swipe right to see projects</p>
+      <div class="p-dots" id="p-dots" role="group" aria-label="Pages">
+        <button class="p-dot" type="button" data-pdot="0" aria-label="Projects page"></button>
+        <button class="p-dot" type="button" data-pdot="1" aria-label="Home page" aria-current="true"></button>
+      </div>
+      <nav class="p-dock" aria-label="Phone dock">
+        <button class="p-dock-item" type="button" data-pdock aria-label="Safari"><img src="assets/icons/safari.png" alt="Safari"></button>
+        <button class="p-dock-item" type="button" data-pdock aria-label="Mail"><img src="assets/icons/mail.png" alt="Mail"></button>
+        <button class="p-dock-item" type="button" data-pdock aria-label="Messages"><img src="assets/icons/messages.png" alt="Messages"></button>
+        <button class="p-dock-item" type="button" data-pdock aria-label="Photos"><img src="assets/icons/photos.png" alt="Photos"></button>
+        <button class="p-dock-item" type="button" data-pdock aria-label="Music"><img src="assets/icons/music.png" alt="Music"></button>
+        <button class="p-dock-item" type="button" data-pdock aria-label="Claude"><img src="assets/icons/claude.png" alt="Claude"></button>
+        <button class="p-dock-item" type="button" data-pdock aria-label="Trash"><img src="assets/icons/trash.png" alt="Trash"></button>
+      </nav>
+      <div class="p-sheets" id="p-sheets"></div>
+    </div>
   </div>
 
   <div class="desktop" id="desktop">
@@ -225,5 +287,6 @@
   <script src="site.config.js"></script>
   <script src="apps.js"></script>
   <script src="desktop.js"></script>
+  <script src="phone.js"></script>
 </body>
 </html>

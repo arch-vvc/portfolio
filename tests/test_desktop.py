@@ -113,9 +113,10 @@ class Desktop(unittest.TestCase):
         self.assertEqual(len(re.findall(r"<h1[\s>]", self.html)), 1)
         self.assertIn('href="plain.html"', self.html)
 
-    def test_small_screens_get_the_plain_version(self):
+    def test_small_screens_get_the_phone_layout_and_keep_the_plain_link(self):
         self.assertRegex(self.css, r"@media\s*\(max-width:\s*\d+px\)")
-        self.assertIn("small-screen", self.html)
+        self.assertIn('class="phone"', self.html)
+        self.assertIn('href="plain.html"', self.html)
 
     def test_wallpaper_is_one_swappable_file(self):
         self.assertRegex(self.css, r"url\(['\"]?assets/wallpaper\.\w+['\"]?\)")
@@ -131,7 +132,8 @@ class Desktop(unittest.TestCase):
     def test_folder_and_file_icons_are_the_real_ones(self):
         for name in ("folder.png", "cvfile.png"):
             self.assertTrue((ROOT / "assets" / "icons" / name).is_file(), name)
-        self.assertEqual(self.html.count('src="assets/icons/folder.png"'), 11)
+        laptop = self.html[self.html.index('id="desktop"'):]
+        self.assertEqual(laptop.count('src="assets/icons/folder.png"'), 11)
 
     def test_every_folder_has_a_finder_window_definition(self):
         keys = re.findall(r'"([a-z\-]+)":\s*\{\s*title:', self.js)

@@ -307,6 +307,13 @@ window.DESKTOP_APPS = (function () {
     sync();
   }
 
+  // The phone layout (phone.js) reuses this content with its own markup.
+  window.DESKTOP_SHARED = {
+    esc: esc, threads: THREADS, tabs: TABS, covers: COVERS, albums: ALBUMS, to: TO,
+    gmailUrl: gmailUrl, mailtoUrl: mailtoUrl, subject: DRAFT_SUBJECT, body: DRAFT_BODY,
+    linkedin: LINKEDIN, github: GITHUB
+  };
+
   return {
     "Mail": { title: "New Message", size: [580, 440], pos: [360, 160], html: mail, init: mailInit },
     "Messages": { title: "Messages", size: [700, 520], pos: [330, 150], html: messages, init: messagesInit },
