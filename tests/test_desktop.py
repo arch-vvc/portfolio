@@ -210,6 +210,17 @@ class Desktop(unittest.TestCase):
         self.assertNotIn("Album title", self.apps)
         self.assertGreaterEqual(self.apps.count(">Drake<"), 3)
 
+    def test_the_firm_is_named_ooh_advertising_everywhere(self):
+        for f in ROOT.rglob("*"):
+            if f.suffix in (".html", ".js") and ".git" not in f.parts and "tests" not in f.parts:
+                self.assertNotIn("out of home advertising firm", f.read_text(encoding="utf-8"), f.name)
+
+    def test_folders_and_files_open_on_double_click(self):
+        self.assertIn('addEventListener("dblclick"', self.js)
+        # a single click on a desktop icon only selects unless it came from the keyboard
+        self.assertIn("e.detail === 0", self.js)
+        self.assertNotIn('icon.addEventListener("click", function () { openWin(cvWin); });', self.js)
+
     def test_music_window_shape(self):
         for t in ("Home", "Recently Played", "Library", "Playlists", "Albums", "Songs"):
             self.assertIn(t, self.apps, t)

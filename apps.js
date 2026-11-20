@@ -83,7 +83,7 @@ window.DESKTOP_APPS = (function () {
       lines: [
         { text: "Tender tracker for Windstream: 33 portals read every day, an 8 figure contract now underway." },
         { text: "Call QA for voice agents, exception triage for accounts payable, and gtm_agent for outreach." },
-        { text: "Founder's office at Windstream and an out of home advertising firm. Data and AI strategy at NexTurn." },
+        { text: "Founder's office at Windstream and OOH Advertising. Data and AI strategy at NexTurn." },
         { text: "Capstone: an immune system inspired supply chain pipeline. Paper submitted." }
       ]
     }

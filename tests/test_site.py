@@ -222,7 +222,7 @@ class HomePage(unittest.TestCase):
             self.assertIn(t, self.html, t)
 
     def test_employers(self):
-        for t in ("NexTurn", "Windstream Technologies", "out of home advertising firm",
+        for t in ("NexTurn", "Windstream Technologies", "OOH Advertising",
                   "Centre for Innovation and Entrepreneurship"):
             self.assertIn(t, self.html, t)
 

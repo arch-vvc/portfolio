@@ -408,18 +408,35 @@
     desktop.querySelector(".stage").appendChild(el);
     var w = register(el, f.title, true);
 
+    // Rows behave like Finder rows: one click selects, two open. Links open in a new tab.
     var pane = el.querySelector(".finder-pane");
+    var rowEls = el.querySelectorAll(".frow");
+    function selectRow(row) {
+      for (var k = 0; k < rowEls.length; k++) rowEls[k].classList.remove("selected");
+      row.classList.add("selected");
+    }
     var buttons = el.querySelectorAll("button.frow");
     for (var b2 = 0; b2 < buttons.length; b2++) {
       (function (btn) {
         var row = rows[Number(btn.getAttribute("data-row"))];
-        btn.addEventListener("click", function () {
-          if (row.kind === "folder") { openFolder(row.open); return; }
-          for (var k = 0; k < buttons.length; k++) buttons[k].classList.remove("selected");
-          btn.classList.add("selected");
+        btn.addEventListener("click", function (e) {
+          selectRow(btn);
           if (row.text) pane.innerHTML = paneHtml(row.name, row.text);
+          if (row.kind === "folder" && e.detail === 0) openFolder(row.open);
         });
+        if (row.kind === "folder") btn.addEventListener("dblclick", function () { openFolder(row.open); });
       })(buttons[b2]);
+    }
+    var links = el.querySelectorAll("a.frow");
+    for (var l2 = 0; l2 < links.length; l2++) {
+      (function (a) {
+        a.addEventListener("click", function (e) {
+          if (e.detail === 0) return;          // keyboard: let the link open
+          e.preventDefault();
+          selectRow(a);
+        });
+        a.addEventListener("dblclick", function () { window.open(a.href, "_blank", "noopener"); });
+      })(links[l2]);
     }
     return w;
   }
@@ -494,17 +511,21 @@
     for (var i = 0; i < icons.length; i++) icons[i].classList.remove("selected");
     if (el) el.classList.add("selected");
   }
+  // A single click selects. A double click opens, like Finder. Enter or Space on a focused
+  // icon (a click with no mouse detail) also opens, so the keyboard still works.
   for (var i = 0; i < icons.length; i++) {
     (function (icon) {
+      function open() {
+        var key = icon.getAttribute("data-folder");
+        if (key && FOLDERS[key]) openFolder(key);
+        else if (icon.getAttribute("data-file") === "cv") openWin(cvWin);
+      }
       icon.addEventListener("click", function (e) {
         e.stopPropagation();
         select(icon);
-        var key = icon.getAttribute("data-folder");
-        if (key && FOLDERS[key]) openFolder(key);
+        if (e.detail === 0) open();
       });
-      if (icon.getAttribute("data-file") === "cv") {
-        icon.addEventListener("click", function () { openWin(cvWin); });
-      }
+      icon.addEventListener("dblclick", function (e) { e.stopPropagation(); open(); });
     })(icons[i]);
   }
   desktop.addEventListener("click", function () { select(null); });
