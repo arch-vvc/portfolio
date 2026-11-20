@@ -210,7 +210,7 @@ class Desktop(unittest.TestCase):
             self.assertTrue((ROOT / c).is_file(), c)
         self.assertNotIn("Song title", self.apps)
         self.assertNotIn("Album title", self.apps)
-        self.assertGreaterEqual(self.apps.count(">Drake<"), 3)
+        self.assertGreaterEqual(self.apps.count("Drake"), 3)
 
     def test_the_firm_is_named_ooh_advertising_everywhere(self):
         for f in ROOT.rglob("*"):
@@ -257,6 +257,11 @@ class Desktop(unittest.TestCase):
         phone = (ROOT / "phone.js").read_text(encoding="utf-8")
         self.assertIn("Download PDF", phone)
         self.assertIn('cvPath: "assets/Archit_Rishabh_CV.pdf"', (ROOT / "site.config.js").read_text(encoding="utf-8"))
+
+    def test_last_played_is_headlines_by_drake_on_the_take_care_cover(self):
+        self.assertIn('title: "Headlines", artist: "Drake", cover: ALBUMS[0], album: ALBUM_TITLES[0]', self.apps)
+        self.assertEqual(self.apps.count("esc(LAST_PLAYED.title)"), 2)   # the Last Played row and the player bar
+        self.assertIn('art(ALBUMS, 0, LAST_PLAYED.album)', self.apps)
 
     def test_music_window_shape(self):
         for t in ("Home", "Recently Played", "Library", "Playlists", "Albums", "Songs"):

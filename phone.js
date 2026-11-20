@@ -461,9 +461,12 @@
   }
 
   function musicSheet(origin) {
-    var body = node('<h3 class="p-large">Home</h3><h3 class="p-h3">On Repeat</h3><div class="p-cards">' + cards(shared.covers, "") +
+    var last = shared.lastPlayed;
+    var body = node('<h3 class="p-large">Home</h3>' +
+      '<h3 class="p-h3">Last Played</h3><div class="p-last"><img src="' + esc(last.cover) + '" alt="' + esc(last.album) + '"><div><span class="p-card-title">' + esc(last.title) + '</span><span class="p-card-sub">' + esc(last.artist) + "</span></div></div>" +
+      '<h3 class="p-h3">On Repeat</h3><div class="p-cards">' + cards(shared.covers, "") +
       '</div><h3 class="p-h3">Recently Played</h3><div class="p-cards">' + cards(shared.albums, "small", shared.albumTitles) +
-      '</div><div class="p-mini"><img src="' + esc(shared.covers[0]) + '" alt="Drake"><span>Drake<br>Drake</span>' + ICON.play + "</div>");
+      '</div><div class="p-mini"><img src="' + esc(last.cover) + '" alt="' + esc(last.album) + '"><span>' + esc(last.title) + "<br>" + esc(last.artist) + "</span>" + ICON.play + "</div>");
     openSheet({ title: "Music", body: body, origin: origin });
   }
 

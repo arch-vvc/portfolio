@@ -149,6 +149,8 @@ window.DESKTOP_APPS = (function () {
   var COVERS = ["assets/music/drake1.jpg", "assets/music/drake2.jpg", "assets/music/drake3.jpg", "assets/music/drake4.jpg"];
   var ALBUMS = ["assets/music/album1.jpg", "assets/music/album2.jpg", "assets/music/album3.jpg", "assets/music/album4.jpg"];
   var ALBUM_TITLES = ["Take Care", "Habibti", "Views", "Nothing Was The Same"];
+  // Last played: the song, the artist, and the cover of the album it is on (Take Care).
+  var LAST_PLAYED = { title: "Headlines", artist: "Drake", cover: ALBUMS[0], album: ALBUM_TITLES[0] };
 
   // Cover art for a tile: a photo while there is one, a gradient otherwise.
   function art(list, i, alt) {
@@ -191,11 +193,11 @@ window.DESKTOP_APPS = (function () {
       ], ["", "Library", "Playlists"]) + "</aside>" +
       '<section class="mu-main"><div class="mu-top" data-drag></div><div class="mu-scroll">' +
       "<h2>Home</h2>" +
-      '<h3>Last Played</h3><div class="mu-last">' + art(COVERS, 0) + '<div><span class="t-title">Drake</span><span class="t-sub">Drake</span></div></div>' +
+      '<h3>Last Played</h3><div class="mu-last">' + art(ALBUMS, 0, LAST_PLAYED.album) + '<div><span class="t-title">' + esc(LAST_PLAYED.title) + '</span><span class="t-sub">' + esc(LAST_PLAYED.artist) + '</span></div></div>' +
       '<h3>On Repeat</h3><ul class="tiles">' + tiles(COVERS, 4, "big") + "</ul>" +
       "<h3>Recently Played</h3><ul class=\"tiles\">" + tiles(ALBUMS, 4, "small", ALBUM_TITLES) + "</ul>" +
       '</div><div class="mu-player" aria-hidden="true">' + svg("shuffle") + svg("prev") + svg("play", "play") + svg("next") + svg("repeat") +
-      '<span class="mu-now"><span>Drake</span><span>Drake</span></span>' + svg("volume") + "</div></section>";
+      '<span class="mu-now"><span>' + esc(LAST_PLAYED.title) + '</span><span>' + esc(LAST_PLAYED.artist) + '</span></span>' + svg("volume") + "</div></section>";
   }
 
   // ---------- Photos ----------
@@ -312,7 +314,7 @@ window.DESKTOP_APPS = (function () {
 
   // The phone layout (phone.js) reuses this content with its own markup.
   window.DESKTOP_SHARED = {
-    esc: esc, threads: THREADS, tabs: TABS, covers: COVERS, albums: ALBUMS, albumTitles: ALBUM_TITLES, to: TO,
+    esc: esc, threads: THREADS, tabs: TABS, covers: COVERS, albums: ALBUMS, albumTitles: ALBUM_TITLES, lastPlayed: LAST_PLAYED, to: TO,
     gmailUrl: gmailUrl, mailtoUrl: mailtoUrl, subject: DRAFT_SUBJECT, body: DRAFT_BODY,
     linkedin: LINKEDIN, github: GITHUB
   };

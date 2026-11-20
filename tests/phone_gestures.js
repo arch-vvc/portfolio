@@ -134,6 +134,7 @@ function helpers(page, client) {
   await h.tap('[data-pdock][aria-label=Music]');
   const musicText = await page.$eval('.p-sheet', e => e.innerText);
   for (const name of ['Take Care', 'Habibti', 'Views', 'Nothing Was The Same']) check('music shows album ' + name, musicText.includes(name), musicText.slice(0, 200));
+  check('music shows Last Played as Headlines by Drake', /Last Played[\s\S]*Headlines[\s\S]*Drake/.test(musicText), musicText.slice(0, 200));
   await h.closeTop();
 
   // the CV sheet carries the CV

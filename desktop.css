@@ -694,3 +694,8 @@ a.tool { text-decoration: none; }
 a.tool:hover { background: rgba(255, 255, 255, 0.22); }
 a.tool:focus-visible { outline: calc(var(--u) * 2) solid #fff; outline-offset: calc(var(--u) * 2); }
 .p-download { margin: 0 0 14px; }
+
+.p-last { display: flex; align-items: center; gap: 14px; }
+.p-last img { flex: none; width: 76px; height: 76px; border-radius: 12px; object-fit: cover; }
+.p-last .p-card-title { display: block; font-size: 17px; font-weight: 600; }
+.p-last .p-card-sub { display: block; font-size: 14.5px; color: #8e8e93; }

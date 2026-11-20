@@ -185,6 +185,11 @@ class Phone(unittest.TestCase):
         self.assertNotIn("is coming soon", self.js)
 
     # ----- the music names the owner asked for -----
+    def test_phone_last_played_matches_the_laptop(self):
+        self.assertIn("shared.lastPlayed", self.js)
+        self.assertIn('"Last Played"'.replace('"', ''), self.js)
+        self.assertNotIn("<span>Drake<br>Drake</span>", self.js)
+
     def test_recently_played_shows_the_album_names_not_drake(self):
         for title in ALBUMS:
             self.assertIn('"%s"' % title, self.apps_js, title)
