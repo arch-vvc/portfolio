@@ -52,9 +52,9 @@ function helpers(page, client) {
   const inset = await page.$eval('#phone-screen', e => { const r = e.getBoundingClientRect(); return [r.left, innerWidth - r.right, innerHeight - r.bottom]; });
   check('screen inset at least 12px on the sides and bottom', inset.every(v => v >= 12), inset);
 
-  // the dock is four icons: Phone, Music, Messages, Safari
+  // the dock is four icons: Mail, Music, Messages, Safari
   const dock = await page.$$eval('[data-pdock]', d => d.map(x => x.getAttribute('aria-label')));
-  check('dock has exactly four icons', JSON.stringify(dock) === JSON.stringify(['Phone', 'Music', 'Messages', 'Safari']), dock);
+  check('dock has exactly four icons', JSON.stringify(dock) === JSON.stringify(['Mail', 'Music', 'Messages', 'Safari']), dock);
 
   // Home first, with the internships; the hint says what the owner asked for
   check('starts on home', (await h.track()) === 'translateX(0%)', await h.track());
@@ -108,20 +108,17 @@ function helpers(page, client) {
   check('edge swipe goes back to the list', (await page.$eval('.p-sheet h2', e => e.textContent)) === 'Messages');
   await h.closeTop();
 
-  // Phone: ways to reach Archit; the email draft opens on top and Send follows the edits
-  await h.tap('[data-pdock][aria-label=Phone]');
-  const phoneText = await page.$eval('.p-sheet', e => e.innerText);
-  check('phone lists email, LinkedIn and GitHub', /Email Archit/.test(phoneText) && /LinkedIn/.test(phoneText) && /GitHub/.test(phoneText), phoneText.slice(0, 120));
-  check('no phone number is shown by default', !/Call/.test(phoneText) && !/\+?\d[\d\s]{8,}/.test(phoneText));
-  await h.tap('.p-sheet [data-mail]');
-  check('mail draft opens over the phone sheet', (await h.sheets()) === 2);
+  // Mail: the dock icon opens the drafted message; Send follows the edits
+  await h.tap('[data-pdock][aria-label=Mail]');
+  check('mail draft opens from the dock', (await h.sheets()) === 1);
+  const mailText = await page.$eval('.p-sheet', e => e.innerText);
+  check('no phone number is shown', !/\+?\d[\d\s]{8,}/.test(mailText));
   await page.fill('#p-subject', 'Call next week?');
   const send = await page.$eval('#p-send', a => a.href);
   check('mail send link carries the subject and address', send.startsWith('https://mail.google.com/mail/?view=cm') && send.includes('Call%20next%20week%3F') && send.includes('archit.rishabh25%40gmail.com'), send);
   await page.focus('#p-mailbody');
   await page.keyboard.press('Escape'); await page.waitForTimeout(500);
-  check('Escape inside the mail body does not discard the draft', (await h.sheets()) === 2);
-  await h.closeTop();
+  check('Escape inside the mail body does not discard the draft', (await h.sheets()) === 1);
   await h.closeTop();
 
   // Safari does not open on a stub
@@ -179,10 +176,8 @@ function helpers(page, client) {
     check(name + ': widget fully visible', fit.widget, fit);
     check(name + ': the four dock icons fit and are big enough', fit.dock.length === 4 && fit.dock.every(Boolean), fit.dock);
     check(name + ': no sideways overflow', !fit.overflowX, fit);
-    const [px, py] = await p2.$eval('[data-pdock][aria-label=Phone]', e => { const r = e.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; });
+    const [px, py] = await p2.$eval('[data-pdock][aria-label=Mail]', e => { const r = e.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; });
     await p2.touchscreen.tap(px, py); await p2.waitForTimeout(750);
-    const [mx, my] = await p2.$eval('.p-sheet [data-mail]', e => { const r = e.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; });
-    await p2.touchscreen.tap(mx, my); await p2.waitForTimeout(750);
     const mail = await p2.evaluate(() => {
       const body = document.querySelector('.p-sheet:last-child .p-body');
       const to = [...document.querySelectorAll('.p-sheet:last-child .p-field-row span')].pop();

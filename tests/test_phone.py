@@ -10,7 +10,7 @@ PROJECT_FOLDERS = ["capstone", "tender-tracker", "call-qa", "exception-triage", 
 LETTERS = {"windstream": "W", "nexturn": "N", "ooh": "O", "capstone": "I", "tender-tracker": "T",
            "call-qa": "C", "exception-triage": "E", "gtm-agent": "G", "drishtikon": "D",
            "e-cell": "E", "cricket": "C"}
-DOCK = ["Phone", "Music", "Messages", "Safari"]
+DOCK = ["Mail", "Music", "Messages", "Safari"]
 ALBUMS = ["Take Care", "Habibti", "Views", "Nothing Was The Same"]
 
 
@@ -153,14 +153,16 @@ class Phone(unittest.TestCase):
     def test_sheets_for_every_dock_app_and_folder(self):
         for name in DOCK:
             self.assertIn('"%s"' % name, self.js, name)
-        for fn in ("folderSheet", "cvSheet", "mailSheet", "phoneSheet", "messagesSheet", "safariSheet", "musicSheet"):
+        for fn in ("folderSheet", "cvSheet", "mailSheet", "messagesSheet", "safariSheet", "musicSheet"):
             self.assertIn(fn, self.js, fn)
         self.assertNotIn("photosSheet", self.js)
 
-    def test_phone_app_offers_the_drafted_email_and_no_number_by_default(self):
-        self.assertIn("Email Archit", self.js)
-        self.assertIn("cfg.phone", self.js)
-        self.assertRegex((ROOT / "site.config.js").read_text(encoding="utf-8"), r'phone:\s*""')
+    def test_mail_is_in_the_dock_and_opens_the_draft_with_no_number_anywhere(self):
+        self.assertIn('"Mail": mailSheet', self.js)
+        self.assertNotIn("phoneSheet", self.js)
+        self.assertNotIn("cfg.phone", self.js)
+        self.assertNotIn("tel:", self.js)
+        self.assertFalse((ROOT / "assets" / "icons" / "ios-phone.png").exists())
 
     def test_close_returns_to_the_icon(self):
         self.assertIn("getBoundingClientRect", self.js)

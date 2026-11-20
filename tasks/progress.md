@@ -50,8 +50,8 @@ Not re-reviewed by the council. Maximum fix rounds reached, so the rest is for t
 6. Not tested on a real iPhone: Safari's own edge swipe, the Gmail send link, and new tab behaviour.
 
 ## Owner changes after the merge (20 Nov 2026), branch claude/phone-v2
-- Dock is four icons cut from the owner's iPhone screenshot: Phone, Music, Messages, Safari. No Trash, Photos, Claude or Mail icon on the phone.
-- Phone opens a Favorites sheet (email draft, LinkedIn, GitHub). A Call row appears only if phone is set in site.config.js.
+- Dock is four icons cut from the owner's iPhone screenshot: Mail, Music, Messages, Safari. No Trash, Photos, Claude or Phone icon on the phone.
+- Mail opens the drafted email directly (replaced the Phone app on 20 Nov 2026 at the owner's request). No phone number appears anywhere.
 - Home (internships) is first; Projects is one swipe LEFT. Hints: "swipe left to see projects" and "swipe right to go back home".
 - Folder icons are stylised first letters (W, N, O, I, T, C, E, G, D, E, C). The CV keeps its document thumbnail.
 - Recently Played shows Take Care, Habibti, Views, Nothing Was The Same (laptop and phone).

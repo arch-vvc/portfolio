@@ -25,10 +25,7 @@
     search: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16 16l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
     lock: '<svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><rect x="6" y="11" width="12" height="8" rx="2" fill="currentColor"/><path d="M9 11V8.500a3 3 0 0 1 6 0V11" fill="none" stroke="currentColor" stroke-width="1.800"/></svg>',
     play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.500v13l11-6.500z" fill="currentColor"/></svg>',
-    download: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.500 11l4.500 4.500 4.500-4.500M5 19h14" fill="none" stroke="#4da3ff" stroke-width="1.900" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    mail: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.500" width="18" height="13" rx="3" fill="none" stroke="#4da3ff" stroke-width="1.800"/><path d="M4 8l8 5.500L20 8" fill="none" stroke="#4da3ff" stroke-width="1.800" stroke-linejoin="round"/></svg>',
-    link: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14l4-4M8.500 11.500l-2 2a3 3 0 0 0 4.200 4.200l2-2M15.500 12.500l2-2a3 3 0 0 0-4.200-4.200l-2 2" fill="none" stroke="#4da3ff" stroke-width="1.800" stroke-linecap="round"/></svg>',
-    call: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h3l1.500 4-2 1.300a11 11 0 0 0 5.200 5.200L16 12.500l4 1.500v3a2 2 0 0 1-2 2A14 14 0 0 1 5 6a2 2 0 0 1 2-2z" fill="none" stroke="#34c759" stroke-width="1.800" stroke-linejoin="round"/></svg>'
+    download: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.500 11l4.500 4.500 4.500-4.500M5 19h14" fill="none" stroke="#4da3ff" stroke-width="1.900" stroke-linecap="round" stroke-linejoin="round"/></svg>'
   };
 
   function file(name) {
@@ -470,23 +467,9 @@
     openSheet({ title: "Music", body: body, origin: origin });
   }
 
-  // ----- Phone: ways to reach Archit, in the shape of the Favorites list -----
-  function phoneSheet(origin) {
-    var rows = '<button class="p-row" type="button" data-mail>' + ICON.mail + '<span class="p-row-name">Email Archit</span><span class="p-row-meta">Draft ready</span></button>' +
-      '<a class="p-row" href="' + esc(shared.linkedin) + '" target="_blank" rel="noopener">' + ICON.link + '<span class="p-row-name">LinkedIn</span></a>' +
-      '<a class="p-row" href="' + esc(shared.github) + '" target="_blank" rel="noopener">' + ICON.link + '<span class="p-row-name">GitHub</span></a>';
-    if (cfg.phone) {
-      rows = '<a class="p-row" href="tel:' + esc(String(cfg.phone).replace(/[^0-9+]/g, "")) + '">' + ICON.call + '<span class="p-row-name">Call</span></a>' + rows;
-    }
-    var body = node('<h3 class="p-large">Favorites</h3><div class="p-rows">' + rows + "</div>");
-    var rec = openSheet({ title: "Phone", body: body, origin: origin });
-    var mail = rec.body.querySelector("[data-mail]");
-    mail.addEventListener("click", function () { mailSheet(mail); });
-  }
-
   // ----- wiring: icons on the pages, then the dock -----
   var APPS = {
-    "Phone": phoneSheet, "Music": musicSheet, "Messages": messagesSheet, "Safari": safariSheet
+    "Mail": mailSheet, "Music": musicSheet, "Messages": messagesSheet, "Safari": safariSheet
   };
 
   var icons = document.querySelectorAll(".p-icon");

@@ -546,7 +546,7 @@ class TodoConfig(unittest.TestCase):
         import subprocess
         r = subprocess.run(["python3", str(ROOT / "scripts" / "todo_config.py")],
                            capture_output=True, text=True)
-        self.assertEqual(r.stdout.count("- [ ]"), 13)
+        self.assertEqual(r.stdout.count("- [ ]"), 12)
 
     def test_gitignore_covers_junk(self):
         g = (ROOT / ".gitignore").read_text(encoding="utf-8")

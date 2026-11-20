@@ -9,8 +9,6 @@ var SITE_CONFIG = {
     tender: "",
     capstone: ""
   },
-  // Optional phone number. When set, the Phone app on the phone layout gets a Call row. Left empty on purpose.
-  phone: "",
   // Safari tabs. An empty value leaves that tab as a stub.
   twitter: "",
   youtube: "",
