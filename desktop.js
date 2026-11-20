@@ -145,7 +145,31 @@
   var dock = document.querySelector(".dock");
   var trash = dock.lastElementChild;
   var appName = document.getElementById("app-name");
-  var previewOnly = document.querySelectorAll(".preview-only");
+  var menus = document.querySelector(".menus");
+  var MENUS = {
+    "Finder": ["File", "Edit", "View", "Go", "Window", "Help"],
+    "Preview": ["File", "Edit", "View", "Go", "Tools", "Window", "Help"],
+    "Safari": ["File", "Edit", "View", "History", "Bookmarks", "Window", "Help"],
+    "Mail": ["File", "Edit", "View", "Mailbox", "Message", "Format", "Window", "Help"],
+    "Messages": ["File", "Edit", "View", "Conversation", "Window", "Help"],
+    "Music": ["File", "Edit", "Song", "View", "Controls", "Account", "Window", "Help"],
+    "Photos": ["File", "Edit", "Image", "View", "Window", "Help"]
+  };
+  var shownMenu = "";
+
+  function setMenus(app) {
+    if (shownMenu === app) return;
+    shownMenu = app;
+    var old = menus.querySelectorAll(".menu-item");
+    for (var i = 0; i < old.length; i++) menus.removeChild(old[i]);
+    var names = MENUS[app] || MENUS.Finder;
+    for (var j = 0; j < names.length; j++) {
+      var s = document.createElement("span");
+      s.className = "menu-item";
+      s.textContent = names[j];
+      menus.appendChild(s);
+    }
+  }
   var order = [];        // open windows, back to front
   var all = [];          // every registered window
 
@@ -157,7 +181,13 @@
     for (var j = order.length - 1; j >= 0; j--) if (isOpen(order[j])) { front = order[j]; break; }
     var app = front ? front.app : "Finder";
     appName.textContent = app;
-    for (var k = 0; k < previewOnly.length; k++) previewOnly[k].style.display = app === "Preview" ? "" : "none";
+    setMenus(app);
+    for (var d = 0; d < all.length; d++) {
+      if (all[d].dockBtn) {
+        if (all[d].el.classList.contains("is-gone")) all[d].dockBtn.removeAttribute("data-running");
+        else all[d].dockBtn.setAttribute("data-running", "");
+      }
+    }
   }
 
   function focusWin(w) {
@@ -405,6 +435,57 @@
       w.el.style.top = "calc(var(--u) * " + (262 + n * 26) + ")";
     }
     openWin(w);
+  }
+
+  // ----- dock apps: Safari, Mail, Messages, Photos and Music (apps.js describes them) -----
+  var APPS = window.DESKTOP_APPS || {};
+  var appWins = {};
+
+  function buildApp(name) {
+    var def = APPS[name];
+    var el = document.createElement("section");
+    el.className = "window app app-" + name.toLowerCase() + " is-gone";
+    el.setAttribute("data-app", name);
+    el.setAttribute("tabindex", "-1");
+    el.setAttribute("aria-label", def.title);
+    el.style.width = "calc(var(--u) * " + def.size[0] + ")";
+    el.style.height = "calc(var(--u) * " + def.size[1] + ")";
+    el.innerHTML = def.html();
+    desktop.querySelector(".stage").appendChild(el);
+    var w = register(el, def.title, true);
+    if (def.init) def.init(el);
+    return w;
+  }
+
+  function openApp(name) {
+    if (!APPS[name]) return;
+    var w = appWins[name];
+    if (!w) {
+      w = appWins[name] = buildApp(name);
+      var def = APPS[name];
+      var shown = 0;
+      for (var k in appWins) if (appWins[k] !== w && !appWins[k].el.classList.contains("is-gone")) shown++;
+      w.el.style.left = "calc(var(--u) * " + (def.pos[0] + shown * 24) + ")";
+      w.el.style.top = "calc(var(--u) * " + (def.pos[1] + shown * 24) + ")";
+      w.dockBtn = dockButton(name);
+    }
+    openWin(w);
+  }
+
+  function dockButton(name) {
+    var items = dock.querySelectorAll("[data-dock]");
+    for (var i = 0; i < items.length; i++) if (items[i].getAttribute("aria-label") === name) return items[i];
+    return null;
+  }
+
+  var dockItems = dock.querySelectorAll("[data-dock]");
+  for (var di = 0; di < dockItems.length; di++) {
+    (function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        openApp(btn.getAttribute("aria-label"));
+      });
+    })(dockItems[di]);
   }
 
   // ----- desktop icons -----

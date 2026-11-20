@@ -20,7 +20,7 @@ FOLDERS = [
     ("cricket", "Cricket"),
 ]
 
-DOCK = ["Safari", "Messages", "Photos", "Music", "Claude", "Trash"]
+DOCK = ["Safari", "Mail", "Messages", "Photos", "Music", "Claude", "Trash"]
 
 REPOS = ["voice-agent-call-qa", "invoice-exception-triage", "gtm_agent",
          "immunological_supply_chain_management"]
@@ -61,6 +61,7 @@ class Desktop(unittest.TestCase):
         cls.parsed.feed(cls.html)
         cls.css = (ROOT / "desktop.css").read_text(encoding="utf-8")
         cls.js = (ROOT / "desktop.js").read_text(encoding="utf-8")
+        cls.apps = (ROOT / "apps.js").read_text(encoding="utf-8")
 
     def test_page_passes_the_shared_checks(self):
         self.assertEqual(check_html(self.html, ROOT), [])
@@ -90,6 +91,7 @@ class Desktop(unittest.TestCase):
         self.assertEqual(len(r), 3, r)
         self.assertIn("Give Archit a job", r[0])
         self.assertIn("folders for demos", r[1])
+        self.assertEqual(r[2], "Ask about the capstone project")
 
     def test_window_buttons_are_labelled_and_wired(self):
         actions = {b["data-action"]: b.get("aria-label") for b in self.parsed.buttons
@@ -172,6 +174,58 @@ class Desktop(unittest.TestCase):
     def test_script_is_loaded_at_the_end_of_body(self):
         self.assertLess(self.html.index("<main"), self.html.index("desktop.js"))
         self.assertNotIn('type="module"', self.html)
+
+    # ----- the four app windows -----
+    def test_apps_script_loads_between_config_and_desktop(self):
+        i = [self.html.index(s) for s in ("site.config.js", "apps.js", "desktop.js")]
+        self.assertEqual(i, sorted(i))
+
+    def test_apps_script_works_from_disk(self):
+        for banned in ("fetch(", "import ", "export ", "XMLHttpRequest", "http://"):
+            self.assertNotIn(banned, self.apps, banned)
+        for url in re.findall(r"https://[^\"'\s]+", self.apps):
+            self.assertTrue(url.startswith(("https://github.com/arch-vvc", "https://www.linkedin.com/in/archit-rishabh", "https://mail.google.com/mail/?view=cm")), url)
+
+    def test_dock_apps_are_wired(self):
+        for label in ("Safari", "Mail", "Messages", "Photos", "Music"):
+            self.assertRegex(self.js + self.apps, r'"%s"' % label)
+
+    def test_messages_threads(self):
+        for name in ("Archit Rishabh", "Areas I want to work in", "Work I've done before"):
+            self.assertIn(name, self.apps, name)
+        self.assertIn("mailto:archit.rishabh25@gmail.com", self.apps)
+        self.assertIn("Search", self.apps)
+        self.assertIn("iMessage", self.apps)
+
+    def test_mail_draft_and_send_paths(self):
+        self.assertIn("Cool website, let's schedule a call", self.apps)
+        self.assertIn('TO = "archit.rishabh25@gmail.com"', self.apps)
+        self.assertIn("mail.google.com/mail/?view=cm", self.apps)
+        self.assertIn("encodeURIComponent", self.apps)
+        self.assertIn("mailto:", self.apps)
+        self.assertIn('id="ml-subject"', self.apps)
+        self.assertIn("<textarea", self.apps)
+
+    def test_music_window_shape(self):
+        for t in ("Home", "Recently Played", "Library", "Playlists", "Albums", "Songs"):
+            self.assertIn(t, self.apps, t)
+
+    def test_safari_tabs_and_what_they_do(self):
+        for tab in ("GitHub", "Krillion", "LinkedIn", "Twitter", "YouTube"):
+            self.assertIn('"%s"' % tab, self.apps, tab)
+        self.assertIn("https://github.com/arch-vvc", self.apps)
+        self.assertIn("https://www.linkedin.com/in/archit-rishabh", self.apps)
+        for key in ("krillionImage", "twitter", "youtube"):
+            self.assertIn("cfg." + key, self.apps, key)
+
+    def test_photos_is_a_stub_until_photos_arrive(self):
+        self.assertIn("Photos", self.apps)
+        self.assertIn("photos", self.apps)
+
+    def test_no_private_screenshot_content_was_copied(self):
+        low = (self.apps + self.html).lower()
+        for private in ("naisha", "baxani", "peda", "charleia", "+1 (", "95292", "farmvilla"):
+            self.assertNotIn(private, low, private)
 
 
 if __name__ == "__main__":

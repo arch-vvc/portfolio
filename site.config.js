@@ -9,6 +9,11 @@ var SITE_CONFIG = {
     tender: "",
     capstone: ""
   },
+  // Safari tabs. An empty value leaves that tab as a stub.
+  twitter: "",
+  youtube: "",
+  // Path to the screenshot shown in the Krillion tab, for example "assets/krillion.png".
+  krillionImage: "",
   // Call QA live result text, shown on the project page when not empty.
   callqaResult: "",
   // Capstone result text, shown under Research when not empty.
