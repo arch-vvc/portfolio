@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9aa3a8"/>
+      <stop offset="0.55" stop-color="#bcc3c6"/>
+      <stop offset="1" stop-color="#d3d8d6"/>
+    </linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7d9a4a"/>
+      <stop offset="0.5" stop-color="#5f7d35"/>
+      <stop offset="1" stop-color="#3f5a22"/>
+    </linearGradient>
+    <linearGradient id="trees" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4d6a36"/>
+      <stop offset="1" stop-color="#2f4723"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+  <!-- distant tree line -->
+  <path d="M0 520 C80 470 140 500 210 470 C300 430 360 490 450 460 C540 430 620 500 720 470 C820 440 900 500 1000 470 C1100 440 1200 500 1300 470 C1400 440 1500 490 1600 450 L1600 640 L0 640 Z" fill="url(#trees)"/>
+  <!-- left colonial building -->
+  <g>
+    <rect x="40" y="470" width="470" height="170" fill="#ece9e1"/>
+    <rect x="40" y="455" width="470" height="22" fill="#d8d4c9"/>
+    <path d="M30 455 L275 380 L520 455 Z" fill="#9a5a45"/>
+    <rect x="215" y="400" width="120" height="70" fill="#f4f1ea"/>
+    <path d="M205 402 L275 350 L345 402 Z" fill="#b06a52"/>
+    <g fill="#b9b4a6">
+      <rect x="70" y="500" width="34" height="62"/><rect x="130" y="500" width="34" height="62"/>
+      <rect x="190" y="500" width="34" height="62"/><rect x="330" y="500" width="34" height="62"/>
+      <rect x="390" y="500" width="34" height="62"/><rect x="450" y="500" width="34" height="62"/>
+    </g>
+    <rect x="248" y="505" width="54" height="75" fill="#8e8a7e"/>
+    <rect x="40" y="600" width="470" height="40" fill="#d6d2c7"/>
+  </g>
+  <!-- big trees -->
+  <g>
+    <rect x="610" y="420" width="16" height="220" fill="#3b2f23"/>
+    <ellipse cx="618" cy="380" rx="120" ry="110" fill="#43602f"/>
+    <ellipse cx="560" cy="430" rx="80" ry="70" fill="#4b6a35"/>
+    <ellipse cx="690" cy="440" rx="90" ry="70" fill="#3c5829"/>
+    <ellipse cx="1330" cy="400" rx="130" ry="110" fill="#3f5b2b"/>
+    <rect x="1322" y="440" width="16" height="200" fill="#3b2f23"/>
+    <ellipse cx="1430" cy="450" rx="90" ry="70" fill="#476636"/>
+  </g>
+  <!-- field -->
+  <rect y="630" width="1600" height="370" fill="url(#grass)"/>
+  <!-- worn pitch strip -->
+  <path d="M640 700 L860 700 L900 1000 L560 1000 Z" fill="#8a9a52" opacity="0.55"/>
+  <!-- tarp, lower right -->
+  <path d="M1180 760 C1300 720 1480 730 1600 700 L1600 1000 L1130 1000 C1120 900 1140 800 1180 760 Z" fill="#1d6fcf"/>
+  <path d="M1230 790 C1330 765 1470 770 1600 745" stroke="#4a95e6" stroke-width="8" fill="none" opacity="0.7"/>
+  <!-- kids on the field, tiny -->
+  <g fill="#f2f2f0">
+    <rect x="1040" y="690" width="10" height="26"/><rect x="1075" y="696" width="10" height="24"/>
+    <rect x="980" y="700" width="9" height="22"/>
+  </g>
+</svg>

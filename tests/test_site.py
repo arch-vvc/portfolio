@@ -201,7 +201,7 @@ class SkeletonFiles(unittest.TestCase):
             self.assertNotIn(banned, js, banned)
 
     def test_index_loads_config_before_script(self):
-        html = (ROOT / "index.html").read_text(encoding="utf-8")
+        html = (ROOT / "plain.html").read_text(encoding="utf-8")
         self.assertLess(html.index("site.config.js"), html.index("script.js"))
         self.assertNotIn("type=\"module\"", html)
 
@@ -214,7 +214,7 @@ class SkeletonFiles(unittest.TestCase):
 class HomePage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.html = (ROOT / "index.html").read_text(encoding="utf-8")
+        cls.html = (ROOT / "plain.html").read_text(encoding="utf-8")
 
     def test_project_titles(self):
         for t in ("Call QA for voice agents", "Exception triage for accounts payable",
@@ -296,7 +296,7 @@ class ProjectPages(unittest.TestCase):
 
     def test_back_home_link(self):
         for n in PROJECT_PAGES:
-            self.assertIn('href="../index.html"', self.page(n), n)
+            self.assertIn('href="../plain.html"', self.page(n), n)
 
     def test_repo_links(self):
         self.assertIn("github.com/arch-vvc/voice-agent-call-qa", self.page("call-qa"))
@@ -304,7 +304,7 @@ class ProjectPages(unittest.TestCase):
         self.assertIn("github.com/arch-vvc/gtm_agent", self.page("gtm-agent"))
 
     def test_no_unfinished_words(self):
-        for n in PROJECT_PAGES + ("../index",):
+        for n in PROJECT_PAGES + ("../plain", "../index"):
             low = self.page(n).lower()
             for bad in ("placeholder", "todo", "lorem"):
                 self.assertNotIn(bad, low, (n, bad))

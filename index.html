@@ -9,148 +9,231 @@
   <meta property="og:title" content="Archit Rishabh">
   <meta property="og:description" content="Archit Rishabh builds applied AI for messy business operations: a tender tracker behind an 8 figure contract, invoice triage, voice agent QA, outreach and supply chain systems.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a5aa8'/%3E%3Ctext x='16' y='24' font-size='22' font-family='sans-serif' font-weight='700' text-anchor='middle' fill='white'%3EA%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="desktop.css">
 </head>
 <body>
-  <header>
-    <h1>Archit Rishabh</h1>
-    <p class="lead">Applied AI for messy business operations.</p>
-    <p class="meta">Final year AI and ML at PES University, Bangalore. I build AI systems for procurement, finance, customer calls, sales and supply chains. Open to forward deployed engineer and founder's office roles, remote or in India.</p>
-    <ul class="facts">
-      <li>Built a tender tracker that the company uses, resulting in an 8 figure contract now underway.</li>
-      <li>Cut client insight time by 93% at a $150M firm.</li>
-      <li>National finalist at Drishtikon '26 from 750+ applicants.</li>
-      <li>Supply chain capstone paper submitted.</li>
-    </ul>
-    <p class="links">
-      <a href="mailto:archit.rishabh25@gmail.com">archit.rishabh25@gmail.com</a>
-      <a href="https://www.linkedin.com/in/archit-rishabh" rel="noopener">LinkedIn</a>
-      <a href="https://github.com/arch-vvc" rel="noopener">GitHub</a>
-      <span data-cv></span>
-    </p>
-  </header>
-  <main>
-    <section id="projects">
-      <h2>Projects</h2>
-      <ul class="rows">
-        <li class="row">
-          <div class="head"><h3>Tender tracker</h3></div>
-          <p class="stack">Python, LLM APIs</p>
-          <p>Reads 33 Indian state eProcurement portals every day, keeps the IT tenders that fit the bidder and emails the bid team a digest with an Excel sheet. Used by the company, resulting in an 8 figure contract now underway.</p>
-          <p>About 3,900 new open tenders a day, 366 tests.</p>
-          <p class="actions"><a href="projects/tender-tracker.html">Read the case study</a> <span data-demo="tender"></span></p>
-        </li>
-        <li class="row">
-          <div class="head"><h3>Call QA for voice agents</h3></div>
-          <p class="stack">Python, LLM APIs</p>
-          <p>Simulated callers, including confused, Hinglish and adversarial ones, talk to an agent built from a client's SOP. A judge marks the exact turn where a call fails.</p>
-          <p>Live run: the first prompt passed 0 of 5 callers, the fixed prompt passed 4 of 5. 428 tests.</p>
-          <p class="actions"><a href="projects/call-qa.html">Call QA page</a> <a href="https://github.com/arch-vvc/voice-agent-call-qa" rel="noopener">Repo</a> <span data-demo="callqa"></span></p>
-        </li>
-        <li class="row">
-          <div class="head"><h3>Exception triage for accounts payable</h3></div>
-          <p class="stack">Python, Tally and Zoho Books exports</p>
-          <p>Matches invoices, purchase orders and payments, then lists every mismatch with the rupees at risk, the exact source rows and one plain English sentence.</p>
-          <p>Caught 16 of 16 planted exceptions across 8 types. 505 tests.</p>
-          <p class="actions"><a href="projects/exception-triage.html">Triage page</a> <a href="https://github.com/arch-vvc/invoice-exception-triage" rel="noopener">Repo</a> <span data-demo="triage"></span></p>
-        </li>
-        <li class="row">
-          <div class="head"><h3>gtm_agent, a pitch engine for FDE outreach</h3></div>
-          <p class="stack">Python, FastAPI, Redis, PostgreSQL, Docker</p>
-          <p>Give it a startup's URL. It returns the cluster, the demo to send, the deployment pain the company's customers likely have, three tailoring changes and a pitch note of 150 words or fewer that names only things found on the company's own site.</p>
-          <p>632 tests.</p>
-          <p class="actions"><a href="projects/gtm-agent.html">gtm_agent page</a> <a href="https://github.com/arch-vvc/gtm_agent" rel="noopener">Repo</a> <span data-demo="gtm"></span></p>
-        </li>
-      </ul>
-    </section>
+  <a class="skip" href="plain.html">Plain text version</a>
+  <h1 class="sr-only">Archit Rishabh, applied AI for messy business operations</h1>
 
-    <section id="experience">
-      <h2>Experience</h2>
-      <ul class="rows">
-        <li class="row">
-          <div class="head"><h3>Founder's Office Intern, Windstream Technologies</h3><span class="when">Jammu and Kashmir, 2024</span></div>
-          <p>Ran a site feasibility analysis across 100+ renewable energy installations (terrain, grid access, cost) to guide capital allocation for a ₹20 crore project.</p>
-          <p>Built an energy yield model on 35,000+ hourly weather records. A hybrid turbine redesign lifts output 20 to 25% at windy sites and loses up to 13% elsewhere, so spend moved to panel and battery upgrades.</p>
-          <p>Built the tender tracker above. Supported the C suite on proposals and client presentations.</p>
-          <ul data-photos class="photos" hidden></ul>
-        </li>
-        <li class="row">
-          <div class="head"><h3>Data and AI Strategy Intern, NexTurn</h3><span class="when">Bangalore, 2024</span></div>
-          <p>Built a RAG based document analysis and visualisation pipeline for a $150M firm, cutting client insight generation time by 93%.</p>
-          <p>Parsed, chunked and embedded 10+ simultaneous unstructured documents into a vector index, and used structured LLM outputs to turn key metrics into automated visual reports.</p>
-        </li>
-        <li class="row">
-          <div class="head"><h3>Founder's Office Intern, an out of home advertising firm</h3><span class="when">New Delhi, 2023</span></div>
-          <p>Analysed crowd flow and visibility across 50+ Delhi Metro stations (about 30 lakh daily commuters) to build a site prioritisation framework, and created the pitch decks behind tender submissions.</p>
-        </li>
-        <li class="row">
-          <div class="head"><h3>Research and Editorial Intern, PES University Centre for Innovation and Entrepreneurship</h3><span class="when">Bangalore, 2024</span></div>
-        </li>
-        <li class="row">
-          <div class="head"><h3>AI response evaluation</h3><span class="when">Hindi and English</span></div>
-          <p>Bilingual evaluation of AI responses.</p>
-        </li>
-      </ul>
-    </section>
+  <!-- Shared drawing parts: folder, document and window toolbar glyphs. -->
+  <svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="folder-back" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2d8cf0"/><stop offset="1" stop-color="#1568d6"/></linearGradient>
+      <linearGradient id="folder-front" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fc8ff"/><stop offset="1" stop-color="#37a0f4"/></linearGradient>
+      <linearGradient id="trash-glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f6f8" stop-opacity="0.95"/><stop offset="1" stop-color="#cfd5db" stop-opacity="0.85"/></linearGradient>
+    </defs>
+    <symbol id="folder" viewBox="0 0 96 80">
+      <path d="M4 14a8 8 0 0 1 8-8h22l8 8h42a8 8 0 0 1 8 8v46a8 8 0 0 1-8 8H12a8 8 0 0 1-8-8z" fill="url(#folder-back)"/>
+      <path d="M4 30a8 8 0 0 1 8-8h72a8 8 0 0 1 8 8v38a8 8 0 0 1-8 8H12a8 8 0 0 1-8-8z" fill="url(#folder-front)"/>
+      <path d="M12 22h72a8 8 0 0 1 8 8v1H4v-1a8 8 0 0 1 8-8z" fill="#ffffff" opacity="0.35"/>
+    </symbol>
+    <symbol id="document" viewBox="0 0 80 96">
+      <path d="M8 4h42l22 22v62a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4z" fill="#f7f7f8" stroke="#c9ccd1" stroke-width="2"/>
+      <path d="M50 4v18a4 4 0 0 0 4 4h18z" fill="#dfe2e6"/>
+      <g stroke="#9aa0a8" stroke-width="2.4" stroke-linecap="round"><path d="M16 38h48M16 46h48M16 54h36"/></g>
+      <rect x="14" y="68" width="30" height="14" rx="3" fill="#e5483f"/>
+      <text x="29" y="79" font-size="10" font-family="sans-serif" font-weight="700" text-anchor="middle" fill="#fff">PDF</text>
+    </symbol>
+    <symbol id="g-sidebar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 5v14" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="g-zoom-out" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l5 5M8 11h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="g-zoom-fit" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="g-zoom-in" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l5 5M8 11h6M11 8v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="g-pen" viewBox="0 0 24 24"><path d="M4 20l1-4L16 5l3 3L8 19z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="g-chevron" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="g-crop" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="9" cy="10" r="1.6" fill="currentColor"/><path d="M4 17l5-4 4 3 3-2 5 4" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="g-rotate" viewBox="0 0 24 24"><rect x="6" y="8" width="12" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 5h6M13 3l2 2-2 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="g-sign" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6 14c2-4 3-4 4-1s2 1 4-2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="g-more" viewBox="0 0 24 24"><path d="M6 7l5 5-5 5M13 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="g-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="g-list" viewBox="0 0 24 24"><path d="M8 7h11M8 12h11M8 17h11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="4.5" cy="7" r="1.3" fill="currentColor"/><circle cx="4.5" cy="12" r="1.3" fill="currentColor"/><circle cx="4.5" cy="17" r="1.3" fill="currentColor"/></symbol>
+  </svg>
 
-    <section id="research">
-      <h2>Research</h2>
-      <ul class="rows">
-        <li class="row">
-          <div class="head"><h3>Capstone: Immunological Supply Chain</h3><span class="when">PES University, paper submitted</span></div>
-          <p class="stack">Python, PyTorch, GCN, PPO, XGBoost, FAISS</p>
-          <p>A supply chain that heals itself the way an immune system does. A 28 stage pipeline runs GCN anomaly detection, a PPO rerouting agent and a FAISS memory of past disruptions over 240K+ records.</p>
-          <p>Backtested blind on real USAID shipment data, it flagged the Haiti 2010 disruption, and recommended vendors beat actual procurement on late rate in 71% of 76 cases. Every headline number reproduces bit for bit from a fresh clone, and CI fails if a number drifts.</p>
-          <p data-text="capstoneResult" hidden></p>
-          <p class="actions"><a href="https://github.com/arch-vvc/immunological_supply_chain_management" rel="noopener">Repo</a></p>
-        </li>
-      </ul>
-    </section>
+  <div class="small-screen">
+    <p class="small-title">Archit Rishabh</p>
+    <p>The desktop is built for a laptop screen. A phone version is on its way.</p>
+    <p><a href="plain.html">Open the plain text version</a></p>
+  </div>
 
-    <section id="education">
-      <h2>Education</h2>
-      <ul class="rows">
-        <li class="row">
-          <div class="head"><h3><span data-degree>AI and ML engineering</span>, PES University</h3><span class="when">Bangalore, 2023 to 2027</span></div>
-          <p>Final year.</p>
-        </li>
-        <li class="row">
-          <div class="head"><h3>Delhi Public School South, CBSE</h3><span class="when">2021 to 2023</span></div>
-          <p>91%.</p>
-        </li>
-        <li class="row">
-          <div class="head"><h3>Bishop Cotton Boys' School, ICSE</h3><span class="when">2011 to 2021</span></div>
-          <p>96.67%.</p>
-        </li>
-      </ul>
-    </section>
+  <div class="desktop" id="desktop">
+    <header class="menubar">
+      <div class="menus">
+        <span class="apple" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16.37 12.62c-.03-2.45 2-3.63 2.09-3.69-1.14-1.66-2.9-1.9-3.53-1.92-1.5-.15-2.93.88-3.69.88-.76 0-1.94-.86-3.19-.84-1.64.02-3.15.95-4 2.42-1.71 2.96-.44 7.34 1.22 9.74.81 1.17 1.78 2.49 3.05 2.44 1.22-.05 1.69-.79 3.17-.79s1.9.79 3.19.76c1.32-.02 2.15-1.19 2.95-2.37.93-1.36 1.31-2.68 1.34-2.75-.03-.01-2.57-.99-2.6-3.88zM13.95 5.4c.67-.81 1.12-1.94 1-3.07-.96.04-2.13.64-2.82 1.45-.62.72-1.16 1.87-1.02 2.98 1.07.08 2.17-.55 2.84-1.36z"/></svg></span>
+        <strong class="app-name" id="app-name">Preview</strong>
+        <span class="menu-item">File</span>
+        <span class="menu-item">Edit</span>
+        <span class="menu-item">View</span>
+        <span class="menu-item">Go</span>
+        <span class="menu-item preview-only">Tools</span>
+        <span class="menu-item">Window</span>
+        <span class="menu-item">Help</span>
+      </div>
+      <div class="status">
+        <svg class="status-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9a15 15 0 0 1 20 0M5 12.500a10.500 10.500 0 0 1 14 0M8.500 16a5.500 5.500 0 0 1 7 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="19" r="1.500" fill="currentColor"/></svg>
+        <svg class="status-icon battery" viewBox="0 0 28 24" aria-hidden="true"><rect x="2" y="6" width="21" height="12" rx="3.500" fill="none" stroke="currentColor" stroke-width="1.500" opacity="0.7"/><rect x="4" y="8" width="8" height="8" rx="2" fill="currentColor"/><path d="M25 10v4" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.7"/></svg>
+        <span class="status-name">Archit Rishabh</span>
+        <time class="clock" id="clock">Fri 20 Nov 3:12 PM</time>
+      </div>
+    </header>
 
-    <section id="leadership">
-      <h2>Leadership and activities</h2>
-      <ul class="rows">
-        <li class="row">
-          <div class="head"><h3>Finalist, Drishtikon '26 case competition</h3><span class="when">IIMS Pune</span></div>
-          <p>National final from 750+ applicants, on corporate restructuring and marketing cases.</p>
-        </li>
-        <li class="row">
-          <div class="head"><h3>PESU E-Cell organising committee</h3></div>
-          <p>Built a 20 case business simulation from real corporate problems and ran it for 100+ participants.</p>
-        </li>
-        <li class="row">
-          <div class="head"><h3>Cricket</h3></div>
-          <p>Winner of the Cottonian Shield and the KSCA BT Ramaiah Shield, Best Wicketkeeper in both. Coached 15 juniors to a final. Played football and basketball for the university.</p>
-        </li>
-      </ul>
-    </section>
-  </main>
-  <footer>
-    <p class="links">
-      <a href="mailto:archit.rishabh25@gmail.com">Email</a>
-      <a href="https://www.linkedin.com/in/archit-rishabh" rel="noopener">LinkedIn</a>
-      <a href="https://github.com/arch-vvc" rel="noopener">GitHub</a>
-    </p>
-  </footer>
-  <script src="site.config.js"></script>
-  <script src="script.js"></script>
+    <main class="stage">
+      <aside class="widget" aria-labelledby="reminders-title">
+        <div class="widget-head">
+          <span class="widget-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#g-list"/></svg></span>
+          <h2 id="reminders-title">Reminders</h2>
+          <span class="widget-count" id="reminder-count" aria-live="polite">3</span>
+        </div>
+        <ul class="reminders">
+          <li data-reminder><label><input type="checkbox"><span class="tick" aria-hidden="true"></span><span class="text">Give Archit a job</span></label></li>
+          <li data-reminder><label><input type="checkbox"><span class="tick" aria-hidden="true"></span><span class="text">Check out the folders for demos</span></label></li>
+          <li data-reminder><label><input type="checkbox"><span class="tick" aria-hidden="true"></span><span class="text">Ask about the tender tracker</span></label></li>
+        </ul>
+      </aside>
+
+      <nav class="icons" aria-label="Desktop folders and files">
+        <div class="icon-col">
+          <button class="icon" type="button" data-folder="tender-tracker" data-name="Tender Tracker" aria-label="Tender Tracker folder"><svg class="art" viewBox="0 0 96 80" aria-hidden="true"><use href="#folder"/></svg><span class="label">Tender Tracker</span></button>
+          <button class="icon" type="button" data-folder="call-qa" data-name="Call QA" aria-label="Call QA folder"><svg class="art" viewBox="0 0 96 80" aria-hidden="true"><use href="#folder"/></svg><span class="label">Call QA</span></button>
+          <button class="icon" type="button" data-folder="exception-triage" data-name="Exception Triage" aria-label="Exception Triage folder"><svg class="art" viewBox="0 0 96 80" aria-hidden="true"><use href="#folder"/></svg><span class="label">Exception Triage</span></button>
+          <button class="icon" type="button" data-folder="gtm-agent" data-name="gtm_agent" aria-label="gtm_agent folder"><svg class="art" viewBox="0 0 96 80" aria-hidden="true"><use href="#folder"/></svg><span class="label">gtm_agent</span></button>
+          <button class="icon" type="button" data-folder="capstone" data-name="Immunological Supply Chain" aria-label="Immunological Supply Chain folder"><svg class="art" viewBox="0 0 96 80" aria-hidden="true"><use href="#folder"/></svg><span class="label">Immunological Supply Chain</span></button>
+          <button class="icon" type="button" data-folder="windstream" data-name="Windstream" aria-label="Windstream folder"><svg class="art" viewBox="0 0 96 80" aria-hidden="true"><use href="#folder"/></svg><span class="label">Windstream</span></button>
+          <button class="icon" type="button" data-folder="nexturn" data-name="NexTurn" aria-label="NexTurn folder"><svg class="art" viewBox="0 0 96 80" aria-hidden="true"><use href="#folder"/></svg><span class="label">NexTurn</span></button>
+        </div>
+        <div class="icon-col">
+          <button class="icon" type="button" data-folder="ooh" data-name="OOH Advertising" aria-label="OOH Advertising folder"><svg class="art" viewBox="0 0 96 80" aria-hidden="true"><use href="#folder"/></svg><span class="label">OOH Advertising</span></button>
+          <button class="icon" type="button" data-folder="drishtikon" data-name="Drishtikon '26" aria-label="Drishtikon '26 folder"><svg class="art" viewBox="0 0 96 80" aria-hidden="true"><use href="#folder"/></svg><span class="label">Drishtikon '26</span></button>
+          <button class="icon" type="button" data-folder="e-cell" data-name="E-Cell" aria-label="E-Cell folder"><svg class="art" viewBox="0 0 96 80" aria-hidden="true"><use href="#folder"/></svg><span class="label">E-Cell</span></button>
+          <button class="icon" type="button" data-folder="cricket" data-name="Cricket" aria-label="Cricket folder"><svg class="art" viewBox="0 0 96 80" aria-hidden="true"><use href="#folder"/></svg><span class="label">Cricket</span></button>
+          <button class="icon" type="button" data-file="cv" aria-label="Archit_Rishabh_CV.pdf, double click to open"><svg class="art doc" viewBox="0 0 80 96" aria-hidden="true"><use href="#document"/></svg><span class="label">Archit_Rishabh_CV.pdf</span></button>
+        </div>
+      </nav>
+
+      <section class="window" id="cv-window" aria-labelledby="cv-title" tabindex="-1">
+        <div class="titlebar" id="titlebar">
+          <div class="lights">
+            <button class="light close" type="button" data-action="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button class="light minimise" type="button" data-action="minimise" aria-label="Minimise"><span aria-hidden="true">&minus;</span></button>
+            <button class="light zoom" type="button" data-action="fullscreen" aria-label="Full screen"><span aria-hidden="true">&#x2922;</span></button>
+          </div>
+          <div class="tools tools-left" aria-hidden="true">
+            <span class="tool wide"><svg viewBox="0 0 24 24"><use href="#g-sidebar"/></svg><svg class="small" viewBox="0 0 24 24"><use href="#g-chevron"/></svg></span>
+          </div>
+          <div class="doc-title">
+            <h2 id="cv-title">Archit_Rishabh_CV.pdf</h2>
+            <span class="doc-sub">1 page</span>
+          </div>
+          <div class="tools tools-right" aria-hidden="true">
+            <span class="tool group"><svg viewBox="0 0 24 24"><use href="#g-zoom-out"/></svg><svg viewBox="0 0 24 24"><use href="#g-zoom-fit"/></svg><svg viewBox="0 0 24 24"><use href="#g-zoom-in"/></svg></span>
+            <span class="tool wide"><svg viewBox="0 0 24 24"><use href="#g-pen"/></svg><svg class="small" viewBox="0 0 24 24"><use href="#g-chevron"/></svg></span>
+            <span class="tool group"><svg viewBox="0 0 24 24"><use href="#g-crop"/></svg><svg viewBox="0 0 24 24"><use href="#g-rotate"/></svg><svg viewBox="0 0 24 24"><use href="#g-sign"/></svg></span>
+            <span class="tool"><svg viewBox="0 0 24 24"><use href="#g-more"/></svg></span>
+            <span class="tool round"><svg viewBox="0 0 24 24"><use href="#g-search"/></svg></span>
+          </div>
+        </div>
+
+        <div class="pdf" id="pdf">
+          <article class="page">
+            <h3 class="cv-name">Archit Rishabh</h3>
+            <p class="cv-contact">Bangalore, India &bull; <a href="mailto:archit.rishabh25@gmail.com">archit.rishabh25@gmail.com</a> &bull; <a href="https://github.com/arch-vvc" rel="noopener">github.com/arch-vvc</a> &bull; <a href="https://www.linkedin.com/in/archit-rishabh" rel="noopener">linkedin.com/in/archit-rishabh</a></p>
+
+            <h4>Education</h4>
+            <div class="entry"><div class="row"><strong>PES University</strong><span></span></div><div class="row"><span>B.Tech, Artificial Intelligence &amp; Machine Learning</span><span>2023 to 2027</span></div></div>
+            <div class="entry"><div class="row"><strong>Delhi Public School South</strong><span></span></div><div class="row"><span>CBSE Class XII: 91%</span><span>2021 to 2023</span></div></div>
+            <div class="entry"><div class="row"><strong>Bishop Cotton Boys&rsquo; School</strong><span></span></div><div class="row"><span>ICSE Class X: 96.67%</span><span>2011 to 2021</span></div></div>
+
+            <h4>Experience</h4>
+            <div class="entry">
+              <strong>Windstream Technologies</strong><br><strong>Founder&rsquo;s Office Intern</strong>
+              <ul>
+                <li>Ran multi variable site feasibility analysis across <b>100+</b> renewable energy installations (terrain, grid access, cost) to guide capital allocation for a <b>₹20 Cr project</b>.</li>
+                <li>Built an energy yield model on 35,000+ hourly weather records across sites, showing a hybrid turbine redesign <b>lifts output 20 to 25%</b> only at windy sites and loses up to <b>13%</b> elsewhere, redirecting spend to panel and battery upgrades.</li>
+                <li>Built a tender tracker that scans government tender portals and alerts the bid team to relevant tenders; used by the company, resulting in an <b>8 figure contract</b> now underway.</li>
+                <li>Supported the C suite on proposals and client presentations for strategic partnerships.</li>
+              </ul>
+            </div>
+            <div class="entry">
+              <strong>OOH Advertising</strong><br><strong>Founder&rsquo;s Office Intern</strong>
+              <ul>
+                <li>Analysed crowd flow and visibility data across <b>50+ Delhi Metro stations</b> (~30L daily commuters) to build a site prioritisation framework for outdoor advertising placements.</li>
+                <li>Created pitch decks supporting tender submissions across the South and East Delhi corridors.</li>
+              </ul>
+            </div>
+            <div class="entry">
+              <strong>NexTurn Limited</strong><br><strong>Data &amp; AI Strategy Intern</strong>
+              <ul>
+                <li>Built an AI driven document analysis and visualisation system for a <b>$150M</b> firm, cutting client insight generation time by <b>93% across 10+ simultaneous documents</b>.</li>
+                <li>Analysed unstructured business documents to surface strategic insights for leadership decisions.</li>
+              </ul>
+            </div>
+
+            <h4>Projects &amp; Research</h4>
+            <div class="entry">
+              <div class="row"><strong>Immunological Supply Chain Management System</strong><span>PES University</span></div>
+              <ul>
+                <li>Built a <b>28 stage</b> ML and RL pipeline modelling supply chain resilience on immune principles (<b>240K+</b> records).</li>
+                <li>Blind backtest on real USAID shipment data flagged the Haiti 2010 disruption; recommended vendors beat actual procurement on late rate in <b>71% of 76 cases</b>. Paper submitted.</li>
+              </ul>
+            </div>
+            <div class="entry">
+              <strong>Invoice Exception Triage</strong>
+              <ul>
+                <li>Built a tool that matches invoices against purchase orders and payments and explains each mismatch in plain English, so finance teams clear exceptions faster; caught <b>16 of 16</b> planted exceptions on a 40 invoice test set.</li>
+              </ul>
+            </div>
+            <div class="entry">
+              <strong>Call QA for Voice Agents</strong>
+              <ul>
+                <li>Built a test harness where LLM simulated callers (confused, Hinglish, adversarial) talk to a voice agent built from a client SOP, and a judge flags the exact failing turn; on a live 5 caller run the first prompt passed <b>0 of 5</b> and the fixed prompt <b>4 of 5</b>.</li>
+              </ul>
+            </div>
+            <div class="entry">
+              <strong>gtm_agent, a pitch engine for FDE outreach</strong>
+              <ul>
+                <li>Built an engine that takes a startup&rsquo;s URL and returns its cluster, the demo to send, the deployment pain its customers likely have and a pitch note of 150 words or fewer that names only things found on the company&rsquo;s own site; <b>632 tests</b>.</li>
+              </ul>
+            </div>
+
+            <h4>Leadership &amp; Activities</h4>
+            <div class="entry">
+              <div class="row"><strong>Drishtikon &rsquo;26, IIMS Pune</strong><span>National Case Competition Finalist</span></div>
+              <ul><li>Reached the national final from <b>750+</b> applicants on corporate restructuring and marketing cases.</li></ul>
+            </div>
+            <div class="entry">
+              <div class="row"><strong>PESU Entrepreneurship Cell</strong><span>Organising Committee</span></div>
+              <ul><li>Architected a <b>20 case</b> business simulation from real corporate problems; ran it end to end for <b>100+</b> participants.</li></ul>
+            </div>
+            <div class="entry">
+              <div class="row"><strong>Sports, PES University &amp; Bishop Cotton Boys&rsquo; School</strong><span>Cricket, Football, Basketball</span></div>
+              <ul><li>Won the Cottonian Shield and KSCA BT Ramaiah Shield (Best Wicketkeeper in both).</li></ul>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <nav class="dock" aria-label="Dock">
+      <button class="dock-item" type="button" data-dock aria-label="Finder" data-running><img src="assets/icons/finder.png" alt="Finder"></button>
+      <button class="dock-item" type="button" data-dock aria-label="Launchpad"><img src="assets/icons/launchpad.png" alt="Launchpad"></button>
+      <button class="dock-item" type="button" data-dock aria-label="Safari"><img src="assets/icons/safari.png" alt="Safari"></button>
+      <button class="dock-item" type="button" data-dock aria-label="Messages" data-running><img src="assets/icons/messages.png" alt="Messages"></button>
+      <button class="dock-item" type="button" data-dock aria-label="FaceTime"><img src="assets/icons/facetime.png" alt="FaceTime"></button>
+      <button class="dock-item" type="button" data-dock aria-label="Photos"><img src="assets/icons/photos.png" alt="Photos"></button>
+      <button class="dock-item" type="button" data-dock aria-label="Notes" data-running><img src="assets/icons/notes.png" alt="Notes"></button>
+      <button class="dock-item" type="button" data-dock aria-label="Music"><img src="assets/icons/music.png" alt="Music"></button>
+      <button class="dock-item" type="button" data-dock aria-label="Siri"><img src="assets/icons/siri.png" alt="Siri"></button>
+      <button class="dock-item" type="button" data-dock aria-label="System Settings"><img src="assets/icons/settings.png" alt="System Settings"></button>
+      <button class="dock-item" type="button" data-dock aria-label="Brave"><img src="assets/icons/brave.png" alt="Brave"></button>
+      <button class="dock-item" type="button" data-dock aria-label="WhatsApp"><img src="assets/icons/whatsapp.png" alt="WhatsApp"></button>
+      <button class="dock-item" type="button" data-dock aria-label="ChatGPT"><img src="assets/icons/chatgpt.png" alt="ChatGPT"></button>
+      <button class="dock-item" type="button" data-dock aria-label="Claude" data-running><img src="assets/icons/claude.png" alt="Claude"></button>
+      <span class="dock-sep" aria-hidden="true"></span>
+      <button class="dock-item" type="button" data-dock aria-label="Preview" data-running id="dock-preview"><img src="assets/icons/preview.png" alt="Preview"></button>
+      <span class="dock-sep" aria-hidden="true"></span>
+      <button class="dock-item dock-min" type="button" id="dock-min" aria-label="Restore Archit_Rishabh_CV.pdf" hidden><span class="thumb" aria-hidden="true"></span></button>
+      <button class="dock-item" type="button" data-dock aria-label="Trash"><svg class="trash" viewBox="0 0 64 72" aria-hidden="true"><path d="M20 6l6-4h14l4 4" fill="none" stroke="#9aa3ad" stroke-width="2"/><path d="M26 8l5-6 8 2-3 6zM38 8l8-4 5 5-9 3z" fill="#f1c24a"/><path d="M10 12h44l-4 54a5 5 0 0 1-5 4H19a5 5 0 0 1-5-4z" fill="url(#trash-glass)" stroke="#ffffff" stroke-opacity="0.6" stroke-width="1.500"/><path d="M22 22v40M32 22v40M42 22v40" stroke="#ffffff" stroke-opacity="0.55" stroke-width="2"/></svg></button>
+    </nav>
+  </div>
+
+  <script src="desktop.js"></script>
 </body>
 </html>
