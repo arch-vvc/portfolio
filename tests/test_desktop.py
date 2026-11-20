@@ -206,7 +206,7 @@ class Desktop(unittest.TestCase):
 
     def test_music_is_all_drake_with_real_covers(self):
         covers = re.findall(r'assets/music/[\w.]+', self.apps)
-        self.assertGreaterEqual(len(covers), 3)
+        self.assertGreaterEqual(len(set(covers)), 8)
         for c in covers:
             self.assertTrue((ROOT / c).is_file(), c)
         self.assertNotIn("Song title", self.apps)
