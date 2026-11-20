@@ -152,9 +152,9 @@ window.DESKTOP_APPS = (function () {
   // Last played: the song, the artist, and the cover of the album it is on (Take Care).
   var LAST_PLAYED = { title: "Headlines", artist: "Drake", cover: ALBUMS[0], album: ALBUM_TITLES[0] };
 
-  // Anything tapped in Music goes to Drake's page in the visitor's music app (Apple Music opens the
-  // Music app on iPhone and Mac; elsewhere it opens in the browser).
-  var DRAKE_URL = "https://music.apple.com/us/artist/drake/271256";
+  // Anything tapped in Music goes to Drake's official YouTube channel. It opens in the YouTube app on a
+  // phone that has it and in the browser everywhere else.
+  var DRAKE_URL = "https://www.youtube.com/@DrakeOfficial";
 
   // Cover art for a tile: a photo while there is one, a gradient otherwise.
   function art(list, i, alt) {

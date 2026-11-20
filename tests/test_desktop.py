@@ -183,7 +183,7 @@ class Desktop(unittest.TestCase):
         for banned in ("fetch(", "import ", "export ", "XMLHttpRequest", "http://"):
             self.assertNotIn(banned, self.apps, banned)
         for url in re.findall(r"https://[^\"'\s]+", self.apps):
-            self.assertTrue(url.startswith(("https://github.com/arch-vvc", "https://www.linkedin.com/in/archit-rishabh", "https://mail.google.com/mail/?view=cm", "https://music.apple.com/us/artist/drake/271256")), url)
+            self.assertTrue(url.startswith(("https://github.com/arch-vvc", "https://www.linkedin.com/in/archit-rishabh", "https://mail.google.com/mail/?view=cm", "https://www.youtube.com/@DrakeOfficial")), url)
 
     def test_dock_apps_are_wired(self):
         for label in ("Safari", "Mail", "Messages", "Photos", "Music"):
@@ -291,7 +291,7 @@ class Desktop(unittest.TestCase):
             self.assertIn(precedent, page, precedent)
 
     def test_music_sends_every_click_to_drakes_page_and_on_repeat_says_just_drake(self):
-        url = "https://music.apple.com/us/artist/drake/271256"
+        url = "https://www.youtube.com/@DrakeOfficial"
         self.assertIn('var DRAKE_URL = "%s"' % url, self.apps)
         self.assertIn("musicInit", self.apps)
         self.assertIn("drakeUrl: DRAKE_URL", self.apps)
