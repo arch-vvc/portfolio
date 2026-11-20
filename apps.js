@@ -218,7 +218,7 @@ window.DESKTOP_APPS = (function () {
 
   var TABS = [
     { name: "GitHub", host: "github.com/arch-vvc", href: GITHUB, fav: brand("G", "#24292f") },
-    { name: "Krillion", host: "Krillion", fav: brand("K", "#f2711c"), page: "krillion" },
+    { name: "Krillion", host: "krillion.io", fav: brand("K", "#f2711c"), page: "krillion" },
     { name: "LinkedIn", host: "linkedin.com/in/archit-rishabh", href: LINKEDIN, fav: brand("in", "#0a66c2") },
     { name: "Twitter", host: "x.com", href: cfg.twitter, fav: brand("X", "#000000"), page: "stub" },
     { name: "YouTube", host: "youtube.com", href: cfg.youtube, fav: brand("▶", "#e5322d"), page: "stub" }
@@ -226,8 +226,8 @@ window.DESKTOP_APPS = (function () {
 
   function pageHtml(tab) {
     if (tab.page === "krillion") {
-      return cfg.krillionImage
-        ? '<div class="sf-shot"><img src="' + esc(cfg.krillionImage) + '" alt="My One in a Krillion result in the Krillion game"></div>'
+      return cfg.krillionImageWide || cfg.krillionImage
+        ? '<div class="sf-shot"><img src="' + esc(cfg.krillionImageWide || cfg.krillionImage) + '" alt="My One in a Krillion result in the Krillion game"></div>'
         : '<div class="sf-stub"><div class="sf-frame" aria-hidden="true">' + svg("photos") + "</div><p>My One in a Krillion goes here.</p></div>";
     }
     return '<div class="sf-stub"><div class="sf-frame small" aria-hidden="true">' + tab.fav + "</div><p>" + esc(tab.name) + " is coming soon.</p></div>";

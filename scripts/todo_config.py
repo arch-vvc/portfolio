@@ -12,7 +12,6 @@ WHAT = {
     "capstone": "Loom URL for the capstone demo",
     "twitter": "Twitter or X profile URL, turns on the Twitter tab in Safari",
     "youtube": "YouTube channel URL, turns on the YouTube tab in Safari",
-    "krillionImage": 'path to the Krillion screenshot, for example "assets/krillion.png"',
     "callqaResult": "Call QA live result text, shown on the project page",
     "capstoneResult": "Capstone result text, shown under Research",
     "cvPath": 'path to the CV PDF, for example "assets/archit-rishabh-cv.pdf"',
