@@ -15,7 +15,7 @@ Open `index.html` by double clicking it, or run `python3 -m http.server 8080` in
 
 ## Desktop home page
 
-The CV window is real HTML, so the text can be selected and read by search engines. Its close, minimise and full screen buttons work, the title bar drags, and a double click on the CV file on the desktop reopens it. Folders only select for now, and the dock icons only react to hovering.
+The CV window is real HTML, so the text can be selected and read by search engines. Its close, minimise and full screen buttons work, the title bar drags, and a double click on the CV file on the desktop reopens it. Clicking a folder opens a Finder window with a summary, a Demo.mov row and, where there is one, a GitHub row. A Demo.mov row goes live when its Loom link is set in `site.config.js` (keys `callqa`, `triage`, `gtm`, `tender`, `capstone`). The dock icons only react to hovering for now.
 
 To change the wallpaper, put a new image in `assets/` and change the one `url(assets/wallpaper.jpg)` line in `desktop.css`.
 

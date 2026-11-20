@@ -20,8 +20,10 @@ FOLDERS = [
     ("cricket", "Cricket"),
 ]
 
-DOCK = ["Finder", "Launchpad", "Safari", "Messages", "FaceTime", "Photos", "Notes", "Music",
-        "Siri", "System Settings", "Brave", "WhatsApp", "ChatGPT", "Claude", "Preview", "Trash"]
+DOCK = ["Safari", "Messages", "Photos", "Music", "Claude", "Trash"]
+
+REPOS = ["voice-agent-call-qa", "invoice-exception-triage", "gtm_agent",
+         "immunological_supply_chain_management"]
 
 
 class Collect(HTMLParser):
@@ -81,8 +83,6 @@ class Desktop(unittest.TestCase):
             if name == "Trash":
                 continue
             slug = name.lower().replace(" ", "")
-            if name == "System Settings":
-                slug = "settings"
             self.assertTrue((ROOT / "assets" / "icons" / f"{slug}.png").is_file(), slug)
 
     def test_three_reminders_and_the_first_asks_for_a_job(self):
@@ -125,8 +125,45 @@ class Desktop(unittest.TestCase):
         self.assertTrue(list((ROOT / "assets").glob("wallpaper.*")))
 
     def test_script_works_from_disk(self):
-        for banned in ("fetch(", "import ", "export ", "XMLHttpRequest", "http://", "https://"):
+        for banned in ("fetch(", "import ", "export ", "XMLHttpRequest", "http://"):
             self.assertNotIn(banned, self.js, banned)
+        # Only plain links to the author's own GitHub may appear; nothing is loaded remotely.
+        for url in re.findall(r"https://[^\"'\s]+", self.js):
+            self.assertTrue(url.startswith("https://github.com/arch-vvc/"), url)
+
+    def test_folder_and_file_icons_are_the_real_ones(self):
+        for name in ("folder.png", "cvfile.png"):
+            self.assertTrue((ROOT / "assets" / "icons" / name).is_file(), name)
+        self.assertEqual(self.html.count('src="assets/icons/folder.png"'), 11)
+
+    def test_every_folder_has_a_finder_window_definition(self):
+        keys = re.findall(r'"([a-z\-]+)":\s*\{\s*title:', self.js)
+        self.assertEqual(sorted(keys), sorted(k for k, _ in FOLDERS))
+
+    def test_project_folders_offer_a_demo_and_the_repos_open_on_github(self):
+        heads = list(re.finditer(r'"([a-z\-]+)":\s*\{\s*title:', self.js))
+        blocks = {}
+        for i, m in enumerate(heads):
+            end = heads[i + 1].start() if i + 1 < len(heads) else len(self.js)
+            blocks[m.group(1)] = self.js[m.start():end]
+        for key in ("tender-tracker", "call-qa", "exception-triage", "gtm-agent", "capstone"):
+            self.assertIn('demo: "', blocks[key], key)
+        self.assertIn("Demo.mov", self.js)
+        for repo in REPOS:
+            self.assertIn('repo: "' + repo + '"', self.js, repo)
+        self.assertNotIn("arch-vvc/tender-tracker", self.js)
+        self.assertIn('REPO = "https://github.com/arch-vvc/"', self.js)
+
+    def test_finder_window_has_the_sidebar_from_the_reference(self):
+        for label in ("Recents", "Shared", "Favorites", "Downloads", "Applications", "Desktop",
+                      "Documents", "Locations", "iCloud Drive", "archit"):
+            self.assertIn(label, self.js, label)
+        for col in ("Name", "Date Modified", "Size"):
+            self.assertIn(col, self.js, col)
+
+    def test_demo_buttons_read_the_config(self):
+        self.assertIn("SITE_CONFIG", self.js)
+        self.assertLess(self.html.index("site.config.js"), self.html.index("desktop.js"))
 
     def test_no_external_urls_in_css(self):
         self.assertNotRegex(self.css, r"https?://")

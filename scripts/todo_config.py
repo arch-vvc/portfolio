@@ -9,6 +9,7 @@ WHAT = {
     "triage": "Loom URL for the exception triage demo",
     "gtm": "Loom URL for the gtm_agent demo",
     "tender": "Loom URL for the tender tracker demo",
+    "capstone": "Loom URL for the capstone demo",
     "callqaResult": "Call QA live result text, shown on the project page",
     "capstoneResult": "Capstone result text, shown under Research",
     "cvPath": 'path to the CV PDF, for example "assets/archit-rishabh-cv.pdf"',

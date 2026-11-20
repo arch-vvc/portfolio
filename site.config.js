@@ -6,7 +6,8 @@ var SITE_CONFIG = {
     callqa: "",
     triage: "",
     gtm: "",
-    tender: ""
+    tender: "",
+    capstone: ""
   },
   // Call QA live result text, shown on the project page when not empty.
   callqaResult: "",
