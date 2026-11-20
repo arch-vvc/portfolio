@@ -84,12 +84,9 @@ class Desktop(unittest.TestCase):
             slug = name.lower().replace(" ", "")
             self.assertTrue((ROOT / "assets" / "icons" / f"{slug}.png").is_file(), slug)
 
-    def test_three_reminders_and_the_first_asks_for_a_job(self):
-        r = self.parsed.reminders
-        self.assertEqual(len(r), 3, r)
-        self.assertIn("Give Archit a job", r[0])
-        self.assertIn("folders for demos", r[1])
-        self.assertEqual(r[2], "Ask about the capstone project")
+    def test_three_reminders_in_the_authors_words(self):
+        self.assertEqual(self.parsed.reminders, [
+            "ask about capstone", "hire archit", "check out folders for demos and info"])
 
     def test_window_buttons_are_labelled_and_wired(self):
         actions = {b["data-action"]: b.get("aria-label") for b in self.parsed.buttons
