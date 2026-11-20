@@ -443,3 +443,7 @@ a.bubble.link:focus-visible { outline: calc(var(--u) * 2) solid #4da3ff; outline
 .ml-body { flex: 1; min-height: 0; resize: none; background: transparent; border: 0; outline: none; color: #f2f2f4; font: inherit; font-size: calc(var(--u) * 13.5); line-height: 1.55; padding: calc(var(--u) * 14) calc(var(--u) * 18); }
 .ml-hint { flex: none; margin: 0; padding: calc(var(--u) * 9) calc(var(--u) * 18); border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: calc(var(--u) * 11.5); color: #8e8e93; }
 .ml-hint a { color: #6cb2ff; }
+
+.art[data-cover] { overflow: hidden; background: #2a2a2d; }
+.art[data-cover] img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 28%; border-radius: inherit; }
+.dock-item img[src$="trash.png"] { border-radius: 0; object-fit: contain; filter: drop-shadow(0 calc(var(--u) * 2) calc(var(--u) * 3) rgba(0, 0, 0, 0.3)); }

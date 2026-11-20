@@ -146,11 +146,19 @@ window.DESKTOP_APPS = (function () {
   }
 
   // ---------- Music ----------
-  function tiles(count, cls) {
+  var COVERS = ["assets/music/drake1.jpg", "assets/music/drake2.jpg", "assets/music/drake3.jpg"];
+
+  // Cover art for a tile: a photo while there is one, a gradient otherwise.
+  function art(i, cycle, cls) {
+    var src = cycle ? COVERS[i % COVERS.length] : COVERS[i];
+    return '<span class="art art' + (i % 5) + (cls ? " " + cls : "") + '"' + (src ? ' data-cover' : "") + ">" +
+      (src ? '<img src="' + src + '" alt="Drake">' : svg("note")) + "</span>";
+  }
+
+  function tiles(count, cls, cycle) {
     var out = "";
     for (var i = 0; i < count; i++) {
-      out += '<li class="tile ' + cls + '"><span class="art art' + (i % 5) + '" aria-hidden="true">' + svg("note") + "</span>" +
-        '<span class="t-title">Album title</span><span class="t-sub">Artist</span></li>';
+      out += '<li class="tile ' + cls + '">' + art(i, cycle) + '<span class="t-title">Drake</span><span class="t-sub">Drake</span></li>';
     }
     return out;
   }
@@ -179,11 +187,11 @@ window.DESKTOP_APPS = (function () {
       ], ["", "Library", "Playlists"]) + "</aside>" +
       '<section class="mu-main"><div class="mu-top" data-drag></div><div class="mu-scroll">' +
       "<h2>Home</h2>" +
-      '<h3>Last Played</h3><div class="mu-last"><span class="art art1" aria-hidden="true">' + svg("note") + '</span><div><span class="t-title">Song title</span><span class="t-sub">Artist</span></div></div>' +
-      '<h3>On Repeat</h3><ul class="tiles">' + tiles(4, "big") + "</ul>" +
-      "<h3>Recently Played</h3><ul class=\"tiles\">" + tiles(5, "small") + "</ul>" +
+      '<h3>Last Played</h3><div class="mu-last">' + art(0, false) + '<div><span class="t-title">Drake</span><span class="t-sub">Drake</span></div></div>' +
+      '<h3>On Repeat</h3><ul class="tiles">' + tiles(4, "big", false) + "</ul>" +
+      "<h3>Recently Played</h3><ul class=\"tiles\">" + tiles(5, "small", true) + "</ul>" +
       '</div><div class="mu-player" aria-hidden="true">' + svg("shuffle") + svg("prev") + svg("play", "play") + svg("next") + svg("repeat") +
-      '<span class="mu-now"><span>Song title</span><span>Artist</span></span>' + svg("volume") + "</div></section>";
+      '<span class="mu-now"><span>Drake</span><span>Drake</span></span>' + svg("volume") + "</div></section>";
   }
 
   // ---------- Photos ----------

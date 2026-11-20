@@ -81,8 +81,6 @@ class Desktop(unittest.TestCase):
 
     def test_dock_icon_files_exist(self):
         for name in DOCK:
-            if name == "Trash":
-                continue
             slug = name.lower().replace(" ", "")
             self.assertTrue((ROOT / "assets" / "icons" / f"{slug}.png").is_file(), slug)
 
@@ -205,6 +203,15 @@ class Desktop(unittest.TestCase):
         self.assertIn("mailto:", self.apps)
         self.assertIn('id="ml-subject"', self.apps)
         self.assertIn("<textarea", self.apps)
+
+    def test_music_is_all_drake_with_real_covers(self):
+        covers = re.findall(r'assets/music/[\w.]+', self.apps)
+        self.assertGreaterEqual(len(covers), 3)
+        for c in covers:
+            self.assertTrue((ROOT / c).is_file(), c)
+        self.assertNotIn("Song title", self.apps)
+        self.assertNotIn("Album title", self.apps)
+        self.assertGreaterEqual(self.apps.count(">Drake<"), 3)
 
     def test_music_window_shape(self):
         for t in ("Home", "Recently Played", "Library", "Playlists", "Albums", "Songs"):
