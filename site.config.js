@@ -12,9 +12,8 @@ var SITE_CONFIG = {
   // Safari tabs. An empty value leaves that tab as a stub.
   twitter: "",
   youtube: "",
-  // Screenshots shown in the Krillion tab: portrait for the phone, landscape for the laptop.
+  // Screenshot shown in the Krillion tab of the phone Safari. The laptop has no Krillion tab.
   krillionImage: "assets/krillion.png",
-  krillionImageWide: "assets/krillion-laptop.png",
   // Call QA live result text, shown on the project page when not empty.
   callqaResult: "",
   // Capstone result text, shown under Research when not empty.

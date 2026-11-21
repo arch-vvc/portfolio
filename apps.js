@@ -238,34 +238,41 @@ window.DESKTOP_APPS = (function () {
     { name: "YouTube", host: "youtube.com", href: cfg.youtube, fav: brand("▶", "#e5322d"), page: "stub" }
   ];
 
-  function pageHtml(tab) {
-    if (tab.page === "krillion") {
-      return cfg.krillionImageWide || cfg.krillionImage
-        ? '<div class="sf-shot"><h2 class="kr-yes">YES I HAVE A ONE IN A KRILLION</h2><img src="' + esc(cfg.krillionImageWide || cfg.krillionImage) + '" alt="My One in a Krillion result in the Krillion game"></div>'
-        : '<div class="sf-stub"><div class="sf-frame" aria-hidden="true">' + svg("photos") + "</div><p>My One in a Krillion goes here.</p></div>";
-    }
+  // The laptop Safari has no Krillion tab; the phone Safari (phone.js) still reads it from TABS.
+  function stubHtml(tab) {
     return '<div class="sf-stub"><div class="sf-frame small" aria-hidden="true">' + tab.fav + "</div><p>" + esc(tab.name) + " is coming soon.</p></div>";
+  }
+
+  // What a fresh tab shows: the sites that open for real, as favourites.
+  function startHtml() {
+    var favs = "";
+    for (var i = 0; i < TABS.length; i++) {
+      var t = TABS[i];
+      if (t.href) favs += '<a class="sf-fav" href="' + esc(t.href) + '" target="_blank" rel="noopener">' + t.fav + "<span>" + esc(t.name) + "</span></a>";
+    }
+    return '<div class="sf-start"><h2>Favourites</h2><div class="sf-favs">' + favs + "</div></div>";
   }
 
   function safari() {
     var tabs = "";
     for (var i = 0; i < TABS.length; i++) {
       var t = TABS[i];
+      if (t.page === "krillion") continue;
       var inner = t.fav + "<span>" + esc(t.name) + "</span>";
       if (t.href) tabs += '<a class="sf-tab" href="' + esc(t.href) + '" target="_blank" rel="noopener">' + inner + "</a>";
-      else tabs += '<button class="sf-tab' + (i === 1 ? " selected" : "") + '" type="button" data-tab="' + i + '">' + inner + "</button>";
+      else tabs += '<button class="sf-tab" type="button" data-tab="' + i + '">' + inner + "</button>";
     }
     return '<div class="sf-toolbar" data-drag>' + lights() +
       '<span class="round-btn sq" aria-hidden="true">' + svg("sidebar") + "</span>" +
       '<span class="sf-pill" aria-hidden="true">Personal</span>' +
       '<span class="round-btn pair" aria-hidden="true">' + svg("back") + "<i></i>" + svg("forward") + "</span>" +
-      '<div class="sf-address" aria-hidden="true">' + svg("lock") + '<span id="sf-url">' + esc(TABS[1].host) + "</span></div>" +
+      '<div class="sf-address" aria-hidden="true">' + svg("lock") + '<span id="sf-url">Start Page</span></div>' +
       '<span class="round-btn" aria-hidden="true">' + svg("download") + "</span>" +
       '<span class="round-btn" aria-hidden="true">' + svg("share") + "</span>" +
       '<span class="round-btn" aria-hidden="true">' + svg("plus") + "</span>" +
       '<span class="round-btn" aria-hidden="true">' + svg("tabs") + "</span></div>" +
       '<div class="sf-tabs">' + tabs + "</div>" +
-      '<div class="sf-page" id="sf-page">' + pageHtml(TABS[1]) + "</div>";
+      '<div class="sf-page" id="sf-page">' + startHtml() + "</div>";
   }
 
   function safariInit(el) {
@@ -278,7 +285,7 @@ window.DESKTOP_APPS = (function () {
           var t = TABS[Number(btn.getAttribute("data-tab"))];
           for (var k = 0; k < buttons.length; k++) buttons[k].classList.remove("selected");
           btn.classList.add("selected");
-          page.innerHTML = pageHtml(t);
+          page.innerHTML = stubHtml(t);
           url.textContent = t.host;
         });
       })(buttons[i]);

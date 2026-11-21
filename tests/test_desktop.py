@@ -274,7 +274,7 @@ class Desktop(unittest.TestCase):
             self.assertIn('"%s"' % tab, self.apps, tab)
         self.assertIn("https://github.com/arch-vvc", self.apps)
         self.assertIn("https://www.linkedin.com/in/archit-rishabh", self.apps)
-        for key in ("krillionImage", "twitter", "youtube"):
+        for key in ("twitter", "youtube"):
             self.assertIn("cfg." + key, self.apps, key)
 
     def test_ecell_folder_opens_the_case_board_page(self):
@@ -299,11 +299,19 @@ class Desktop(unittest.TestCase):
         self.assertIn("shared.drakeUrl", phone)
         self.assertIn('(titles ? \'<span class="t-sub">Drake</span>\' : "")', self.apps)
 
-    def test_krillion_tab_has_the_big_headline_on_laptop_and_phone(self):
+    def test_krillion_is_on_the_phone_only(self):
         phone = (ROOT / "phone.js").read_text(encoding="utf-8")
-        for src in (self.apps, phone):
-            self.assertIn("YES I HAVE A ONE IN A KRILLION", src)
-        self.assertRegex((ROOT / "desktop.css").read_text(encoding="utf-8"), r"\.kr-yes\s*\{[^}]*font-weight:\s*900")
+        self.assertIn("YES I HAVE A ONE IN A KRILLION", phone)
+        self.assertIn("cfg.krillionImage", phone)
+        for banned in ("YES I HAVE", "krillionImage", "kr-yes", "sf-shot", "Krillion game"):
+            self.assertNotIn(banned, self.apps, banned)
+        css = (ROOT / "desktop.css").read_text(encoding="utf-8")
+        for banned in (".kr-yes", ".sf-shot"):
+            self.assertNotIn(banned, css, banned)
+        self.assertNotIn("krillionImageWide", (ROOT / "site.config.js").read_text(encoding="utf-8"))
+        self.assertFalse((ROOT / "assets" / "krillion-laptop.png").exists())
+        self.assertIn("function safari()", self.apps)
+        self.assertIn("if (t.page === \"krillion\") continue;", self.apps)
 
     def test_photos_is_a_stub_until_photos_arrive(self):
         self.assertIn("Photos", self.apps)
