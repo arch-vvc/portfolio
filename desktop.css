@@ -198,6 +198,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .entry .row { display: flex; justify-content: space-between; gap: calc(var(--u) * 16); }
 .entry ul { margin: calc(var(--u) * 1) 0 calc(var(--u) * 3); padding-left: calc(var(--u) * 40); }
 .entry li { margin: 0; padding-left: calc(var(--u) * 2); }
+.entry .tech { font-style: italic; text-align: right; }
 
 /* dock */
 .dock {

@@ -64,3 +64,6 @@ Not re-reviewed by the council. Maximum fix rounds reached, so the rest is for t
 - Trash stays as is (owner decision).
 - Music: waiting for the owner to say what to change.
 - Owner said the phone did not change after the merge. The live site was verified serving the new version; preview links are frozen snapshots and never update.
+
+- 21 Nov 2026: owner supplied Archit_Rishabh_CV_CS.pdf and asked to use it instead. assets/Archit_Rishabh_CV.pdf is that file with the phone number removed from the content stream (contact line re centred, link boxes moved, old stream dropped so the number is not in the file). The CV window and the phone CV sheet in index.html mirror its text. scripts/make_cv_pdf.js was removed because it would overwrite the supplied PDF.
+- Open: the supplied CV says "GTM Lead Intelligence Platform" with Airflow, "Journal paper under consideration" and "receipt" in the Triage bullet. Earlier the owner said gtm has no Airflow and the paper is submitted. Shown as supplied; owner to confirm.

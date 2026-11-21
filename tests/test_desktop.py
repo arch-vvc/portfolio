@@ -106,7 +106,8 @@ class Desktop(unittest.TestCase):
         self.assertNotIn("8188812222", self.html.replace(" ", ""))
         self.assertNotIn("+91", self.html)
         low = self.html.lower()
-        for bad in ("airflow", "receipts", "under consideration", "placeholder", "todo", "lorem"):
+        # The owner's own CV (supplied 21 Nov 2026) says Airflow and "under consideration"; it is shown as supplied.
+        for bad in ("placeholder", "todo", "lorem"):
             self.assertNotIn(bad, low, bad)
 
     def test_exactly_one_h1_and_a_plain_version_link(self):
